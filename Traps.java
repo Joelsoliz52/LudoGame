@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 public class Traps implements Comodin{
     private BuildPlayers players;
     private boolean flag;
@@ -8,40 +9,51 @@ public class Traps implements Comodin{
     private final int heigth;
     private final int width;
     private GameLogic<Integer> logic;
-    
+    private int loseTurn = (int)(Math.random()*3)+1;
+    private Pawn pawnA;
     public Traps(){
         heigth = width = 30;
     }
-    public Traps(BuildPlayers players, Aliance aliance, int x, int y, GameLogic<Integer> logic){
+    public Traps(BuildPlayers players, Aliance aliance, int x, int y, GameLogic<Integer> logic,Pawn pawnA){
         this.players = players;
         this.aliance = aliance;
         this.logic = logic;
-        pos = new Position(x, y);
+        this.pawnA = pawnA;
+        Position pos = new Position(x, y);
+        Position pos1 = new Position(0, 9);
+        Position pos2 = new Position(9, 0);
+        Position pos3 = new Position(8, 18);
+        Position pos4 = new Position(18, 8);
         flag = true;
         int al = aleatori();
         Player player = returnPlayer(players.players, x, y);
-        if(trustPositionPawn(player, x, y)){
+        if(pos.equals(pos1)==false && pos.equals(pos2)==false && pos.equals(pos3)==false && pos.equals(pos4)==false){ 
+            pos.setFlagTraps(true);}
+        
+        if(trustPositionPawn(player, x, y) && (!pos.getFlagTraps())){
             if(al == 1){
+                JOptionPane.showMessageDialog(null, "escoge una casilla");
+                escogecasilla(x, y);
+            }else if(al == 2){
+                putTrapLoseTurn(players.players, x, y);
+            }else{
+                if(al == 3){
+                    Pawn pawn = returnPawn(player, pos);
+                    newPositionPawn(pawn, players.players); 
+                }else{
+                   
+                }
+            }
+        }else if(pos.getFlagTraps()){
+            int al2 = (int)(Math.random()*3)+1;
+            if(al2 == 1){
                 putTrapReturnInit(player, x, y);
             }else{
-                if(al == 2){
+                if(al2 == 2){
                     putTrapRecoil(player, x, y, logic.getDice());
                 }else{
-                    if(al == 3){
-                        putTrapLoseTurn(players.players, x, y);
-                    }else{
-                        if(al == 4){
-                            Pawn pawn = returnPawn(player, pos);
-                            putTrapMine(pawn);
-                        }else{
-                            if(al == 5){
-                               Pawn pawn = returnPawn(player, pos);
-                               newPositionPawn(pawn, players.players); 
-                            }else{
-                               putTrapFreezePawn(players.players, x, y);
-                            }
-                        }
-                    }
+                    Pawn pawn = returnPawn(player, pos);
+                    putTrapMine(pawn);
                 }
             }
         }
@@ -50,9 +62,9 @@ public class Traps implements Comodin{
     /**
      * Metodo para seleccionar una trampa al azar
      */
-    public int aleatori(){return (int)(Math.random()*6)+1;}
+    public int aleatori(){return (int)(Math.random()*4)+1;}
     /**
-     * Metodo para volver al inicio  escoger una casilla
+     * Metodo para volver al inicio
      */
     public void putTrapReturnInit(Player player, int x, int y){
         Position current = new Position(x, y);
@@ -62,7 +74,7 @@ public class Traps implements Comodin{
         }
     }
     /**
-     * Metodo para colocar una trampa retroceso escoger una casilla
+     * Metodo para colocar una trampa retroceso
      */
     public void putTrapRecoil(Player player, int x, int y, Dice<Integer> dice){
         dice.throwDice();
@@ -74,7 +86,7 @@ public class Traps implements Comodin{
         }
     }
     /**
-     * Metodo para colocar una trampa perdida de turno    directo
+     * Metodo para colocar una trampa perdida de turno
      */
     public void putTrapLoseTurn(Player[] players, int x, int y){
         Player player = returnPlayer(players, x, y);
@@ -87,12 +99,16 @@ public class Traps implements Comodin{
         flag = false;
     }
     /**
-     * Metodo para colocar una trampa de congelar una ficha   NO TERMINADO
+     * Metodo para colocar una trampa de congelar una ficha
      */
     public void putTrapFreezePawn(Player[] players, int x, int y){
         Position poss = new Position(x, y);
         Pawn pawn = returnPawn(players, poss);
     }
+    public void escogecasilla(int x, int y){
+        logic.setdoubleClicked(true);
+    }
+    
     /**
      * Metodo para cambiar de posicion una ficha     escoger ficha
      */
@@ -108,6 +124,7 @@ public class Traps implements Comodin{
             }
         }
     } 
+
     /***
      * Method for place traps mine 
      */
@@ -148,6 +165,7 @@ public class Traps implements Comodin{
                 while(i < players[pos1].getPawns().length){
                 if(players[pos1].getPawns()[i].getPosition().equals(pos2)){
                     pawns[tam-1] = players[pos1].getPawns()[i]; 
+                    
                     tam++;
                 }
                 i++;
@@ -199,13 +217,13 @@ public class Traps implements Comodin{
         }
         return pawn;
     }
-    private Pawn returnPawn(Player[] players, Pawn pawn){
+    private Pawn returnPawn(Player[] players, Pawn pawn){ // devuelve otra posicion
         int i = 0;
         Position pos1 = new Position(0, 9);
-        Position pos2 = new Position(9, 0);
-        Position pos3 = new Position(8, 18);
-        Position pos4 = new Position(18, 8);
-        Position pos = null;
+            Position pos2 = new Position(9, 0);
+            Position pos3 = new Position(8, 18);
+            Position pos4 = new Position(18, 8);
+            Position pos=null;
         if(pos1.equals(pawn.getPosition())){
             pos = new Position(0, 9-4);
         } else if(pos2.equals(pawn.getPosition())){

@@ -191,7 +191,7 @@ public class RunLogic implements GameLogic<Integer>{
             if(player.getColor() == Color.BLUE){
                 if (current == 83) player.incrementCoin();
             }else if(player.getColor() == Color.GREEN){
-                if (current == 79) player.incrementCoin();//79
+                if (current == 79) player.incrementCoin();
             }else if(player.getColor() == Color.RED){
                 if (current == 83) player.incrementCoin();
             }else if(player.getColor() == Color.YELLOW){
@@ -298,7 +298,7 @@ public class RunLogic implements GameLogic<Integer>{
                 currentPlayer = tam;
             }
             pos++;
-        } else if(player.getFlagBonus()){ // el jugador es el que tiene el bonus, pero talves deberia 
+        } else if(player.getFlagBonus()){ 
             player.setFlagBonus(false);
         }
     }

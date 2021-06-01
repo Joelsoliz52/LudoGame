@@ -21,7 +21,7 @@ public class RunLogic implements GameLogic<Integer>{
     public ArrayList<Position> positionbox;
     public RunLogic(Board board, Aliance aliance){
         if (board == null) {
-            this.board = board = new MRIBoard(new Position(80, 50), new Color[tam]);
+            this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);//cambien mri por run
         } else {
             this.board = board;
         }
@@ -284,10 +284,14 @@ public class RunLogic implements GameLogic<Integer>{
                 currentPlayer = (currentPlayer + 1) % tam;
                 if(player.getloseTurn()<=loseTurn){
                     player.setloseTurn(player.getloseTurn()+1);
-                }else{player.setFlagTraps(false);}
+                }else{
+                    player.setFlagTraps(false);
+                    loseTurn = 0;
+                }
                 if(currentPlayer == 0){
                     currentPlayer = tam;
                 }
+                pos++;
             }
         }
         

@@ -11,6 +11,7 @@ public class Traps implements Comodin{
     private GameLogic<Integer> logic;
     private int loseTurn = (int)(Math.random()*3)+1;
     private Pawn pawnA;
+    private int no;
     public Traps(){
         heigth = width = 30;
     }
@@ -25,25 +26,30 @@ public class Traps implements Comodin{
         Position pos3 = new Position(8, 18);
         Position pos4 = new Position(18, 8);
         flag = true;
-        int al = aleatori();
+        int al = 3; //aleatori();
         Player player = returnPlayer(players.players, x, y);
+        
         if(pos.equals(pos1)==false && pos.equals(pos2)==false && pos.equals(pos3)==false && pos.equals(pos4)==false){ 
             pos.setFlagTraps(true);}
         
         if(trustPositionPawn(player, x, y) && (!pos.getFlagTraps())){
             if(al == 1){
                 JOptionPane.showMessageDialog(null, "escoge una casilla");
-                escogecasilla(x, y);
+                logic.setdoubleClicked(true);
             }else if(al == 2){
                 putTrapLoseTurn(players.players, x, y);
             }else{
                 if(al == 3){
-                    Pawn pawn = returnPawn(player, pos);
-                    newPositionPawn(pawn, players.players); 
+                    JOptionPane.showMessageDialog(null, "escoge una ficha");
+                    logic.setnewPositionPawn(true);
+                    logic.setdoubleClicked(true);
                 }else{
                    
                 }
             }
+        }else if(logic.getnewPositionPawn()){
+            logic.setnewPositionPawn(false);
+            newPositionPawn(x,y, pawnA); 
         }else if(pos.getFlagTraps()){
             int al2 = (int)(Math.random()*3)+1;
             if(al2 == 1){
@@ -105,9 +111,6 @@ public class Traps implements Comodin{
         Position poss = new Position(x, y);
         Pawn pawn = returnPawn(players, poss);
     }
-    public void escogecasilla(int x, int y){
-        logic.setdoubleClicked(true);
-    }
     
     /**
      * Metodo para cambiar de posicion una ficha     escoger ficha
@@ -123,6 +126,41 @@ public class Traps implements Comodin{
                 pawn2.setCurrent(pawn2.getCurrent()-j);
             }
         }
+    } 
+    /**
+     * Metodo para cambiar de posicion una ficha     escoger ficha
+     */
+    public void newPositionPawn(int x, int y, Pawn pawnA){ //Player[] players){
+        Pawn pawn1 = pawnA;
+        Position pos1=pawn1.getPosition();//areglar
+        Player player1 = returnPlayer(players.players, pawn1.getPosition().getX(), pawn1.getPosition().getY());
+        Position posnn = new Position (x,y);
+        Pawn pawn2 = returnPawn(players.players, posnn);//pawn1.getPosition();//logic.doubleMouseClicked(x, y);
+        Player player2 = returnPlayer(players.players, x, y);
+        Position pos2 = pawn2.getPosition();
+        
+        int a =0; int b=0;
+        while(a <84){
+            int A = pawn1.getPath().getAX()[player1.getTurn()-1][a];
+            int B = pawn1.getPath().getAY()[player1.getTurn()-1][a];
+            if(pos2.equals(new Position(A,B))){
+                a=a;
+                break;
+            }
+            a++;
+        }
+        while(b<84){ 
+            int A = pawn2.getPath().getAX()[player2.getTurn()-1][b];
+            int B = pawn2.getPath().getAY()[player2.getTurn()-1][b];
+            if(pos1.equals(new Position(A,B))){
+                b=b;
+                break;
+            }
+            b++;
+        }
+        pawn1.setCurrent(a);
+        pawn2.setCurrent(b);
+        
     } 
 
     /***

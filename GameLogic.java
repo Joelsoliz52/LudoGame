@@ -17,4 +17,6 @@ public interface GameLogic<T> {
     boolean getdoubleClicked();
     void setdoubleClicked(boolean doubleClicked);
     void paint(Graphics2D graphics);
+    boolean getnewPositionPawn();
+    void setnewPositionPawn(boolean newPositionPawn);
 }

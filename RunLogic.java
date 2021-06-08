@@ -19,9 +19,11 @@ public class RunLogic implements GameLogic<Integer>{
     private int loseTurn;
     public boolean doubleClicked;
     public ArrayList<Position> positionbox;
+    public Pawn currentPawn;
+    public boolean newPositionPawn;
     public RunLogic(Board board, Aliance aliance){
         if (board == null) {
-            this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);//cambien mri por run
+            this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
         } else {
             this.board = board;
         }
@@ -30,9 +32,10 @@ public class RunLogic implements GameLogic<Integer>{
         dice = new Dice<Integer>("int");
         dice.content = 0;
         flag = 0;
-        loseTurn=0;
-        doubleClicked=false;
-        positionbox=new ArrayList<>();
+        loseTurn = (int)(Math.random()*3)+1;
+        doubleClicked = false;
+        newPositionPawn = false;
+        positionbox = new ArrayList<>();
         players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
     }
     
@@ -102,6 +105,7 @@ public class RunLogic implements GameLogic<Integer>{
                       player.getPawns()[poss1].getPosition().equals(pos4)){
                         if(al == 1){
                             comodin = new Traps();
+                            currentPawn=player.getPawns()[poss1];
                             chooseCasilla(comodin, x, y,player.getPawns()[poss1]);
                         }else if(al==2){
                             comodin = new Bonus();
@@ -129,7 +133,13 @@ public class RunLogic implements GameLogic<Integer>{
      * @param y Y position of the click.
      */
     public void doubleMouseClicked(int x, int y) {
-        positionbox.add(new Position(x,y));
+        if (!getnewPositionPawn()){
+            positionbox.add(new Position(x,y));}
+        else{
+            comodin = new Traps();
+            chooseCasilla(comodin, x, y,currentPawn);
+        }
+        
     }
     
     /**
@@ -276,10 +286,7 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString(players.players[pos].getName() + " " + "you", 700, 150);
-            if(!player.getFlagTraps()){
-                graphics.drawString("Number on ", 700, 200);
-                graphics.drawString("dice is " + dice.content, 700, 250);
-            }else {
+            if (player.getFlagTraps()){
                 graphics.drawString("Lose Turn ", 700, 200);
                 currentPlayer = (currentPlayer + 1) % tam;
                 if(player.getloseTurn()<=loseTurn){
@@ -292,7 +299,11 @@ public class RunLogic implements GameLogic<Integer>{
                     currentPlayer = tam;
                 }
                 pos++;
+            }else{
+                graphics.drawString("Number on ", 700, 200);
+                graphics.drawString("dice is " + dice.content, 700, 250);
             }
+            
         }
         
         if(flag == 0 && dice.content != 0  && dice.content != 6 && !player.getFlagBonus()) {
@@ -315,5 +326,10 @@ public class RunLogic implements GameLogic<Integer>{
     public void setdoubleClicked(boolean doubleClicked)
     {
         this.doubleClicked=doubleClicked;
+    }
+    
+    public boolean getnewPositionPawn(){return newPositionPawn;}
+    public void setnewPositionPawn(boolean newPositionPawn){
+        this.newPositionPawn = newPositionPawn;
     }
 }

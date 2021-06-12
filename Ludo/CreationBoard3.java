@@ -15,6 +15,7 @@ import utilities.Constants;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.MalformedURLException;
 import java.util.*;
 /**
  * Creation of panel for do a board Classic.
@@ -23,7 +24,7 @@ import java.util.*;
  * @version (a version number or a date)
  */
 @SuppressWarnings("serial")
-public class CreationBoard3 extends JDialog implements ActionListener{
+public class CreationBoard3 extends Dialog implements ActionListener{
     private final Buttons butons;
     private ClassicBoard board;
     public BuildPlayers bul;
@@ -35,7 +36,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
     public CreationBoard3(Menu2 parent,boolean modal){
         super(parent, modal);
         setLayout(null);
-        setBounds(495,150,420,490);
+        setBounds(495,150,400,480);
         butons = new Buttons(this);
         butons.getB3().addActionListener(this);
         butons.getB4().addActionListener(this);
@@ -47,6 +48,8 @@ public class CreationBoard3 extends JDialog implements ActionListener{
         butons.getBc2().addActionListener(this);
         butons.getBc3().addActionListener(this);
         butons.getBc4().addActionListener(this);
+        butons.getBr().addActionListener(this);
+        this.setUndecorated(true);
     }
     public void actionPerformed(ActionEvent e){
         //botones para elegir un arreglo de tamaño n;
@@ -75,8 +78,12 @@ public class CreationBoard3 extends JDialog implements ActionListener{
             butons.getB5().setEnabled(false);
         }
         
-        if(butons.getB4().isEnabled() == false && butons.getB5().isEnabled() == false && butons.getB3().isEnabled() == false){
-            
+        if(butons.getB4().isEnabled() == false && 
+    	   butons.getB5().isEnabled() == false && 
+    	   butons.getB3().isEnabled() == false &&
+    	   e.getSource() == butons.getBr()){
+        	tam = 0;
+        	butons.reset();
         }
         // boton para añadir un jugador al arreglo
        if(e.getSource() == butons.getBa()){
@@ -88,11 +95,17 @@ public class CreationBoard3 extends JDialog implements ActionListener{
             }
             butons.getTx().setText("");
         }
-        Menu2 m = new Menu2();
-        if(e.getSource() == butons.getBb()){
-            this.setVisible(false);
-            m.lastMenu.setVisible(true);
-        }
+        Menu2 m;
+		try {
+			m = new Menu2();
+			if(e.getSource() == butons.getBb()){
+	            this.setVisible(false);
+	            m.lastMenu.setVisible(true);
+	        }
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+        
         // botones para elegir el color
         if(butons.getBa().isEnabled()){
             butons.getBc1().setEnabled(false);
@@ -111,6 +124,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc1() && pos < tam){
             colores[pos] = Color.RED;
             butons.getNom1().setText(""+name[pos]);
+            butons.getNom1().setForeground(Color.RED);
             pos++;
             butons.getBc1().setEnabled(false);
         }else{
@@ -118,6 +132,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.RED;
                 butons.getNom1().setText(""+name[pos]);
+                butons.getNom1().setForeground(Color.RED);
                 pos++;
                 butons.getBc1().setEnabled(false);
             }
@@ -125,6 +140,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc2() && pos < tam){
             colores[pos] = Color.BLUE;
             butons.getNom2().setText(""+name[pos]);
+            butons.getNom2().setForeground(Color.BLUE);
             pos++;
             butons.getBc2().setEnabled(false);
         }else{
@@ -132,6 +148,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.BLUE;
                 butons.getNom2().setText(""+name[pos]);
+                butons.getNom2().setForeground(Color.BLUE);
                 pos++;
                 butons.getBc2().setEnabled(false);
             }
@@ -139,6 +156,7 @@ public class CreationBoard3 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc3() && pos < tam){
             colores[pos] = Color.YELLOW;
             butons.getNom3().setText(""+name[pos]);
+            butons.getNom3().setForeground(Color.YELLOW);
             pos++;
             butons.getBc3().setEnabled(false);
         }else{
@@ -165,7 +183,8 @@ public class CreationBoard3 extends JDialog implements ActionListener{
             }
         }
         if(pos == tam){
-            botonesF();
+        	pos = 0;
+            butons.botonesF();
             map = new HashMap<Color, Boolean>();
             enterHashMap(map, colores);
             board = new ClassicBoard(new Position(80, 50), colores);
@@ -193,63 +212,24 @@ public class CreationBoard3 extends JDialog implements ActionListener{
         }
     }
     
-    /**
-     * Metodo para apagar botones de colores en caso de que haber sido elegidos
-     */
-    private void botonesF(){
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            butons.getBc2().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc3().isEnabled() == false){
-            butons.getBc2().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc2().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc1().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc2().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc3().isEnabled() == false){
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc3().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc2().setEnabled(false);
-            pos = 0;
-        }
-    }
-    
+    public void paint(Graphics gr) {
+    	Graphics2D g2d = (Graphics2D) gr;
+
+    	  /*
+    	   * Para crear un gradiente horizontal,
+    	   * las coordenadas a usar seran del {0,0} al {anchura del componente, 0}
+    	   */
+    	  GradientPaint horizontalGradient = new GradientPaint(0, 0, Color.RED, getWidth(), 0, Color.BLUE);
+    	  g2d.setPaint(horizontalGradient);
+
+    	  g2d.fillRect(0, 0, getWidth(), getHeight());
+
+    } 
     /**
      * Metodo para verificar que color fue seleccionado
      * @param HashMap<Color, Boolean>
      * @param Color[]
-     */
+     */   
     private void enterHashMap(HashMap<Color, Boolean> m, Color[] colores){
         int pos = 0;
         while(pos < tam){

@@ -225,13 +225,18 @@ public class RunLogic implements GameLogic<Integer>{
      * @param Aliance
      * @return retornara true si es existe en una alianza si no false
      */
-    private boolean ifExistAliance(Aliance aliance) {
-    	if((aliance.getAliance1()[0].getFlagBonus() &&
-    	    aliance.getAliance1()[1].getFlagBonus()) ||
-    	   (aliance.getAliance2()[0].getFlagBonus() &&
-    	    aliance.getAliance2()[1].getFlagBonus())) {
-    		return true;
-        } else {return false;}
+    private boolean ifExistAliance(Aliance aliance, Player player) {
+    	if (aliance.getAliance1() != null||
+    		aliance.getAliance2() != null) {
+    		if (aliance.containsPlayerAliance1(player) ||
+    		    aliance.containsPlayerAliance2(player)	) {
+    			return true;
+    		}else{
+    			return false;
+    		}
+        } else {
+        	return false;
+        }
     }
     
     /**
@@ -291,7 +296,7 @@ public class RunLogic implements GameLogic<Integer>{
                     player.setFlagTraps(false);
                     loseTurn = 0;
                 }
-                if(!ifExistAliance(aliance)) {
+                if(!ifExistAliance(aliance, player)) {
                 	currentPlayer = currentPlayer+1;
                 }
                 if(currentPlayer == 0){

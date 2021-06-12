@@ -5,20 +5,16 @@ package utilities;
  */
 import javax.swing.*;
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @SuppressWarnings("serial")
-public class Fondo extends JPanel{
+public class Fondo extends Frame{
     private Image imagen;
-    public final int[] pixels;
-    private final int ancho;
-    private final int alto;
-    public Fondo(String ruta, final int ancho, final int alto) {
-    	this.ancho = ancho;
-    	this.alto = alto;
-    	pixels = new int[ancho*alto];
-    	if(ruta != null) {
-    		imagen = new ImageIcon(getClass().getResource(ruta)).getImage();
-    	}
+    public Fondo(String ruta, final int ancho, final int alto) throws MalformedURLException {
+        URL urlGif = new URL(ruta);
+        Icon iconGif = new ImageIcon(urlGif);
+        JLabel animacionGif = new JLabel(iconGif);
     }
     /**
      * Metodo para pintar la imagen en fondo
@@ -29,9 +25,8 @@ public class Fondo extends JPanel{
      * @param height
      * @param f
      */
-    public void paint(Graphics gr, int x, int y, int width, int height, JFrame f){
+    public void paint(Graphics gr, int x, int y, int width, int height, Frame f){
         gr.drawImage(imagen, x, y, width, height, f);
-        setOpaque(false);
         super.paint(gr);
     }
 }

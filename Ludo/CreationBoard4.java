@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -43,7 +44,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
     public CreationBoard4(Menu2 parent,boolean modal){
         super(parent, modal);
         setLayout(null);
-        setBounds(495,150,420,490);
+        setBounds(495,150,400,480);
         butons = new Buttons(this);
         butons.getB3().addActionListener(this);
         butons.getB4().addActionListener(this);
@@ -55,26 +56,27 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         butons.getBc2().addActionListener(this);
         butons.getBc3().addActionListener(this);
         butons.getBc4().addActionListener(this);
-        
+        butons.getBr().addActionListener(this);
+        this.setUndecorated(true);
         boardMod = new JDialog();
         boardMod.setLayout(null);
-        boardMod.setBounds(495,200,310,225);
+        boardMod.setBounds(495,200,310,210);
         b1 = new JButton();
-        b1.setBounds(33,30,100,100);
+        b1.setBounds(30,30,100,100);
         boardMod.add(b1);
         b1.addActionListener(this);
         b2 = new JButton();
-        b2.setBounds(166,30,100,100);
+        b2.setBounds(180,30,100,100);
         boardMod.add(b2);
         b2.addActionListener(this);
         bd = new JButton("BACK");
-        bd.setBounds(115,150,70,30);
+        bd.setBounds(105,155,100,30);
         bd.setBackground(java.awt.Color.BLACK);
         bd.setForeground(Color.white);
-        bd.setFont(new Font("Agency FB",Font.BOLD, 20));
+        bd.setFont(new Font("Agency FB",Font.BOLD, 16));
         boardMod.add(bd);
         bd.addActionListener(this);
-        
+        boardMod.setUndecorated(true);
         pos = 0;
     }
     public void actionPerformed(ActionEvent e){
@@ -104,8 +106,12 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             butons.getB5().setEnabled(false);
         }
         
-        if(butons.getB4().isEnabled() == false && butons.getB5().isEnabled() == false && butons.getB3().isEnabled() == false){
-            
+        if(butons.getB4().isEnabled() == false && 
+     	   butons.getB5().isEnabled() == false && 
+     	   butons.getB3().isEnabled() == false&&
+     	   e.getSource() == butons.getBr()){
+             	tam = 0;
+             	butons.reset();
         }
         // boton para añadir un jugador al arreglo
        if(e.getSource() == butons.getBa()){
@@ -117,11 +123,18 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             }
             butons.getTx().setText("");
         }
-        Menu2 m = new Menu2();
-        if(e.getSource() == butons.getBb()){
-            this.setVisible(false);
-            m.lastMenu.setVisible(true);
-        }
+        Menu2 m;
+		try {
+			m = new Menu2();
+			if(e.getSource() == butons.getBb()){
+	            this.setVisible(false);
+	            m.lastMenu.setVisible(true);
+	        }
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
         // botones para elegir el color
         if(butons.getBa().isEnabled()){
             butons.getBc1().setEnabled(false);
@@ -140,6 +153,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc1() && pos < tam){
             colores[pos] = Color.RED;
             butons.getNom1().setText(""+name[pos]);
+            butons.getNom1().setForeground(Color.RED);
             pos++;
             butons.getBc1().setEnabled(false);
         }else{
@@ -147,6 +161,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.RED;
                 butons.getNom1().setText(""+name[pos]);
+                butons.getNom1().setForeground(Color.RED);
                 pos++;
                 butons.getBc1().setEnabled(false);
             }
@@ -154,6 +169,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc2() && pos < tam){
             colores[pos] = Color.BLUE;
             butons.getNom2().setText(""+name[pos]);
+            butons.getNom2().setForeground(Color.BLUE);
             pos++;
             butons.getBc2().setEnabled(false);
         }else{
@@ -161,6 +177,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.BLUE;
                 butons.getNom2().setText(""+name[pos]);
+                butons.getNom2().setForeground(Color.BLUE);
                 pos++;
                 butons.getBc2().setEnabled(false);
             }
@@ -168,6 +185,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc3() && pos < tam){
             colores[pos] = Color.YELLOW;
             butons.getNom3().setText(""+name[pos]);
+            butons.getNom3().setForeground(Color.YELLOW);
             pos++;
             butons.getBc3().setEnabled(false);
         }else{
@@ -175,6 +193,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.YELLOW;
                 butons.getNom3().setText(""+name[pos]); 
+                butons.getNom3().setForeground(Color.YELLOW);
                 pos++;
                 butons.getBc3().setEnabled(false);
             }
@@ -182,6 +201,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == butons.getBc4() && pos < tam){
             colores[pos] = Color.GREEN;
             butons.getNom4().setText(""+name[pos]);
+            butons.getNom4().setForeground(Color.GREEN);
             pos++;
             butons.getBc4().setEnabled(false);
         }else{
@@ -189,12 +209,14 @@ public class CreationBoard4 extends JDialog implements ActionListener{
                 pos = 0;
                 colores[pos] = Color.GREEN;
                 butons.getNom4().setText(""+name[pos]);
+                butons.getNom4().setForeground(Color.GREEN);
                 pos++;
                 butons.getBc4().setEnabled(false);
             }
         }
         if(pos == tam){
-            botonesF();
+        	pos = 0;
+            butons.botonesF();
             board = new MRIBoard(new Position(80, 50), colores);
             board.tam = tam;
             boardr = new RunBoard(new Position(80, 50), colores);
@@ -250,55 +272,6 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == bd){
             boardMod.setVisible(false);
             this.setVisible(true);
-        }
-    }
-    
-    private void botonesF(){
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            butons.getBc2().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc3().isEnabled() == false){
-            butons.getBc2().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc2().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            butons.getBc1().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc2().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc3().isEnabled() == false){
-            butons.getBc4().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc3().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc3().isEnabled() == false && butons.getBc2().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc1().setEnabled(false);
-            pos = 0;
-        }
-        if(pos == tam && butons.getBc1().isEnabled() == false && butons.getBc3().isEnabled() == false && butons.getBc4().isEnabled() == false){
-            butons.getBc2().setEnabled(false);
-            pos = 0;
         }
     }
     

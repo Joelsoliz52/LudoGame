@@ -47,14 +47,17 @@ public class Traps implements Comodin{
             logic.setnewPositionPawn(false);
             newPositionPawn(pawnA, x, y, players);
         }else if(pos.getFlagTraps() && !pawnA.getFlag()){
-            int al2 = (int)(Math.random()*3)+1;
+            int al2 = (int)(Math.random()*4)+1;
             if(al2 == 1){
                 putTrapReturnInit(pawnA);
             }else{
                 if(al2 == 2){
                     putTrapRecoil(player, x, y, logic.getDice());
+                }else if(al2 == 3){
+                    putTrapFreezePawn(pawnA);
                 }else{
-                    putTrapMine(players, pawnA);
+                    Pawn pawn = returnPawn(player, pos);
+                    putTrapMine(players, pawn);
                 }
             }
         }else {
@@ -71,7 +74,7 @@ public class Traps implements Comodin{
      * Metodo trampa para volver al inicio
      * @param pawn
      */
-    public void putTrapReturnInit(Pawn pawn){//Player player, int x, int y){
+    public void putTrapReturnInit(Pawn pawn){
         pawn.setCurrent(-1);
     }
 
@@ -100,19 +103,10 @@ public class Traps implements Comodin{
 
     /**
      * Metodo para colocar una trampa de congelar una ficha
-     * @param player, x, y
+     * @param pawn
      */
-    public void putTrapFreezePawn(Player player, int x, int y){
-        Position poss = new Position(x, y);
-        Pawn pawn = returnPawn(player, poss);
-        int i = 0;
-        while(i < positiones.prop()) {
-            if(pawn.getPosition().equals(positiones.mostrar(i))) {
-                pawn.getPosition().setFlagTraps(true);
-                break;
-            }
-            i++;
-        }
+    public void putTrapFreezePawn(Pawn pawn){
+        pawn.setFreezePawn(true);
     }
 
     /**

@@ -206,10 +206,18 @@ public class RunLogic implements GameLogic<Integer>{
                     players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
             else { num = 80; }
 
-            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1) {
+            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1 && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
                 flag = 0;
                 break;
+            }else if(player.getPawns()[i].getFreezePawn()){
+                if(player.getloseTurn() <= loseTurn){
+                    player.setloseTurn(player.getloseTurn()+1);
+                }else{
+                    player.getPawns()[i].setFreezePawn(false);
+                    player.setloseTurn(0);
+                    loseTurn = (int)(Math.random()*3)+1;
+                }
             }
         }
 
@@ -271,10 +279,8 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
-            graphics.drawString( "dado es " + dice.content, 690, 150);
             if (player.getFlagTraps()){
-                graphics.drawString("Lose Turn ", 700, 200);
+                graphics.drawString(players.players[pos].getName()+ " " +"perdiste turno", 690, 100);
                 currentPlayer = (currentPlayer + 1) % tam;
                 if(player.getloseTurn() <= loseTurn){
                     player.setloseTurn(player.getloseTurn()+1);
@@ -291,8 +297,8 @@ public class RunLogic implements GameLogic<Integer>{
                 }
                 pos++;
             }else{
-                graphics.drawString("Number on ", 700, 200);
-                graphics.drawString("dice is " + dice.content, 700, 250);
+                graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+                graphics.drawString( "dado es " + dice.content, 690, 150);
             }
         }
 

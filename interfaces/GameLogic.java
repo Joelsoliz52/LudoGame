@@ -20,5 +20,7 @@ public interface GameLogic<T> {
     void doubleMouseClicked(int x, int y);
     boolean getdoubleClicked();
     void setdoubleClicked(boolean doubleClicked);
+    boolean getnewPositionPawn();
+    void setnewPositionPawn(boolean newPositionPawn);
     void paint(Graphics2D graphics);
 }

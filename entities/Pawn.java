@@ -83,12 +83,6 @@ public class Pawn {
     public boolean getPathOptional(){
         return pathOptional;
     }
-    
-    /**
-     * Returns Path.
-     * @return Path.
-     */
-    public Path getPath() { return path; }
 
     /**
      * Draw new position of the pawn.

@@ -275,9 +275,9 @@ public class MRILogic implements GameLogic<Integer> {
             graphics.fillRect(680, 100, 380, 130);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString("Ganaste " + players.players[pos].getName()  + ".", 690, 100);
-            graphics.drawString( "Felicitaciones, ", 690, 150);
-            graphics.drawString( "Eres el jefe.", 690, 200);
+            graphics.drawString( players.players[pos].getName()  + " wins.", 690, 100);
+            graphics.drawString( "Congratulations, ", 690, 150);
+            graphics.drawString( "you're the boss.", 690, 200);
             currentPlayer = 1;
             board = new MRIBoard(new Position(80, 50), new Color[tam]);
             players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
@@ -288,11 +288,12 @@ public class MRILogic implements GameLogic<Integer> {
                 pos = 0;
             }
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(680, 58, 360, 120);
+            graphics.fillRect(680, 58, 250, 150);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
-            graphics.drawString( "dado es " + dice.content, 690, 150);
+            graphics.drawString(players.players[pos].getName()+ " " +"Your", 690, 100);
+            graphics.drawString( "Number on " , 690, 150);
+            graphics.drawString( "dice is " + dice.content, 690, 200);
         }
 
         if (flag == 0 && dice.content != 0 && dice.content != 6 && kill == 0) {
@@ -310,7 +311,6 @@ public class MRILogic implements GameLogic<Integer> {
     @Override
     public void doubleMouseClicked(int x, int y) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -322,18 +322,16 @@ public class MRILogic implements GameLogic<Integer> {
     @Override
     public void setdoubleClicked(boolean doubleClicked) {
         // TODO Auto-generated method stub
-
     }
 
-	@Override
-	public boolean getnewPositionPawn() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean getnewPositionPawn() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public void setnewPositionPawn(boolean newPositionPawn) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setnewPositionPawn(boolean newPositionPawn) {
+        // TODO Auto-generated method stub
+    }
 }

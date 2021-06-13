@@ -209,10 +209,10 @@ public class ClassicLogic implements GameLogic<Integer> {
         //areglar
         if(player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(590, 100, 380,130);
+            graphics.fillRect(590, 100, 380,180);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString("Player " + currentPlayer + " wins.", 600, 150);
+            graphics.drawString(player.getName() + " wins.", 600, 150);
             graphics.drawString("Congratulations.", 600, 200);
             currentPlayer = 1;
             board = new ClassicBoard(new Position(80, 50), new Color[tam]);
@@ -263,4 +263,15 @@ public class ClassicLogic implements GameLogic<Integer> {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public boolean getnewPositionPawn(){
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setnewPositionPawn(boolean newPositionPawn){
+        // TODO Auto-generated method stub
+    }
 }

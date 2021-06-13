@@ -19,18 +19,18 @@ public class Bonus implements Comodin{
         Player player = returnPlayer(players, pos);
         if(trustPositionPawn(player, x, y)){
             if(al == 1){
-                bonusShield(player, x, y);
+                bonusShield(pawn);
             }else{
                 if(al == 2){
-                    bonusJumperTime(player, pawn);
+                    bonusJumperTime(pawn);
                 }else{
                     if(al == 3 && player.getFlagAliance()){
                         bonusTwoThrowDice(player);
                     }else{
                         if(al == 4){
-                            bonusNewThrowDice(player, pawn,x ,y);
+                            bonusNewThrowDice(player);
                         }else{
-                            bonusSpeed(player, logic.getDice(), x, y, pawn);
+                            bonusSpeed(logic.getDice(), pawn);
                         }
                     }
                 }
@@ -44,18 +44,16 @@ public class Bonus implements Comodin{
     public int aleatori(){return (int)(Math.random()*5)+1;}
     /**
      * Metodo escudo para cualquier trampa
-     * @param Player, int, int, Traps
+     * @param pawn, x, y
      * @return void
      */
-    public void bonusShield(Player player, int x, int y){
-    	Position pos = new Position(x, y);
-    	Pawn pawn = returnPawn(player, pos);
+    public void bonusShield(Pawn pawn){
     	pawn.setFlag(true);
     }
     
     /**
      * Metodos para verificar la posicion de una ficha
-     * @param Player, Position
+     * @param player, pos
      * @return Pawn
      */
     private Pawn returnPawn(Player player, Position pos){
@@ -71,7 +69,7 @@ public class Bonus implements Comodin{
     
     /**
      * Metodo para solo alianzas usar dos dados  // FALTA
-     * @param Player
+     * @param player
      * @return void
      */
     public void bonusTwoThrowDice(Player player){
@@ -86,10 +84,9 @@ public class Bonus implements Comodin{
     
     /**
      * Metodo salto de tiempo
-     * @param Player, Pawn
      * @return void
      */
-    public void bonusJumperTime(Player player, Pawn pawn){
+    public void bonusJumperTime(Pawn pawn){
         int alc = (int)(Math.random()*2)+1;
         if(alc == 1)
                 pawn.setCurrent(pawn.getCurrent()+10);
@@ -100,19 +97,18 @@ public class Bonus implements Comodin{
      
     /**
      * Metodo para lanzar nuevamente dado
-     * @param Player, Pawn, int, int
+     * @param player, pawn, x, y
      * @return void
      */
-    public void bonusNewThrowDice(Player player, Pawn pawn,int x, int y){
+    public void bonusNewThrowDice(Player player){
         player.setFlagBonus(true);
     }
     
     /**
      * Method for having bonus velocity
-     * @param Player, Dice<Integer>, int, int, Pawn
      * @return void
      */
-    public void bonusSpeed(Player player, Dice<Integer> dice, int x, int y, Pawn pawn){
+    public void bonusSpeed(Dice<Integer> dice, Pawn pawn){
         dice.throwDice();
         int pos = dice.content;
         pawn.setCurrent(pawn.getCurrent()+pos);
@@ -120,7 +116,7 @@ public class Bonus implements Comodin{
     
     /**
      * Metodo para devolver un jugador 
-     * @param Player[], Position
+     * @param players, pos1
      * @return Player 
      */
     private Player returnPlayer(Player[] players, Position pos1){
@@ -131,7 +127,7 @@ public class Bonus implements Comodin{
             Pawn[] pawns = players[i].getPawns();
             while(pos < pawns.length){
                 if(pos1.equals(players[i].getPawns()[pos].getPosition())){
-                    return player = players[i];
+                    return players[i];
                 }
                 pos++;
             }
@@ -142,7 +138,7 @@ public class Bonus implements Comodin{
     
     /**
      * Metodo para devuelve posicion ficha segun x y y se usa en bonus speed, jumptime
-     * @param Player, int, int
+     * @param player, x, y
      * @return boolean
      */
     public boolean trustPositionPawn(Player player, int x, int y){
@@ -151,7 +147,7 @@ public class Bonus implements Comodin{
         Position pos = new Position(x, y);
         while(i < player.getPawns().length){
             if(pos.equals(player.getPawns()[i].getPosition())){
-                return test = true;
+                return true;
             }
             i++;
         }
@@ -161,10 +157,10 @@ public class Bonus implements Comodin{
      * Metodo sobreescrito de comodin 
      */
     public Position getPos(){return pos;}
+
 	@Override
 	public void paint(Graphics gr, int h, int w, int x, int y, Color color) {
 		// TODO Auto-generated method stub
-		
 	}
     
 }

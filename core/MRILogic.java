@@ -1,13 +1,5 @@
 package core;
 
- 
-//import org.jshadow.entities.Dice;
-//import org.jshadow.entities.Pawn;
-//import org.jshadow.entities.Player;
-//import org.jshadow.entities.Position;
-//import org.jshadow.interfaces.Board;
-//import org.jshadow.interfaces.GameLogic;
-//import org.jshadow.layouts.Boards.MRIBoard;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -46,7 +38,7 @@ public class MRILogic implements GameLogic<Integer> {
         } else {
             this.board = board;
         }
-        
+
         currentPlayer = 1;
         dice = new Dice<>("int");
         dice.content = 0;
@@ -146,7 +138,7 @@ public class MRILogic implements GameLogic<Integer> {
      * @param y Y position.
      */
     private void moveInitPawn(Player player, int x, int y) {
-        
+
         for (int i = 0; i < 4; i++) {
             Pawn pawn = player.getPawns()[i];
 
@@ -171,7 +163,7 @@ public class MRILogic implements GameLogic<Integer> {
             }
         }
     }
-    
+
     /**
      * Try to move a pawn in the board.
      * @param player Current player.
@@ -202,58 +194,71 @@ public class MRILogic implements GameLogic<Integer> {
             if (current == 74)
                 player.incrementCoin();
 
-            boolean opcional = true;      // condiciones a poner
-            boolean pairs = false;
-            int j = 0;
-            if(opcional&&dice.content==2||dice.content==4||dice.content==6){
-                pairs=true;
-                if(((current == 3&&pairs==true)||(current == 20&&pairs==true)||(current == 37&&pairs==true)||(current == 54&&pairs==true))&&(!pawn.getop())){
+            if((dice.content==2||dice.content==4||dice.content==6)&& pawn.getOptional()==1){
+                optionalInitial(pawn,current);
+                current = pawn.getCurrent();
+                pawn.setOptional(2);
+            }else if (pawn.getOptional()==1){
+                pawn.setOptional(0);
+            }
+            if((pawn.getCurrentOptional() > 8)&& pawn.getOptional()==2){
+                optionalFinal(pawn);
+                current = pawn.getCurrent();
+                pawn.setOptional(0);
+            }
 
-                        pawn.setCurrentOptional(0);
-                        pawn.setPathOptional(true);
-
-                        if(current == 20){
-                        j = 1; pawn.setnumPathOp(1);}
-                    else if (current == 37){
-                        j = 2; pawn.setnumPathOp(2);}
-                    else if(current == 54){
-                        j = 3; pawn.setnumPathOp(3);}
-                    for(int i = 0; i < tam; i++){
-                        if(j == i){
-                            pawn.setCurrent(9 * i);
-                            break;
-                        }
-                    }
-                    pawn.op(true);
-                }else if((pawn.getCurrentOptional() > 8) && (pawn.getop())){
-                    pawn.setPathOptional(false);
-                    for(int i = 0; i < tam; i++){
-                        if(pawn.getnumPathOp() == i){
-                            int u =(dice.content - (dice.content - ( - 8 + pawn.getCurrentOptional()))) + (10 + (i*17));
-                            pawn.setCurrent(u);
-                            break;
-                        }
-                    }
-                    pawn.setCurrentOptional(0);
-                    pawn.op(false);
-                    current = pawn.getCurrent();
-                }
-            }else{
-                pawn.setPathOptional(false);
-                pairs=false;
+            if(((current == 3)||(current == 20)||(current == 37)||(current == 54))&&pawn.getOptional()==0){
+                pawn.setOptional(1);
             }
 
             if(((current % 17) != 0) && (current < 67) && (!pawn.getPathOptional())){
                 for (int i = 1; i <= tam; i++) {
                     k = killPawn(i, k, current);
-                    if (k == 1)
-                        break;
+                    if (k == 1){
+                        pawn.setPathOptional(false);
+                        break;}
                 }
             }
-            pairs=false;
         }
 
         return value;
+    }
+
+    /**
+     * method to enter optional path.
+     * @param pawn Current pawn.
+     * @param current Current pawn path position.
+     */
+    private void optionalInitial(Pawn pawn, int current){
+        pawn.setCurrentOptional(0);
+        pawn.setPathOptional(true);
+        int j = 0;
+        if(current == (20 + dice.content)){j = 1; pawn.setnumPathOp(1);}
+        else if (current == (37 + dice.content)){j = 2; pawn.setnumPathOp(2);}
+        else if(current == (54 + dice.content)){j = 3; pawn.setnumPathOp(3);}
+        for(int i = 0; i < 4; i++){
+            if(j == i){
+                pawn.setCurrent((9 * i) + dice.content);
+                pawn.setCurrentOptional(dice.content);
+                break;
+            }
+        }
+    }
+
+    /**
+     * method to get out of the optional path.
+     * @param pawn Current pawn.
+     */
+    private void optionalFinal(Pawn pawn){
+        pawn.setPathOptional(false);
+        for(int i = 0; i < 4; i++){
+            if(pawn.getnumPathOp() == i){
+                int u =(dice.content - (dice.content - ( - 8 + pawn.getCurrentOptional()))) + (10 + (i*17));
+                pawn.setCurrent(u);
+                break;
+            }
+        }
+        pawn.setCurrentOptional(0);
     }
 
     /**
@@ -270,8 +275,9 @@ public class MRILogic implements GameLogic<Integer> {
             graphics.fillRect(680, 100, 380, 130);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString( players.players[pos].getName() + currentPlayer + " wins.", 690, 150);
-            graphics.drawString( "Congratulations, you're the boss.", 690, 200);
+            graphics.drawString( players.players[pos].getName()  + " wins.", 690, 100);
+            graphics.drawString( "Congratulations, ", 690, 150);
+            graphics.drawString( "you're the boss.", 690, 200);
             currentPlayer = 1;
             board = new MRIBoard(new Position(80, 50), new Color[tam]);
             players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
@@ -302,23 +308,32 @@ public class MRILogic implements GameLogic<Integer> {
         kill = 0;
     }
 
-	@Override
-	public void doubleMouseClicked(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void doubleMouseClicked(int x, int y) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public boolean getdoubleClicked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    }
 
-	@Override
-	public void setdoubleClicked(boolean doubleClicked) {
-		// TODO Auto-generated method stub
-		
-	}
-    
-    
+    @Override
+    public boolean getdoubleClicked() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setdoubleClicked(boolean doubleClicked) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public boolean getnewPositionPawn(){
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setnewPositionPawn(boolean newPositionPawn){
+        // TODO Auto-generated method stub
+    }
 }

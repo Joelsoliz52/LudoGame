@@ -33,9 +33,11 @@ public class RunLogic implements GameLogic<Integer>{
     public boolean doubleClicked;
     public ArrayList<Position> positionbox;
     private ListaSEC<Position> positions;
+    public Pawn currentPawn;
+    public boolean newPositionPawn;
     public RunLogic(Board board, Aliance aliance){
         if (board == null) {
-            this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);//cambien mri por run
+            this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
         } else {
             this.board = board;
         }
@@ -44,14 +46,15 @@ public class RunLogic implements GameLogic<Integer>{
         dice = new Dice<Integer>("int");
         dice.content = 0;
         flag = 0;
-        loseTurn=0;
-        doubleClicked=false;
+        loseTurn = (int)(Math.random()*3)+1;
+        doubleClicked = false;
+        newPositionPawn = false;
         positionbox = new ArrayList<Position>();
         positions=new ListaSEC<Position>();
         addPositions(positions);
         players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
     }
-    
+
     /**
      * Returns dice.
      * @return Dice.
@@ -59,7 +62,7 @@ public class RunLogic implements GameLogic<Integer>{
     public Dice<Integer> getDice(){
         return dice;
     }
-    
+
     /**
      * Returns flag.
      * @return If there is an movement pending returns 1, otherwise 0.
@@ -67,16 +70,26 @@ public class RunLogic implements GameLogic<Integer>{
     public int getFlag(){
         return flag;
     }
-    
+
     /**
      * OnKeyPressed logic.
      */
     public void onKeyPressed() {
         for (int i = 0; i < 4; i++) {
             int current = players.getPlayer(currentPlayer).getPawns()[i].getCurrent();
-            if (current != -1 && current != 83 || current != 79 && (current + dice.content) < 84) {
-                flag = 1;
-                break;
+
+            if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
+                    players.getPlayer(currentPlayer).getColor() == Color.RED){
+                if (current != -1 && current != 83 && (current + dice.content) < 84) {
+                    flag = 1;
+                    break;
+                }
+            }
+            else {
+                if (current != -1 && current != 79 && (current + dice.content) < 80) {
+                    flag = 1;
+                    break;
+                }
             }
         }
         if (flag == 0) {
@@ -90,7 +103,7 @@ public class RunLogic implements GameLogic<Integer>{
             }
         }
     }
-    
+
     /**
      * OnMouseClicked logic.
      * @param x X position of the click.
@@ -109,52 +122,55 @@ public class RunLogic implements GameLogic<Integer>{
                 Position pos3 = new Position(8, 18);
                 Position pos4 = new Position(18, 8);
                 int al = (int)(Math.random()*2)+1;
-                int poss1 = 0;
-                while(poss1 < player.getPawns().length){
-                    int j=0;
-                    if(player.getPawns()[poss1].getPosition().equals(pos1) || 
-                      player.getPawns()[poss1].getPosition().equals(pos2) ||
-                      player.getPawns()[poss1].getPosition().equals(pos3) ||
-                      player.getPawns()[poss1].getPosition().equals(pos4)){
-                        if(al == 1){
-                            comodin = new Traps();
-                            chooseCasilla(comodin, x, y,player.getPawns()[poss1]);
-                        }else if(al==2){
-                            comodin = new Bonus();
-                            chooseCasilla(comodin,x, y,player.getPawns()[poss1]); 
-                        }
-                    }else if(positionbox !=null){
-                        while(j < positionbox.size()){
-                            if(player.getPawns()[poss1].getPosition().equals(positionbox.get(j))){
-                                comodin = new Traps();
-                                chooseCasilla(comodin, x, y,player.getPawns()[poss1]);
-                                positionbox.remove(j);
-                            }
-                            j++;
-                        }
+                int j=0;
+                if(pawn.getPosition().equals(pos1) ||
+                        pawn.getPosition().equals(pos2) ||
+                        pawn.getPosition().equals(pos3) ||
+                        pawn.getPosition().equals(pos4)){
+                    if(al == 1){
+                        comodin = new Traps();
+                        currentPawn = pawn;
+                        chooseCasilla(comodin, x, y,pawn);
+                    }else if(al==2){
+                        comodin = new Bonus();
+                        chooseCasilla(comodin,x, y,pawn);
                     }
-                    poss1++;
+                }else if(positionbox !=null){
+                    while(j < positionbox.size()){
+                        if(pawn.getPosition().equals(positionbox.get(j))){
+                            comodin = new Traps();
+                            chooseCasilla(comodin, x, y,pawn);
+                            positionbox.remove(j);
+                        }
+                        j++;
+                    }
                 }
+
             }
         }
-        
+
         if(pawn.getCurrent() > 7 && pawn.getCurrent() > 4 && pawn.getCurrent() != -1) {
-        	int est = positions.indiceDe(pawn.getPosition());
-	        if(positions.mostrar(est).getFlagTraps()) {
-	        	searchPosTrust(positions, pawn.getPosition(), pawn);
-	        }
+            int est = positions.indiceDe(pawn.getPosition());
+            if(positions.mostrar(est).getFlagTraps()) {
+                searchPosTrust(positions, pawn.getPosition(), pawn);
+            }
         }
     }
-    
+
     /**
      * doubleMouseClicked logic.
      * @param x X position of the click.
      * @param y Y position of the click.
      */
     public void doubleMouseClicked(int x, int y) {
-        positionbox.add(new Position(x,y));
+        if (!getnewPositionPawn()){
+            positionbox.add(new Position(x,y));}
+        else{
+            comodin = new Traps();
+            chooseCasilla(comodin, x, y,currentPawn);
+        }
     }
-    
+
     /**
      * Move a pawn from initial position.
      * @param player Current player.
@@ -169,7 +185,7 @@ public class RunLogic implements GameLogic<Integer>{
                 Position posPawn = pawn.getPosition();
                 Position pos1 = new Position(x, y);
                 Position pos2 = new Position(x + 1, y);
-                
+
                 if (posPawn.equals(pos1) || posPawn.equals(pos2)) {
                     pawn.setCurrent(0);
                     flag = 0;
@@ -178,7 +194,7 @@ public class RunLogic implements GameLogic<Integer>{
             }
         }
     }
-    
+
     /**
      * Try to move a pawn in the board.
      * @param player Current player.
@@ -192,10 +208,10 @@ public class RunLogic implements GameLogic<Integer>{
         for (int i = 0; i < 4; i++) {
             Position posPawn = player.getPawns()[i].getPosition();
             int current = player.getPawns()[i].getCurrent();
-            int num = 0;
-            
+            int num;
+
             if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
-               players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
+                    players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
             else { num = 80; }
 
             if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1) {
@@ -209,7 +225,7 @@ public class RunLogic implements GameLogic<Integer>{
             Pawn pawn = player.getPawns()[value];
             pawn.setCurrent(pawn.getCurrent() + dice.content);
             int current = pawn.getCurrent();
-            
+
             if(player.getColor() == Color.BLUE || player.getColor() == Color.RED){
                 if (current == 83) player.incrementCoin();
             } else {
@@ -219,29 +235,24 @@ public class RunLogic implements GameLogic<Integer>{
 
         return value;
     }
-    
+
     /**
      * Metodo para verificar si el jugador tienen una alianza
-     * @param Aliance
+     * @param aliance
      * @return retornara true si es existe en una alianza si no false
      */
-    private boolean ifExistAliance(Aliance aliance, Player player) {
-    	if (aliance.getAliance1() != null||
-    		aliance.getAliance2() != null) {
-    		if (aliance.containsPlayerAliance1(player) ||
-    		    aliance.containsPlayerAliance2(player)	) {
-    			return true;
-    		}else{
-    			return false;
-    		}
-        } else {
-        	return false;
-        }
+    private boolean ifExistAliance(Aliance aliance) {
+        if((aliance.getAliance1()[0].getFlagBonus() &&
+                aliance.getAliance1()[1].getFlagBonus()) ||
+                (aliance.getAliance2()[0].getFlagBonus() &&
+                        aliance.getAliance2()[1].getFlagBonus())) {
+            return true;
+        } else {return false;}
     }
-    
+
     /**
      * Metodo para elegir una casilla
-     * @param Comodin al crear el comodin como una trampa o bonus se pondra en la casilla
+     * @param comodin al crear el comodin como una trampa o bonus se pondra en la casilla
      * @param x tomado como X de una posicion de una ficha
      * @param y tomado como Y de una posicion de una ficha
      * @param pawn ficha a considerar para una trampa o bonus
@@ -253,7 +264,7 @@ public class RunLogic implements GameLogic<Integer>{
             comodin = new Bonus(this.players.players, this.aliance, x, y, this, pawn);
         }
     }
-    
+
     /**
      * Paint the current view.
      * @param graphics Drawing controller.
@@ -283,41 +294,39 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.fillRect(690, 100, 260,180);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName() + " " + "you", 700, 150);
-            if(!player.getFlagTraps()){
-                graphics.drawString("Number on ", 700, 200);
-                graphics.drawString("dice is " + dice.content, 700, 250);
-            }else {
+            graphics.drawString(player.getName()+ " " + "you", 700, 150);
+            if (player.getFlagTraps()){
                 graphics.drawString("Lose Turn ", 700, 200);
                 currentPlayer = (currentPlayer + 1) % tam;
-                if(player.getloseTurn()<=loseTurn){
+                if(player.getloseTurn() <= loseTurn){
                     player.setloseTurn(player.getloseTurn()+1);
                 }else{
                     player.setFlagTraps(false);
-                    loseTurn = 0;
+                    player.setloseTurn(0);
+                    loseTurn = (int)(Math.random()*3)+1;
                 }
-                if(!ifExistAliance(aliance, player)) {
-                	currentPlayer = currentPlayer+1;
-                }
+                //if(!ifExistAliance(aliance)) {
+                //	currentPlayer = currentPlayer+1;
+                //}
                 if(currentPlayer == 0){
                     currentPlayer = tam;
                 }
-            	pos++;
+                pos++;
+            }else{
+                graphics.drawString("Number on ", 700, 200);
+                graphics.drawString("dice is " + dice.content, 700, 250);
             }
         }
-        
-        if(flag == 0 && dice.content != 0  && dice.content != 6 && !player.getFlagBonus()) {
+
+        if(flag == 0 && dice.content != 0  && dice.content != 6 && !player.getFlagTraps()) {
             currentPlayer = (currentPlayer + 1) % tam;
-            
+
             if(currentPlayer == 0){
                 currentPlayer = tam;
             }
-            pos++;
-        } else if(player.getFlagBonus()){ 
-            player.setFlagBonus(false);
-        }
+            pos++;}
     }
-    
+
     /**
      * Metodo para verificar una posicion en donde se pondra una trampa
      * @return verificacion de si una casilla a sido seleccionada
@@ -329,16 +338,15 @@ public class RunLogic implements GameLogic<Integer>{
 
     /**
      * Metoto para modificar el estado boolean del atributo doubleClicked
-     * @param Boolean doubleClicked
      */
     public void setdoubleClicked(boolean doubleClicked)
     {
-        this.doubleClicked=doubleClicked;
+        this.doubleClicked = doubleClicked;
     }
-    
+
     /**
      * Metodo para devolver una ficha
-     * @param Player, int, int
+     * @param player, x, y
      * @return ficha que tenga dicha posicion
      */
     private Pawn returnPawn(Player player,int x, int y){
@@ -352,49 +360,48 @@ public class RunLogic implements GameLogic<Integer>{
         }
         return null;
     }
-    
+
     /**
      * Metodo para contener posiciones
-     * @param ArrayList<Position>
      * @return devolvera una ista con las posiciones del camino principal sin incluir la zona segura y la zona inicial
      */
     private ListaSEC<Position> addPositions(ListaSEC<Position> pos) {
-	int i = 0;
-    	int x = 7;
-    	int y = 0;
-    	while(i < 38) {
-    		if(x < 10) {
-    			pos.Incorporar(new Position(x,y));
-    			x++;
-    		} else {
-    			if(y < 5) {
-    				pos.Incorporar(new Position(x,y));
-    				y++;
-    			} else {
-    				if(x < 18) {
-    					pos.Incorporar(new Position(x,y));
-    					x++;
-    				} else {
-    					if(y < 13) {
-    						pos.Incorporar(new Position(x,y));
-    						y++;
-    					} else {
-    						if(x > 11) {
-    							pos.Incorporar(new Position(x,y));
-    							x--;
-    						} else {
-    							if(y < 18) {
-    								pos.Incorporar(new Position(x,y));
-    								y++;
-    							} 
-    						}
-    					}
-    				}
-    			}
-    		}
-    		i++;
-    	}
-    	while(i < 54){
+        int i = 0;
+        int x = 7;
+        int y = 0;
+        while(i < 38) {
+            if(x < 10) {
+                pos.Incorporar(new Position(x,y));
+                x++;
+            } else {
+                if(y < 5) {
+                    pos.Incorporar(new Position(x,y));
+                    y++;
+                } else {
+                    if(x < 18) {
+                        pos.Incorporar(new Position(x,y));
+                        x++;
+                    } else {
+                        if(y < 13) {
+                            pos.Incorporar(new Position(x,y));
+                            y++;
+                        } else {
+                            if(x > 11) {
+                                pos.Incorporar(new Position(x,y));
+                                x--;
+                            } else {
+                                if(y < 18) {
+                                    pos.Incorporar(new Position(x,y));
+                                    y++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            i++;
+        }
+        while(i < 54){
             if(x > 11) {
                 pos.Incorporar(new Position(x,y));
                 x--;
@@ -402,28 +409,28 @@ public class RunLogic implements GameLogic<Integer>{
                 if(y < 18) {
                     pos.Incorporar(new Position(x, y));
                     y++;
-    		} else {
+                } else {
                     if(x > 8) {
-        		pos.Incorporar(new Position(x, y));
-    			x--;
+                        pos.Incorporar(new Position(x, y));
+                        x--;
                     }
-            	}
+                }
             }
             i++;
-    	}
-    	while(i < 67){
+        }
+        while(i < 67){
             if(y > 13) {
-    		pos.Incorporar(new Position(x, y));
-    		y--;
+                pos.Incorporar(new Position(x, y));
+                y--;
             } else {
-    		if(x > 0) {
+                if(x > 0) {
                     pos.Incorporar(new Position(x, y));
                     x--;
-    		}
-            }  
+                }
+            }
             i++;
-    	}
-    	while(i < 88){
+        }
+        while(i < 88){
             if(y > 5){
                 pos.Incorporar(new Position(x, y));
                 y--;
@@ -434,34 +441,34 @@ public class RunLogic implements GameLogic<Integer>{
                 }else{
                     if(y > 0){
                         pos.Incorporar(new Position(x, y));
-                        y--; 
+                        y--;
                     }
                 }
             }
             i++;
-    	}
-	return pos;
-    } 
-    /**
-     * Metodo de retorno de un ArrayList
-     * @return lista de posiciones 
-     */
-    public ArrayList<Position> getPositionBox(){ return positionbox; }
-    
+        }
+        return pos;
+    }
+
     /**
      * Metodo de retorno de una lista de posiciones
      * @return ListaSEC<Position>
      */
     public ListaSEC<Position> getPositions(){return positions;}
-    
+
     /**
      * Metodo para anular una trampa si la ficha tiene activada en true la bandera de bonus
-     * @param ListaSEC, Position, Pawn
+     * @param pos, pos1, pawn
      */
     private void searchPosTrust(ListaSEC<Position> pos, Position pos1, Pawn pawn) {
-    	int est = positions.indiceDe(pos1);
-    	if(pos.mostrar(est).getFlagTraps() == pawn.getFlag()) {
-    		pos1.setFlagTraps(false);
-    	}
+        int est = positions.indiceDe(pos1);
+        if(pos.mostrar(est).getFlagTraps() == pawn.getFlag()) {
+            pos1.setFlagTraps(false);
+        }
+    }
+
+    public boolean getnewPositionPawn(){return newPositionPawn;}
+    public void setnewPositionPawn(boolean newPositionPawn){
+        this.newPositionPawn = newPositionPawn;
     }
 }

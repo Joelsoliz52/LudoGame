@@ -206,14 +206,13 @@ public class ClassicLogic implements GameLogic<Integer> {
         board.draw(graphics);
         players.draw(graphics);
         Player player = players.getPlayer(currentPlayer);
-        //areglar
         if(player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
             graphics.fillRect(590, 100, 380,180);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(player.getName() + " wins.", 600, 150);
-            graphics.drawString("Congratulations.", 600, 200);
+            graphics.drawString("Ganaste " + player.getName() + ".", 600, 150);
+            graphics.drawString("Felicitaciones.", 600, 200);
             currentPlayer = 1;
             board = new ClassicBoard(new Position(80, 50), new Color[tam]);
             players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
@@ -225,12 +224,11 @@ public class ClassicLogic implements GameLogic<Integer> {
                 pos = 0;
             }
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(590, 100, 260,180);
+            graphics.fillRect(590, 100, 360,120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName() + " " + "you", 600, 150);
-            graphics.drawString("Number on ", 600, 200);
-            graphics.drawString("dice is " + dice.content, 600, 260);
+            graphics.drawString(players.players[pos].getName() + " " + "tu numero de", 600, 150);
+            graphics.drawString("dado es " + dice.content, 600, 200);
         }
         if(flag == 0 && dice.content != 0 && dice.content != 6 && kill == 0) {
             currentPlayer = (currentPlayer + 1) % tam;

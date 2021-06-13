@@ -4,6 +4,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Panel;
+import java.awt.RenderingHints;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+
 import core.BuildPlayers;
 import interfaces.Board;
 import interfaces.Path;
@@ -23,6 +30,8 @@ public class RunBoard implements Board {
     private Color[] colores;
     public BuildPlayers bd;
     public int tam;
+    private String fondo = "/utilities/RunBoard.jpg";
+	private Image imagen;
     /**
      * RunBoard constructor.
      * @param position2 Initial position of the board.
@@ -30,6 +39,8 @@ public class RunBoard implements Board {
     public RunBoard(entities.Position position2, Color[] colores) {
         this.position = position2;
         this.colores = colores;
+        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
+        imagen = img.getImage();
         height = 30;
         width = 30;
     }
@@ -50,6 +61,7 @@ public class RunBoard implements Board {
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
+        paint(graphics);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 19 * width, 19 * height);
         drawQuarters(graphics, x, y);
@@ -449,22 +461,60 @@ public class RunBoard implements Board {
      * @param graphics Drawing controller.
      */
     private void drawText(Graphics2D graphics) {
-        graphics.setFont(new Font("serif", Font.BOLD, 40));
-        graphics.drawString("Player 1", 90, 40);
-        graphics.drawString("Player 2", 500, 40);
-        graphics.drawString("Player 4", 90, 650);
-        graphics.drawString("Player 3", 500, 650);
-        graphics.drawString("Instruction:", 670,300);
-        graphics.drawString("1.Press enter to roll dice.", 670,350);
-        graphics.drawString("2.Click on coin to move.", 670,400);
-        graphics.drawString("3.Don't worry, be happy.", 670,450);
-        graphics.drawString("LUDO", 150,400);
-        graphics.setFont(new Font("arial", Font.ITALIC, 25));
-        graphics.drawString("FINISH", 322,342);
+    	graphics.setFont(new Font("serif", Font.BOLD, 40));
+        int pos = 0;
+        HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
+        map.put(Color.RED, false);
+        map.put(Color.BLUE, false);
+        map.put(Color.YELLOW, false);
+        map.put(Color.GREEN, false);
+        pos = 0;
+        while(pos < tam){
+            if(bd.players[pos].getColor() != null){
+                map.put(bd.players[pos].getColor(), true);
+            }
+            pos++;
+        }
+        pos = 0;
+        if(map.get(Color.RED)){
+            graphics.drawString(bd.players[pos].getName(), 500, 650);
+            pos++;
+        }else{
+            graphics.drawString("Player 3", 500, 650);
+        }
+        if(map.get(Color.BLUE)){
+            graphics.drawString(bd.players[pos].getName(), 90, 40);
+            pos++;
+        }else{
+            graphics.drawString("Player 1", 90, 40);
+        }
+        if(map.get(Color.YELLOW)){
+            graphics.drawString(bd.players[pos].getName(), 90, 650);
+            pos++;
+        }else{
+            graphics.drawString("Player 4", 90, 650);
+        }
+        if(map.get(Color.GREEN)){
+            graphics.drawString(bd.players[pos].getName(), 500, 40);
+            pos++;
+        }else{
+            graphics.drawString("Player 2", 500, 40);
+        }
+        graphics.drawString("Instrucciones:", 730,300);
+        graphics.drawString("1.Presionar enter para lanzar", 680,350);
+        graphics.drawString("el dado.", 680,400);
+        graphics.drawString("2.Haga click sobre una ficha", 680,450);
+        graphics.drawString("para moverla.", 680,500);
+        graphics.drawString("3.Sin errores, se feliz.", 680,550);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+        RenderingHints.VALUE_ANTIALIAS_ON);
 
     }
-
-
+    
+    public void paint(Graphics2D gr2d) {
+		gr2d.drawImage(imagen, 0, 0, 1200, 700, new Panel());
+	}
+    
     public int getHeight() { return height; }
 
     /**

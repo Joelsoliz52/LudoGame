@@ -2,14 +2,16 @@ package Ludo;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-
 import core.BuildPlayers;
 import core.GameMoves;
 import core.MRILogic;
@@ -41,10 +43,14 @@ public class CreationBoard4 extends JDialog implements ActionListener{
     private Buttons butons;
     private int tam;
     private int pos;
+    private String fondo = "/utilities/CreationBoards.jpg";
+    private Image imagen;
     public CreationBoard4(Menu2 parent,boolean modal){
         super(parent, modal);
         setLayout(null);
         setBounds(495,150,400,480);
+        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
+        imagen = img.getImage();
         butons = new Buttons(this);
         butons.getB3().addActionListener(this);
         butons.getB4().addActionListener(this);
@@ -124,16 +130,11 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             butons.getTx().setText("");
         }
         Menu2 m;
-		try {
-			m = new Menu2();
 			if(e.getSource() == butons.getBb()){
-	            this.setVisible(false);
+				m = new Menu2();
+				this.setVisible(false);
 	            m.lastMenu.setVisible(true);
 	        }
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         
         // botones para elegir el color
         if(butons.getBa().isEnabled()){
@@ -236,7 +237,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == b1){
             boardMod.setVisible(false);
             JFrame frame = new JFrame();
-            frame.setBounds(10, 10, 1250, 700); //1150
+            frame.setBounds(10, 10, 1200, 700); //1150
             frame.setTitle(Constants.TitleGame);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -254,7 +255,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         if(e.getSource() == b2){
             boardMod.setVisible(false);
             JFrame frame = new JFrame();
-            frame.setBounds(10, 10, 1250, 700); //1150
+            frame.setBounds(10, 10, 1200, 700); //1150
             frame.setTitle(Constants.TitleGame);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -273,6 +274,11 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             boardMod.setVisible(false);
             this.setVisible(true);
         }
+    }
+    
+    public void paint(Graphics gr) {
+    	Graphics2D g2d = (Graphics2D) gr;
+    	g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
     }
     
     private void BuildP(BuildPlayers players){

@@ -5,13 +5,8 @@ package Ludo;
  * Clase principal para comenzar a crear el juego
  */
 import javax.swing.*;
-
-import utilities.Fondo;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /** 
  *  
@@ -23,16 +18,17 @@ public class Menu2 extends Frame implements ActionListener{
 	private final static int ancho = pantalla.width;
     private final static int alto = pantalla.height;
     private Button b1, b2, b3, b4, bb;
-    public static Fondo fn;
     JDialog lastMenu;
-    public Menu2() throws MalformedURLException{
+    private String fondo = "/utilities/20210611_175351.gif";
+    private Image imagen;
+    private String complFondo = "/utilities/20210611_175039.gif";
+    private Image imagenCompl;
+    public Menu2(){
         setLayout(null);
-        final String IMAGEN = "file:///D:/ProyectsEclipse/src/utilities/20210611_175351.gif";
-        URL urlGif = new URL(IMAGEN);
-        Icon iconGif = new ImageIcon(urlGif);
-        JLabel animacionGif = new JLabel(iconGif);
-        animacionGif.setBounds(0, 0, 100, 100);
-        add(animacionGif);
+        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
+        imagen = img.getImage();
+        ImageIcon imgC =  new ImageIcon(getClass().getResource(complFondo));
+        imagenCompl = imgC.getImage();
         b1 = new Button("Play Now :D");
         b1.setBounds(290,276,140,50);
         b1.setBackground(java.awt.Color.red);
@@ -102,23 +98,21 @@ public class Menu2 extends Frame implements ActionListener{
         if(e.getSource() == bb){
             lastMenu.setVisible(false);
             Menu2 m;
-			try {
 				m = new Menu2();
 				m.setBounds(ancho/(17/4),alto/(241/47),720,450);
 	            m.setVisible(true);
 	            m.setResizable(false);
 	            b1.setEnabled(true);
 	            b2.setEnabled(true);
-			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-            
+		
         }
     }
-    public void paint(Graphics g) {
-     }
-    public static void main(String[] args) throws MalformedURLException{
+    public void paint(Graphics gr) {
+    	Graphics2D g2d = (Graphics2D) gr;
+    	g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    	g2d.drawImage(imagenCompl, 460, 110, 100, 100, this);
+    }
+    public static void main(String[] args){
         Menu2 m = new Menu2();
         m.setBounds(ancho/(17/4),alto/(241/47),720,450);
         m.setVisible(true);

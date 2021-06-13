@@ -145,14 +145,6 @@ public class RunLogic implements GameLogic<Integer>{
                         j++;
                     }
                 }
-
-            }
-        }
-
-        if(pawn.getCurrent() > 7 && pawn.getCurrent() > 4 && pawn.getCurrent() != -1) {
-            int est = positions.indiceDe(pawn.getPosition());
-            if(positions.mostrar(est).getFlagTraps()) {
-                searchPosTrust(positions, pawn.getPosition(), pawn);
             }
         }
     }
@@ -237,20 +229,6 @@ public class RunLogic implements GameLogic<Integer>{
     }
 
     /**
-     * Metodo para verificar si el jugador tienen una alianza
-     * @param aliance
-     * @return retornara true si es existe en una alianza si no false
-     */
-    private boolean ifExistAliance(Aliance aliance) {
-        if((aliance.getAliance1()[0].getFlagBonus() &&
-                aliance.getAliance1()[1].getFlagBonus()) ||
-                (aliance.getAliance2()[0].getFlagBonus() &&
-                        aliance.getAliance2()[1].getFlagBonus())) {
-            return true;
-        } else {return false;}
-    }
-
-    /**
      * Metodo para elegir una casilla
      * @param comodin al crear el comodin como una trampa o bonus se pondra en la casilla
      * @param x tomado como X de una posicion de una ficha
@@ -273,14 +251,13 @@ public class RunLogic implements GameLogic<Integer>{
         board.draw(graphics);
         players.draw(graphics);
         Player player = players.getPlayer(currentPlayer);
-        //areglar
         if(player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
             graphics.fillRect(590, 100, 380,130);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName()+ " " + " wins.", 600, 150);
-            graphics.drawString("Congratulations.", 600, 200);
+            graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 600, 150);
+            graphics.drawString("Felicidades.", 600, 200);
             currentPlayer = 1;
             board = new RunBoard(new Position(80, 50), new Color[tam]);
             players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
@@ -291,10 +268,11 @@ public class RunLogic implements GameLogic<Integer>{
                 pos = 0;
             }
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(690, 100, 260,180);
+            graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(player.getName()+ " " + "you", 700, 150);
+            graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+            graphics.drawString( "dado es " + dice.content, 690, 150);
             if (player.getFlagTraps()){
                 graphics.drawString("Lose Turn ", 700, 200);
                 currentPlayer = (currentPlayer + 1) % tam;
@@ -455,17 +433,6 @@ public class RunLogic implements GameLogic<Integer>{
      * @return ListaSEC<Position>
      */
     public ListaSEC<Position> getPositions(){return positions;}
-
-    /**
-     * Metodo para anular una trampa si la ficha tiene activada en true la bandera de bonus
-     * @param pos, pos1, pawn
-     */
-    private void searchPosTrust(ListaSEC<Position> pos, Position pos1, Pawn pawn) {
-        int est = positions.indiceDe(pos1);
-        if(pos.mostrar(est).getFlagTraps() == pawn.getFlag()) {
-            pos1.setFlagTraps(false);
-        }
-    }
 
     public boolean getnewPositionPawn(){return newPositionPawn;}
     public void setnewPositionPawn(boolean newPositionPawn){

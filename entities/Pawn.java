@@ -83,6 +83,12 @@ public class Pawn {
     public boolean getPathOptional(){
         return pathOptional;
     }
+    
+    /**
+     * Returns Path.
+     * @return Path.
+     */
+    public Path getPath() { return path; }
 
     /**
      * Draw new position of the pawn.
@@ -153,12 +159,6 @@ public class Pawn {
     public void setnumPathOp(int numPathOp){
         this.numPathOp= numPathOp;
     }
-
-    /**
-     * Returns Path.
-     * @return Path.
-     */
-    public Path getPath() { return path; }
 
     public boolean getFlag() { return flagBonus; }
 

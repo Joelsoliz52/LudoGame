@@ -1,11 +1,10 @@
 package layouts.Boards;
 
 import java.awt.*;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.util.*;
+
+import javax.swing.ImageIcon;
+
 import core.BuildPlayers;
 import interfaces.Board;
 import interfaces.Path;
@@ -22,6 +21,8 @@ public class MRIBoard implements Board {
     private final entities.Position position;
     private final int width;
     public int tam;
+    private String fondo = "/utilities/MRIBoard.jpg";
+	private Image imagen;
     public BuildPlayers bd;
     private Color[] colores;
     /**
@@ -31,6 +32,8 @@ public class MRIBoard implements Board {
     public MRIBoard(entities.Position position2, Color[] colores) {
         position = position2;
         this.colores = colores;
+        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
+        imagen = img.getImage();
         height = 30;
         width = 30;
     }
@@ -51,6 +54,7 @@ public class MRIBoard implements Board {
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
+        paint(graphics);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 19 * width, 19 * height);
         drawQuarters(graphics, x, y);
@@ -375,24 +379,6 @@ public class MRIBoard implements Board {
     private void drawText(Graphics2D graphics) {
         graphics.setFont(new Font("serif", Font.BOLD, 40));
         int pos = 0;
-        int esp = 50;
-        int numJ = tam + 1;
-        while(pos < 4){
-            if(pos < bd.players.length){
-                graphics.setColor(Color.black);
-                graphics.setFont(new Font("Agency FB",Font.BOLD,28));
-                graphics.drawString(bd.players[pos].getName(),1000,esp);
-            }else{
-                graphics.setColor(Color.black);
-                graphics.setFont(new Font("Agency FB",Font.BOLD,28));
-                graphics.drawString("Player"+" "+numJ,1000,esp);
-                numJ++;
-            }
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON);
-            pos++;
-            esp = esp+110;
-        }
         HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
         map.put(Color.RED, false);
         map.put(Color.BLUE, false);
@@ -430,152 +416,16 @@ public class MRIBoard implements Board {
         }else{
             graphics.drawString("Player 2", 500, 40);
         }
-        
+        graphics.drawString("Instrucciones:", 730,300);
+        graphics.drawString("1.Presionar enter para lanzar", 680,350);
+        graphics.drawString("el dado.", 680,400);
+        graphics.drawString("2.Haga click sobre una ficha", 680,450);
+        graphics.drawString("para moverla.", 680,500);
+        graphics.drawString("3.Sin errores, se feliz.", 680,550);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
         RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setStroke(new BasicStroke(2));
-        int esp2 = 990;
-        int alt = 70;
-        pos = 0;
-        while(pos < tam){
-            while(esp2 <= 1119){
-                if(bd.players[pos].getColor() != null){
-                    graphics.setColor(bd.players[pos].getColor());
-                    graphics.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                    map.put(bd.players[pos].getColor(), true);
-                }
-            }
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON);
-            esp2 = 990;
-            alt = alt+110;
-            pos++;
-        }
-        drawPlayersBox(graphics,map,esp2,alt);
     }
 
-    private void drawPlayersBox(Graphics2D gr2, HashMap<Color, Boolean> map, int esp2, int alt){
-        if(tam == 2){
-            if((map.get(Color.RED)&&map.get(Color.BLUE)) && !(map.get(Color.YELLOW)&&map.get(Color.GREEN))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.YELLOW);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.GREEN);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.YELLOW)&&map.get(Color.GREEN)) && !(map.get(Color.RED)&&map.get(Color.BLUE))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.RED);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.BLUE);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if(map.get(Color.RED)&&map.get(Color.YELLOW) && !(map.get(Color.GREEN)&&map.get(Color.BLUE))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.BLUE);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.GREEN);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.YELLOW)&&map.get(Color.BLUE)) && !(map.get(Color.RED)&&map.get(Color.GREEN))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.RED);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.GREEN);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.GREEN)&&map.get(Color.BLUE)) && !(map.get(Color.RED)&&map.get(Color.YELLOW))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.YELLOW);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.RED);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if(map.get(Color.RED)&&map.get(Color.GREEN) && !(map.get(Color.YELLOW)&&map.get(Color.BLUE))){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.YELLOW);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-                esp2 = 890;
-                alt = alt+110;
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.BLUE);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-        }
-        if(tam == 3){
-            if((map.get(Color.GREEN)&&map.get(Color.RED)&&map.get(Color.BLUE)) && !map.get(Color.YELLOW)){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.YELLOW);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.YELLOW)&&map.get(Color.RED)&&map.get(Color.BLUE)) && !map.get(Color.GREEN)){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.GREEN);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.GREEN)&&map.get(Color.RED)&&map.get(Color.YELLOW)) && !map.get(Color.BLUE)){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.BLUE);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            if((map.get(Color.GREEN)&&map.get(Color.YELLOW)&&map.get(Color.BLUE)) && !map.get(Color.RED) ){
-                while(esp2 <= 1019){
-                    gr2.setColor(Color.RED);
-                    gr2.drawRect(esp2, alt, 43, 40);
-                    esp2 = esp2+43;
-                }
-            }
-            gr2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-            RenderingHints.VALUE_ANTIALIAS_ON);
-        }
-    }
-    
     /**
      * Draw triangle.
      * @param graphics Drawing controller.
@@ -588,6 +438,10 @@ public class MRIBoard implements Board {
         graphics.fillPolygon(xPoints, yPoints, 3);
     }
 
+    public void paint(Graphics2D gr2d) {
+		gr2d.drawImage(imagen, 0, 0, 1200, 700, new Panel());
+	}
+    
     /**
      * Returns height of the boxes.
      * @return Height of the boxes.

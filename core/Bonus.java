@@ -52,22 +52,6 @@ public class Bonus implements Comodin{
     }
     
     /**
-     * Metodos para verificar la posicion de una ficha
-     * @param player, pos
-     * @return Pawn
-     */
-    private Pawn returnPawn(Player player, Position pos){
-        int i = 0;
-        while(i < player.getPawns().length){
-            if(pos.equals(player.getPawns()[i].getPosition())){
-                return player.getPawns()[i];
-            }
-            i++;
-        }
-        return null;
-    }
-    
-    /**
      * Metodo para solo alianzas usar dos dados  // FALTA
      * @param player
      * @return void

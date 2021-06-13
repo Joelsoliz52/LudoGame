@@ -4,7 +4,6 @@ package Ludo;
 import javax.swing.*;
 
 import core.GameMoves;
-
 import core.BuildPlayers;
 import core.ClassicLogic;
 import entities.Player;
@@ -12,10 +11,8 @@ import entities.Position;
 import layouts.Boards.ClassicBoard;
 import utilities.Buttons;
 import utilities.Constants;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.net.MalformedURLException;
 import java.util.*;
 /**
  * Creation of panel for do a board Classic.
@@ -23,6 +20,7 @@ import java.util.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
+
 @SuppressWarnings("serial")
 public class CreationBoard3 extends Dialog implements ActionListener{
     private final Buttons butons;
@@ -33,10 +31,14 @@ public class CreationBoard3 extends Dialog implements ActionListener{
     private HashMap<Color, Boolean> map;
     private int tam;
     private int pos;
+    private String fondo = "/utilities/CreationBoards.jpg";
+    private Image imagen;
     public CreationBoard3(Menu2 parent,boolean modal){
         super(parent, modal);
         setLayout(null);
         setBounds(495,150,400,480);
+        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
+        imagen = img.getImage();
         butons = new Buttons(this);
         butons.getB3().addActionListener(this);
         butons.getB4().addActionListener(this);
@@ -96,16 +98,11 @@ public class CreationBoard3 extends Dialog implements ActionListener{
             butons.getTx().setText("");
         }
         Menu2 m;
-		try {
+		if(e.getSource() == butons.getBb()){
 			m = new Menu2();
-			if(e.getSource() == butons.getBb()){
-	            this.setVisible(false);
-	            m.lastMenu.setVisible(true);
-	        }
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
+			this.setVisible(false);
+            m.lastMenu.setVisible(true);
 		}
-        
         // botones para elegir el color
         if(butons.getBa().isEnabled()){
             butons.getBc1().setEnabled(false);
@@ -193,15 +190,15 @@ public class CreationBoard3 extends Dialog implements ActionListener{
             BuildP(bul.players); 
         }
         if(e.getSource() == butons.getBs()){
-            this.setVisible(false);
+        	setVisible(false);
             JFrame frame = new JFrame();
-            frame.setBounds(10, 10, 1150, 700);
+            frame.setBounds(10, 10, 1150, 700); //1150
             frame.setTitle(Constants.TitleGame);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ClassicLogic logic = new ClassicLogic(board);
+            board.setBd(bul);
             logic.tam = this.tam;
-            board.setBd(bul); 
             logic.players = board.bd;
             GameMoves gm = new GameMoves(logic);
             gm.setFocusable(true);
@@ -212,19 +209,11 @@ public class CreationBoard3 extends Dialog implements ActionListener{
         }
     }
     
-    public void paint(Graphics gr) {
+   public void paint(Graphics gr) {
     	Graphics2D g2d = (Graphics2D) gr;
-
-    	  /*
-    	   * Para crear un gradiente horizontal,
-    	   * las coordenadas a usar seran del {0,0} al {anchura del componente, 0}
-    	   */
-    	  GradientPaint horizontalGradient = new GradientPaint(0, 0, Color.RED, getWidth(), 0, Color.BLUE);
-    	  g2d.setPaint(horizontalGradient);
-
-    	  g2d.fillRect(0, 0, getWidth(), getHeight());
-
-    } 
+    	g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    }
+	
     /**
      * Metodo para verificar que color fue seleccionado
      * @param HashMap<Color, Boolean>

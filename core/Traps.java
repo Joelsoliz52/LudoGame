@@ -11,18 +11,15 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
-import interfaces.GameLogic;
 import utilities.ListaSEC;
 
 public class Traps implements Comodin{
     private Position pos;
-    private GameLogic<Integer> logic;
     private ListaSEC<Position> positiones;
 
     public Traps(){}
 
     public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA){
-        this.logic = logic;
         Position pos = new Position(x, y);
         Position pos1 = new Position(0, 9);
         Position pos2 = new Position(9, 0);

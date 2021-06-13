@@ -13,15 +13,15 @@ import interfaces.Path;
  * @version 2
  */
 public class Pawn {
-	
+
     private final Path path;
     private Position position;
     private int current;
-    private int currentOptional;   //cont casillas del camino
+    private int currentOptional;
     private final int height;
     private final int width;
-    private boolean pathOptional;    //  camino
-    private boolean op;
+    private boolean pathOptional;
+    private int optional;
     private int numPathOp;
     private boolean flagBonus;
     /**
@@ -37,11 +37,11 @@ public class Pawn {
         this.position = new Position(-1, -1);
         this.width = width;
         pathOptional = false;
-        op=false;
+        optional = 0;
         numPathOp = 0;
         flagBonus = false;
     }
-    
+
     /**
      * Draw pawn.
      * @param graphics Drawing controller.
@@ -50,7 +50,7 @@ public class Pawn {
      * @param player Current player.
      */
     public void draw(Graphics2D graphics, int x, int y, Player player) {
-        
+
         int temp1;
         int temp2;
 
@@ -61,28 +61,29 @@ public class Pawn {
             temp1 = 80;
             temp2 = 50;
             if(!pathOptional) {
-              x = path.getAX()[player.getTurn() - 1][current];
-              y = path.getAY()[player.getTurn() - 1][current];
+                x = path.getAX()[player.getTurn() - 1][current];
+                y = path.getAY()[player.getTurn() - 1][current];
             }
             else{
-             x = path.getOptionalAX()[player.getTurn() - 1][current];
-             y = path.getOptionalAY()[player.getTurn() - 1][current];
+                x = path.getOptionalAX()[player.getTurn() - 1][current];
+                y = path.getOptionalAY()[player.getTurn() - 1][current];
             }
         }
         position = new Position(x, y);
         graphics.setColor(player.getColor());
         drawNewPosition(graphics, temp1, temp2);
-    
+
     }
-    
+
     public boolean setPathOptional(boolean pathOptional){
         this.pathOptional = pathOptional;
         return pathOptional;
     }
+
     public boolean getPathOptional(){
         return pathOptional;
     }
-    
+
     /**
      * Draw new position of the pawn.
      * @param graphics Drawing controller.
@@ -109,7 +110,7 @@ public class Pawn {
      * @param current New current path position.
      */
     public void setCurrent(int current) { this.current = current; }
-    
+
     /**
      * Returns current pathOptional position of the pawn.
      * @return Current pathOptional position.
@@ -120,31 +121,46 @@ public class Pawn {
      * Set current pathOptional position.
      * @param currentOptional New current pathOptional position.
      */
-    public int setCurrentOptional(int currentOptional) { return this.currentOptional = currentOptional; }
-    
+    public void setCurrentOptional(int currentOptional) {
+        this.currentOptional = currentOptional;
+    }
+
     /**
      * Returns current position of the pawn.
      * @return Current position.
      */
     public Position getPosition() { return position; }
-    
-    public void op(boolean op){
-        this.op = op;
+
+    public void setOptional(int optional){
+        this.optional = optional;
     }
-    
-    public boolean getop(){
-        return op;
+
+    public int getOptional(){
+        return optional;
     }
-    
+
+    /**
+     * Set optional path number.
+     */
     public int getnumPathOp(){
         return numPathOp;
     }
-    
+
+    /**
+     * Set optional path number.
+     * @param numPathOp New optional path number.
+     */
     public void setnumPathOp(int numPathOp){
         this.numPathOp= numPathOp;
     }
-    
+
+    /**
+     * Returns Path.
+     * @return Path.
+     */
+    public Path getPath() { return path; }
+
     public boolean getFlag() { return flagBonus; }
-    
+
     public void setFlag(boolean flagBonus) { this.flagBonus = flagBonus;}
 }

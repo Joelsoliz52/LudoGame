@@ -23,6 +23,7 @@ public class Pawn {
     private int optional;
     private int numPathOp;
     private boolean flagBonus;
+    private boolean freezePawn;
     /**
      * Pawn constructor.
      * @param height Height of pawn boxes.
@@ -39,6 +40,7 @@ public class Pawn {
         optional = 0;
         numPathOp = 0;
         flagBonus = false;
+        freezePawn = false;
     }
 
     /**
@@ -162,4 +164,8 @@ public class Pawn {
     public boolean getFlag() { return flagBonus; }
 
     public void setFlag(boolean flagBonus) { this.flagBonus = flagBonus;}
+
+    public boolean getFreezePawn() { return freezePawn; }
+
+    public void setFreezePawn(boolean freezePawn) { this.freezePawn = freezePawn;}
 }

@@ -43,7 +43,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
     private Buttons butons;
     private int tam;
     private int pos;
-    private String fondo = "/utilities/CreationBoards.jpg";
+    private String fondo = "/resources/images/CreationBoards.jpg";
     private Image imagen;
     public CreationBoard4(Menu2 parent,boolean modal){
         super(parent, modal);

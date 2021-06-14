@@ -31,7 +31,7 @@ public class CreationBoard3 extends Dialog implements ActionListener{
     private HashMap<Color, Boolean> map;
     private int tam;
     private int pos;
-    private String fondo = "/utilities/CreationBoards.jpg";
+    private String fondo = "/resources/images/CreationBoards.jpg";
     private Image imagen;
     public CreationBoard3(Menu2 parent,boolean modal){
         super(parent, modal);

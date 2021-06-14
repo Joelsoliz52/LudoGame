@@ -98,10 +98,10 @@ public class GameSetupView extends View {
         playersNumberLabel.setup(50, 10, Color.WHITE);
         playerNameLabel.setup(50, 110, Color.WHITE);
         chooseColorLabel.setup(50, 195, Color.WHITE);
-        player1Label.setup(50, 233);
-        player2Label.setup(50, 313);
-        player3Label.setup(250, 273);
-        player4Label.setup(250, 353);
+        player1Label.setup(50, 233, Color.RED);
+        player2Label.setup(50, 313, Color.YELLOW);
+        player3Label.setup(250, 273, Color.BLUE);
+        player4Label.setup(250, 353, Color.GREEN);
 
         this.add(playersNumberLabel);
         this.add(playerNameLabel);
@@ -171,7 +171,7 @@ public class GameSetupView extends View {
         });
         startButton.onClick(e -> {
             GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.playersColors).getBoard();
-            this.setNextView(GameView.getInstance(logic));
+            this.setNextView(GameView.getInstance(logic, this.gameMode));
             this.goNext();
         });
     }

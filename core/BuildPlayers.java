@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -92,7 +93,15 @@ public class BuildPlayers {
             pos++;
         }
     }
-    
+
+    /**
+     * Method for add players with an arrayList.
+     * @param players
+     */
+    public void addPlayers(ArrayList<Player> players) {
+        this.players = players.toArray(new Player[0]);
+    }
+
     /**
      * Metodo para dar un turno especifico para cada jugador
      * @param players

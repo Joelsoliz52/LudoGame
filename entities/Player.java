@@ -18,8 +18,8 @@ public class Player {
     private final Pawn[] pawns;
     private int turn;
     private String name;
-    private boolean flagBonus;
-    private boolean flagTraps;
+    private int flagBonus;
+    private int flagTraps;
     private boolean flagAliance;
     private int loseTurn;
     /**
@@ -34,8 +34,8 @@ public class Player {
         this.name = name;
         coin = 0;
         pawns = new Pawn[4];
-        flagBonus = false;
-        flagTraps = false;
+        flagBonus = 0;
+        flagTraps = 0;
         flagAliance = false;
         loseTurn = 0;
         for(int i = 0; i < 4; i++) {
@@ -80,13 +80,13 @@ public class Player {
      * Retorna una bandera de bonus
      * @return
      */
-    public boolean getFlagBonus(){return flagBonus;}
+    public int getFlagBonus(){return flagBonus;}
     
     /**
      * Retorna una bandera de trampa
      * @return
      */
-    public boolean getFlagTraps(){return flagTraps;}
+    public int getFlagTraps(){return flagTraps;}
     
     /**
      * Retorna una bandera de alianza
@@ -104,13 +104,13 @@ public class Player {
      * Modifica una bandera de bonus
      * @return
      */
-    public void setFlagBonus(boolean flagBonus){this.flagBonus = flagBonus;}
+    public void setFlagBonus(int flagBonus){this.flagBonus = flagBonus;}
     
     /**
      * Modifica una bandera de trampa
      * @return
      */
-    public void setFlagTraps(boolean flagTraps){this.flagTraps = flagTraps;}
+    public void setFlagTraps(int flagTraps){this.flagTraps = flagTraps;}
     
     /**
      * Modifica una bandera de alianza

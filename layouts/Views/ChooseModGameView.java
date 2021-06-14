@@ -19,8 +19,8 @@ public class ChooseModGameView extends View {
 
     private ChooseModGameView() {
         BasicLabel titleLabel = new BasicLabel("Escoge uno:");
-        ImagePanel mriBoard = new ImagePanel("mriBoard.png", 30, 50, new Dimension(310, 210));
-        ImagePanel runBoard = new ImagePanel("runBoard.png", 180, 50, new Dimension(310, 210));
+        ImagePanel mriBoard = new ImagePanel("mriBoard.jpg", 30, 50, new Dimension(310, 210));
+        ImagePanel runBoard = new ImagePanel("runBoard.jpg", 180, 50, new Dimension(310, 210));
 
         titleLabel.setup(30, 0);
         backButton.setup(105, 165, 100, 30, Color.BLACK);

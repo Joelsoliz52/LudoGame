@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import interfaces.GameLogic;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -28,15 +29,24 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     // Fields of the class.
     private static final long serialVersionUID = 1L;
     private final GameLogic<Integer> logic;
-    
-    
+
+    public GameMoves(GameLogic<Integer> logic) {
+        this(logic, new Dimension(1200, 700));
+    }
+
     /**
      * GameMoves constructor.
      * @param logic Logic of the game.
      */
-    public GameMoves(GameLogic<Integer> logic) {
+    public GameMoves(GameLogic<Integer> logic, Dimension size) {
         setFocusTraversalKeysEnabled(false);
         requestFocus();
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        setSize(size);
+        setLayout(null);
+
         this.logic = logic;
     }
 

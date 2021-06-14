@@ -72,11 +72,7 @@ public class Aliance{
      * @return
      */
     private boolean knowTurn(int est, HashMap<Integer, Boolean> map){
-        boolean b = false;
-        if(map.get(est)){
-            b = true;
-        }
-        return b;
+        return !map.get(est);
     }
     
     /**
@@ -106,26 +102,16 @@ public class Aliance{
      * @return si el jugador esta en una alianza retorna true si no false
      */
     public boolean containsPlayerAliance1(Player player){
-        if(getAliance1()[0].equals(player)){
+        if(getAliance1()[0].equals(player) || getAliance1()[1].equals(player)){
             return true;
-        }else{
-            if(getAliance1()[1].equals(player)){
-                return true;
-            }else {
-            	return false;
-            }
         }
+        return false;
     }
     public boolean containsPlayerAliance2(Player player) {
-    	if(getAliance2()[0].equals(player)){
+    	if(getAliance2()[0].equals(player) || getAliance2()[1].equals(player)){
             return true;
-        }else{
-            if(getAliance2()[1].equals(player)){
-                return true;
-            }else{
-                return false;
-            }
-    	}
+        }
+        return false;
     }
     
     /**

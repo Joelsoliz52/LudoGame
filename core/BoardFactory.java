@@ -1,6 +1,5 @@
 package core;
 
-import entities.Aliance;
 import entities.Player;
 import entities.Position;
 import interfaces.Board;
@@ -102,8 +101,7 @@ public class BoardFactory {
                 mriLogic.players = ((MRIBoard) board).bd;
                 return mriLogic;
             case RUN:
-                Aliance aliance = playersList.size() > 3 ? new Aliance(playersList.size(), builder, (RunBoard) board) : null;
-                RunLogic runLogic = new RunLogic(board, aliance);
+                RunLogic runLogic = new RunLogic(board);
                 ((RunBoard) board).setBd(builder);
                 runLogic.tam = this.playersNumber;
                 runLogic.players = ((RunBoard) board).bd;

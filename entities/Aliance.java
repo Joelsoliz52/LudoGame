@@ -135,7 +135,7 @@ public class Aliance{
     public void putTrapAfterAliance(Player player, Traps trap){
     	int x = player.getPawns()[0].getPosition().getX();
     	int y = player.getPawns()[0].getPosition().getY();
-    	trap = new Traps(players.players, x, y, new RunLogic(boardr, this),player.getPawns()[0]);
+    	trap = new Traps(players.players, x, y, new RunLogic(boardr),player.getPawns()[0]);
     }
     
     /**

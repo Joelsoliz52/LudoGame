@@ -112,7 +112,7 @@ public class RunLogic implements GameLogic<Integer>{
     public void onMouseClicked(int x, int y) {
         Player player = players.getPlayer(currentPlayer);
         Pawn pawn = returnPawn(player, x, y);
-        if(!player.getFlagTraps()){
+        if(player.getFlagTraps() != 1){
             int value = movePawn(player, x, y);
             if (value == -1) {
                 moveInitPawn(player, x, y);
@@ -206,10 +206,18 @@ public class RunLogic implements GameLogic<Integer>{
                     players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
             else { num = 80; }
 
-            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1) {
+            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1 && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
                 flag = 0;
                 break;
+            }else if(player.getPawns()[i].getFreezePawn()){
+                if(player.getloseTurn() <= loseTurn){
+                    player.setloseTurn(player.getloseTurn()+1);
+                }else{
+                    player.getPawns()[i].setFreezePawn(false);
+                    player.setloseTurn(0);
+                    loseTurn = (int)(Math.random()*3)+1;
+                }
             }
         }
 
@@ -271,13 +279,13 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            if (player.getFlagTraps()){
-                graphics.drawString("Lose Turn ", 700, 200);
+            if (player.getFlagTraps()==1){
+                graphics.drawString(players.players[pos].getName()+ " " +"perdiste turno", 690, 100);
                 currentPlayer = (currentPlayer + 1) % tam;
                 if(player.getloseTurn() <= loseTurn){
                     player.setloseTurn(player.getloseTurn()+1);
                 }else{
-                    player.setFlagTraps(false);
+                    player.setFlagTraps(0);
                     player.setloseTurn(0);
                     loseTurn = (int)(Math.random()*3)+1;
                 }
@@ -288,19 +296,42 @@ public class RunLogic implements GameLogic<Integer>{
                     currentPlayer = tam;
                 }
                 pos++;
-            } else {
-                graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
-                graphics.drawString( "dado es " + dice.content, 690, 150);
+
+            }else if(player.getFlagTraps()==3) {
+                graphics.drawString(players.players[pos].getName()+ " " +"regresaste al inicio", 690, 100);
+            }else if(player.getFlagTraps()==4) {
+                graphics.drawString(players.players[pos].getName()+ " " +"retrocediste", 690, 100);
+            }else if(player.getFlagTraps()==5) {
+                graphics.drawString(players.players[pos].getName()+ " " +"ficha congelada", 690, 100);
+            }else if(player.getFlagTraps()==6) {
+                graphics.drawString(players.players[pos].getName()+ " " +"caiste en una mina", 690, 100);
+            }else if(player.getFlagBonus()==1) {
+                graphics.drawString(players.players[pos].getName()+ " " +"ganaste un escudo", 690, 100);
+            }else if(player.getFlagBonus()==2) {
+                graphics.drawString(players.players[pos].getName()+ " " +"salto", 690, 100);
+                graphics.drawString( "en el tiempo", 690, 150);
+            }else if(player.getFlagBonus()==3) {
+                graphics.drawString(players.players[pos].getName()+ " " +"lanza", 690, 100);
+                graphics.drawString( "nuevamente dado", 690, 150);
+            }else if(player.getFlagBonus()==4) {
+                graphics.drawString(players.players[pos].getName()+ " " +"avanzaste", 690, 100);
+            }else {
+                    graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+                    graphics.drawString( "dado es " + dice.content, 690, 150);
             }
         }
 
-        if(flag == 0 && dice.content != 0  && dice.content != 6 && !player.getFlagTraps()) {
+        if(flag == 0 && dice.content != 0  && dice.content != 6 && (player.getFlagTraps()!=1) && player.getFlagBonus()!=3) {
             currentPlayer = (currentPlayer + 1) % tam;
 
             if(currentPlayer == 0){
                 currentPlayer = tam;
             }
             pos++;}
+        if(player.getFlagBonus()!=0 || player.getFlagTraps()!=0 && player.getFlagTraps()!=1){
+            player.setFlagBonus(0);
+            player.setFlagTraps(0);
+        }
     }
 
     /**

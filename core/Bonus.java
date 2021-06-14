@@ -20,9 +20,11 @@ public class Bonus implements Comodin{
         if(trustPositionPawn(player, x, y)){
             if(al == 1){
                 bonusShield(pawn);
+                player.setFlagBonus(1);
             }else{
                 if(al == 2){
                     bonusJumperTime(pawn);
+                    player.setFlagBonus(2);
                 }else{
                     if(al == 3 && player.getFlagAliance()){
                         bonusTwoThrowDice(player);
@@ -31,6 +33,7 @@ public class Bonus implements Comodin{
                             bonusNewThrowDice(player);
                         }else{
                             bonusSpeed(logic.getDice(), pawn);
+                            player.setFlagBonus(4);
                         }
                     }
                 }
@@ -58,11 +61,11 @@ public class Bonus implements Comodin{
      */
     public void bonusTwoThrowDice(Player player){
     	if(aliance.containsPlayerAliance1(player)) {
-        	aliance.getAliance1()[0].setFlagBonus(true);
-        	aliance.getAliance1()[1].setFlagBonus(true);
+        	aliance.getAliance1()[0].setFlagBonus(0);
+        	aliance.getAliance1()[1].setFlagBonus(0);
         }else {
-        	aliance.getAliance2()[0].setFlagBonus(true);
-        	aliance.getAliance2()[1].setFlagBonus(true);
+        	aliance.getAliance2()[0].setFlagBonus(0);
+        	aliance.getAliance2()[1].setFlagBonus(0);
         }
     }
     
@@ -85,7 +88,7 @@ public class Bonus implements Comodin{
      * @return void
      */
     public void bonusNewThrowDice(Player player){
-        player.setFlagBonus(true);
+        player.setFlagBonus(3);
     }
     
     /**

@@ -1,6 +1,5 @@
 package core;
 
-import entities.Aliance;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -10,10 +9,8 @@ import java.awt.*;
 
 public class Bonus implements Comodin{
     private Position pos;
-    private Aliance aliance;
     public Bonus(){}
-    public Bonus(Player[] players, Aliance aliance,int x, int y, RunLogic logic,Pawn pawn){
-        this.aliance = aliance;
+    public Bonus(Player[] players, int x, int y, RunLogic logic,Pawn pawn){
         int al = aleatori();
         pos = new Position(x, y);
         Player player = returnPlayer(players, pos);
@@ -26,15 +23,11 @@ public class Bonus implements Comodin{
                     bonusJumperTime(pawn);
                     player.setFlagBonus(2);
                 }else{
-                    if(al == 3 && player.getFlagAliance()){
-                        bonusTwoThrowDice(player);
+                    if(al == 3){
+                        bonusNewThrowDice(player);
                     }else{
-                        if(al == 4){
-                            bonusNewThrowDice(player);
-                        }else{
-                            bonusSpeed(logic.getDice(), pawn);
-                            player.setFlagBonus(4);
-                        }
+                        bonusSpeed(logic.getDice(), pawn);
+                        player.setFlagBonus(4);
                     }
                 }
             }
@@ -44,7 +37,7 @@ public class Bonus implements Comodin{
     /**
      * Metodo para elegir al azar un bonus
      */
-    public int aleatori(){return (int)(Math.random()*5)+1;}
+    public int aleatori(){return (int)(Math.random()*4)+1;}
     /**
      * Metodo escudo para cualquier trampa
      * @param pawn, x, y
@@ -52,21 +45,6 @@ public class Bonus implements Comodin{
      */
     public void bonusShield(Pawn pawn){
     	pawn.setFlag(true);
-    }
-    
-    /**
-     * Metodo para solo alianzas usar dos dados  // FALTA
-     * @param player
-     * @return void
-     */
-    public void bonusTwoThrowDice(Player player){
-    	if(aliance.containsPlayerAliance1(player)) {
-        	aliance.getAliance1()[0].setFlagBonus(0);
-        	aliance.getAliance1()[1].setFlagBonus(0);
-        }else {
-        	aliance.getAliance2()[0].setFlagBonus(0);
-        	aliance.getAliance2()[1].setFlagBonus(0);
-        }
     }
     
     /**

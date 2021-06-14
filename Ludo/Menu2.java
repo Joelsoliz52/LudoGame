@@ -7,7 +7,7 @@ package Ludo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.applet.*;
 /** 
  *  
  * @author Raul
@@ -18,8 +18,10 @@ public class Menu2 extends Frame implements ActionListener{
 	private final static int ancho = pantalla.width;
     private final static int alto = pantalla.height;
     private Button b1, b2, b3, b4, bb;
-    JDialog lastMenu;
+    public JDialog lastMenu;
     private String fondo = "/utilities/20210611_175351.gif";
+    private String audioName = "";
+    private AudioClip sound;
     private Image imagen;
     private String complFondo = "/utilities/20210611_175039.gif";
     private Image imagenCompl;
@@ -29,6 +31,8 @@ public class Menu2 extends Frame implements ActionListener{
         imagen = img.getImage();
         ImageIcon imgC =  new ImageIcon(getClass().getResource(complFondo));
         imagenCompl = imgC.getImage();
+        sound = java.applet.Applet.newAudioClip(getClass().getResource(audioName));
+        sound.play();
         b1 = new Button("Play Now :D");
         b1.setBounds(290,276,140,50);
         b1.setBackground(java.awt.Color.red);
@@ -48,8 +52,10 @@ public class Menu2 extends Frame implements ActionListener{
         lastMenu = new JDialog(this, "  ");
         lastMenu.setLayout(null);
         lastMenu.setBounds(580,290,220,200);
+        lastMenu.setBackground(Color.LIGHT_GRAY);
         Label lb1 = new Label("Choose Mode Game ");
         lb1.setBounds(12,10,200,40);
+        lb1.setBackground(Color.LIGHT_GRAY);
         lb1.setForeground(Color.black);
         lb1.setFont(new Font("Agency FB",Font.BOLD, 20));
         lastMenu.add(lb1);
@@ -84,16 +90,19 @@ public class Menu2 extends Frame implements ActionListener{
         }
         if(e.getSource() == b2){
             System.exit(0);
+            sound.stop();
         }
         if(e.getSource() == b3){
             CreationBoard3 crb = new CreationBoard3(this, false);
             crb.setVisible(true);
             lastMenu.setVisible(false);
+            sound.stop();
         }
         if(e.getSource() == b4){
             CreationBoard4 crb = new CreationBoard4(this, false);
             crb.setVisible(true);
             lastMenu.setVisible(false);
+            sound.stop();
         }
         if(e.getSource() == bb){
             lastMenu.setVisible(false);

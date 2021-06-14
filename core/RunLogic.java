@@ -2,8 +2,6 @@ package core;
 
 import java.awt.*;
 import java.util.*;
-
-import entities.Aliance;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -24,7 +22,6 @@ public class RunLogic implements GameLogic<Integer>{
     private Board board;
     private Comodin comodin;
     private int currentPlayer;
-    private Aliance aliance;
     private final Dice<Integer> dice;
     private int flag;
     public int tam;
@@ -35,13 +32,12 @@ public class RunLogic implements GameLogic<Integer>{
     private ListaSEC<Position> positions;
     public Pawn currentPawn;
     public boolean newPositionPawn;
-    public RunLogic(Board board, Aliance aliance){
+    public RunLogic(Board board){
         if (board == null) {
             this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
         } else {
             this.board = board;
         }
-        this.aliance = aliance;
         currentPlayer = 1;
         dice = new Dice<Integer>("int");
         dice.content = 0;
@@ -247,7 +243,7 @@ public class RunLogic implements GameLogic<Integer>{
         if(comodin instanceof Traps){
             comodin = new Traps(this.players.players, x, y, this, pawn);
         }else{
-            comodin = new Bonus(this.players.players, this.aliance, x, y, this, pawn);
+            comodin = new Bonus(this.players.players, x, y, this, pawn);
         }
     }
 

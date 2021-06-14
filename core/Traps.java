@@ -11,12 +11,9 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
-import utilities.ListaSEC;
 
 public class Traps implements Comodin{
     private Position pos;
-    private ListaSEC<Position> positiones;
-
     public Traps(){}
 
     public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA){

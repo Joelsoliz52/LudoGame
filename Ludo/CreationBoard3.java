@@ -31,7 +31,7 @@ public class CreationBoard3 extends Dialog implements ActionListener{
     private HashMap<Color, Boolean> map;
     private int tam;
     private int pos;
-    private String fondo = "/resources/images/CreationBoards.jpg";
+    private String fondo = "/utilities/CreationBoards.jpg";
     private Image imagen;
     public CreationBoard3(Menu2 parent,boolean modal){
         super(parent, modal);
@@ -86,6 +86,7 @@ public class CreationBoard3 extends Dialog implements ActionListener{
     	   e.getSource() == butons.getBr()){
         	tam = 0;
         	butons.reset();
+        	repaint();
         }
         // boton para añadir un jugador al arreglo
        if(e.getSource() == butons.getBa()){
@@ -120,63 +121,66 @@ public class CreationBoard3 extends Dialog implements ActionListener{
         }
         if(e.getSource() == butons.getBc1() && pos < tam){
             colores[pos] = Color.RED;
-            butons.getNom1().setText(""+name[pos]);
-            butons.getNom1().setForeground(Color.RED);
+            butons.setJ1(""+name[pos]);
             pos++;
             butons.getBc1().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc1() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.RED;
-                butons.getNom1().setText(""+name[pos]);
-                butons.getNom1().setForeground(Color.RED);
+                butons.setJ1(""+name[pos]);
                 pos++;
                 butons.getBc1().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc2() && pos < tam){
             colores[pos] = Color.BLUE;
-            butons.getNom2().setText(""+name[pos]);
-            butons.getNom2().setForeground(Color.BLUE);
+            butons.setJ2(""+name[pos]);
             pos++;
             butons.getBc2().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc2() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.BLUE;
-                butons.getNom2().setText(""+name[pos]);
-                butons.getNom2().setForeground(Color.BLUE);
+                butons.setJ2(""+name[pos]);
                 pos++;
                 butons.getBc2().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc3() && pos < tam){
             colores[pos] = Color.YELLOW;
-            butons.getNom3().setText(""+name[pos]);
-            butons.getNom3().setForeground(Color.YELLOW);
+            butons.setJ3(""+name[pos]);
             pos++;
             butons.getBc3().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc3() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.YELLOW;
-                butons.getNom3().setText(""+name[pos]); 
+                butons.setJ3(""+name[pos]);
                 pos++;
                 butons.getBc3().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc4() && pos < tam){
             colores[pos] = Color.GREEN;
-            butons.getNom4().setText(""+name[pos]);
+            butons.setJ4(""+name[pos]);
             pos++;
             butons.getBc4().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc4() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.GREEN;
-                butons.getNom4().setText(""+name[pos]);
+                butons.setJ4(""+name[pos]);
                 pos++;
                 butons.getBc4().setEnabled(false);
+                repaint();
             }
         }
         if(pos == tam){
@@ -212,6 +216,7 @@ public class CreationBoard3 extends Dialog implements ActionListener{
    public void paint(Graphics gr) {
     	Graphics2D g2d = (Graphics2D) gr;
     	g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    	butons.paint(g2d);
     }
 	
     /**

@@ -12,7 +12,6 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 
 import core.BuildPlayers;
-import entities.Player;
 import interfaces.Board;
 import interfaces.Path;
 import layouts.Paths.RunPath;
@@ -63,10 +62,8 @@ public class RunBoard implements Board {
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
         paint(graphics);
+
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(x, y, 19 * width, 19 * height);
-        drawQuarters(graphics, x, y);
-        drawPawnQuarter(graphics, x, y);
         drawPathColor(graphics, x, y);
         graphics.setStroke(new BasicStroke(2));
         graphics.setColor(Color.BLACK);
@@ -263,18 +260,6 @@ public class RunBoard implements Board {
     }
 
 
-   
-    /**
-     * Draw pawn initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Position X, pawn initial boxes.
-     * @param y Position Y, pawn initial boxes.
-     */
-    private void drawPawnQuarter(Graphics2D graphics, int x, int y) {
-        drawPawnHorizontalQuarter(graphics, x, y);
-        drawPawnVerticalQuarter(graphics, x, y);
-    }
-
     /**
      * Draw pawn initial horizontal boxes.
      * @param graphics Drawing controller.
@@ -469,32 +454,45 @@ public class RunBoard implements Board {
         map.put(Color.BLUE, false);
         map.put(Color.YELLOW, false);
         map.put(Color.GREEN, false);
-        for(Player player : bd.players) {
-            if(player.getColor() != null){
-                map.replace(player.getColor(), true);
+        pos = 0;
+        while(pos < tam){
+            if(bd.players[pos].getColor() != null){
+                map.put(bd.players[pos].getColor(), true);
             }
+            pos++;
         }
+        pos = 0;
         if(map.get(Color.RED)){
             graphics.drawString(bd.players[pos].getName(), 500, 650);
             pos++;
+        }else{
+            graphics.drawString("Player 3", 500, 650);
         }
         if(map.get(Color.BLUE)){
             graphics.drawString(bd.players[pos].getName(), 90, 40);
             pos++;
+        }else{
+            graphics.drawString("Player 1", 90, 40);
         }
         if(map.get(Color.YELLOW)){
             graphics.drawString(bd.players[pos].getName(), 90, 650);
             pos++;
+        }else{
+            graphics.drawString("Player 4", 90, 650);
         }
         if(map.get(Color.GREEN)){
             graphics.drawString(bd.players[pos].getName(), 500, 40);
+            pos++;
+        }else{
+            graphics.drawString("Player 2", 500, 40);
         }
-        graphics.drawString("Instrucciones:", 730,300);
-        graphics.drawString("1.Presionar enter para lanzar", 680,350);
-        graphics.drawString("el dado.", 680,400);
-        graphics.drawString("2.Haga click sobre una ficha", 680,450);
-        graphics.drawString("para moverla.", 680,500);
-        graphics.drawString("3.Sin errores, se feliz.", 680,550);
+        graphics.setFont(new Font("serif", Font.BOLD, 30));
+        graphics.drawString("Instrucciones:", 750,300);
+        graphics.drawString("1.Presionar enter para lanzar", 700,340);
+        graphics.drawString("el dado.", 700,380);
+        graphics.drawString("2.Haga click sobre una ficha", 700,420);
+        graphics.drawString("para moverla.", 700,460);
+        graphics.drawString("3.Sin errores, se feliz.", 700,500);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
         RenderingHints.VALUE_ANTIALIAS_ON);
 

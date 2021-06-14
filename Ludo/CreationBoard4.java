@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,7 +15,6 @@ import core.BuildPlayers;
 import core.GameMoves;
 import core.MRILogic;
 import core.RunLogic;
-import entities.Aliance;
 import entities.Player;
 import entities.Position;
 import layouts.Boards.MRIBoard;
@@ -33,7 +31,6 @@ import utilities.Constants;
 public class CreationBoard4 extends JDialog implements ActionListener{
     private JButton b1, b2, bd;
     private final JDialog boardMod;
-    private Aliance aliance;
     private MRIBoard board;
     private RunBoard boardr;
     public BuildPlayers bul;
@@ -42,8 +39,10 @@ public class CreationBoard4 extends JDialog implements ActionListener{
     private Color[] colores;
     private Buttons butons;
     private int tam;
-    private int pos;
-    private String fondo = "/resources/images/CreationBoards.jpg";
+    private int pos; 
+    private String button1 = "/utilities/Sintitulo1.jpg";
+    private String button2 = "/utilities/Sintitulo2.jpg";
+    private String fondo = "/utilities/CreationBoards.jpg";
     private Image imagen;
     public CreationBoard4(Menu2 parent,boolean modal){
         super(parent, modal);
@@ -51,6 +50,8 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         setBounds(495,150,400,480);
         ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
         imagen = img.getImage();
+        ImageIcon imgB1 =  new ImageIcon(getClass().getResource(button1));
+        ImageIcon imgB2 =  new ImageIcon(getClass().getResource(button2));
         butons = new Buttons(this);
         butons.getB3().addActionListener(this);
         butons.getB4().addActionListener(this);
@@ -64,15 +65,19 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         butons.getBc4().addActionListener(this);
         butons.getBr().addActionListener(this);
         this.setUndecorated(true);
+        Color color = new Color(125,33,129);
         boardMod = new JDialog();
         boardMod.setLayout(null);
         boardMod.setBounds(495,200,310,210);
+        boardMod.setBackground(color);
         b1 = new JButton();
         b1.setBounds(30,30,100,100);
+        b1.setIcon(imgB1);
         boardMod.add(b1);
         b1.addActionListener(this);
         b2 = new JButton();
         b2.setBounds(180,30,100,100);
+        b2.setIcon(imgB2);
         boardMod.add(b2);
         b2.addActionListener(this);
         bd = new JButton("BACK");
@@ -118,6 +123,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
      	   e.getSource() == butons.getBr()){
              	tam = 0;
              	butons.reset();
+             	repaint();
         }
         // boton para añadir un jugador al arreglo
        if(e.getSource() == butons.getBa()){
@@ -153,66 +159,66 @@ public class CreationBoard4 extends JDialog implements ActionListener{
         }
         if(e.getSource() == butons.getBc1() && pos < tam){
             colores[pos] = Color.RED;
-            butons.getNom1().setText(""+name[pos]);
-            butons.getNom1().setForeground(Color.RED);
+            butons.setJ1(""+name[pos]);
             pos++;
             butons.getBc1().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc1() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.RED;
-                butons.getNom1().setText(""+name[pos]);
-                butons.getNom1().setForeground(Color.RED);
+                butons.setJ1(""+name[pos]);
                 pos++;
                 butons.getBc1().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc2() && pos < tam){
             colores[pos] = Color.BLUE;
-            butons.getNom2().setText(""+name[pos]);
-            butons.getNom2().setForeground(Color.BLUE);
+            butons.setJ2(""+name[pos]);
             pos++;
             butons.getBc2().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc2() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.BLUE;
-                butons.getNom2().setText(""+name[pos]);
-                butons.getNom2().setForeground(Color.BLUE);
+                butons.setJ2(""+name[pos]);
                 pos++;
                 butons.getBc2().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc3() && pos < tam){
             colores[pos] = Color.YELLOW;
-            butons.getNom3().setText(""+name[pos]);
-            butons.getNom3().setForeground(Color.YELLOW);
+            butons.setJ3(""+name[pos]);
             pos++;
             butons.getBc3().setEnabled(false);
+            repaint();
         }else{
             if(e.getSource() == butons.getBc3() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.YELLOW;
-                butons.getNom3().setText(""+name[pos]); 
-                butons.getNom3().setForeground(Color.YELLOW);
+                butons.setJ3(""+name[pos]);
                 pos++;
                 butons.getBc3().setEnabled(false);
+                repaint();
             }
         }
         if(e.getSource() == butons.getBc4() && pos < tam){
             colores[pos] = Color.GREEN;
-            butons.getNom4().setText(""+name[pos]);
-            butons.getNom4().setForeground(Color.GREEN);
+            butons.setJ4(""+name[pos]);
             pos++;
             butons.getBc4().setEnabled(false);
+            repaint();
         }else{
-            if(e.getSource() == butons.getBc4() && pos < tam){
+            if(e.getSource() == butons.getBc4() && pos == tam){
                 pos = 0;
                 colores[pos] = Color.GREEN;
-                butons.getNom4().setText(""+name[pos]);
-                butons.getNom4().setForeground(Color.GREEN);
+                butons.setJ4(""+name[pos]);
                 pos++;
                 butons.getBc4().setEnabled(false);
+                repaint();
             }
         }
         if(pos == tam){
@@ -226,9 +232,6 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             bul1 = new BuildPlayers(tam, board.getHeight(), board.getWidth(), boardr);
             BuildP(bul);
             BuildP(bul1);
-            if(tam > 3){
-                aliance = new Aliance(tam,bul1, boardr);
-            }
         }
         if(e.getSource() == butons.getBs()){
             this.setVisible(false);
@@ -259,7 +262,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             frame.setTitle(Constants.TitleGame);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            RunLogic logic = new RunLogic(boardr, aliance);
+            RunLogic logic = new RunLogic(boardr);
             boardr.setBd(bul1);
             logic.tam = this.tam;
             logic.players = boardr.bd;
@@ -279,6 +282,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
     public void paint(Graphics gr) {
     	Graphics2D g2d = (Graphics2D) gr;
     	g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+    	butons.paint(g2d);
     }
     
     private void BuildP(BuildPlayers players){

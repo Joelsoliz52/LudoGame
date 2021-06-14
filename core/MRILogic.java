@@ -201,7 +201,7 @@ public class MRILogic implements GameLogic<Integer> {
             }else if (pawn.getOptional()==1){
                 pawn.setOptional(0);
             }
-            if((pawn.getCurrentOptional() > 8)&& pawn.getOptional()==2){
+            if((pawn.getCurrentOptional() > 7)&& pawn.getOptional()==2){
                 optionalFinal(pawn);
                 current = pawn.getCurrent();
                 pawn.setOptional(0);
@@ -238,7 +238,7 @@ public class MRILogic implements GameLogic<Integer> {
         else if(current == (54 + dice.content)){j = 3; pawn.setnumPathOp(3);}
         for(int i = 0; i < 4; i++){
             if(j == i){
-                pawn.setCurrent((9 * i) + dice.content);
+                pawn.setCurrent((8 * i) + dice.content);
                 pawn.setCurrentOptional(dice.content);
                 break;
             }
@@ -253,8 +253,8 @@ public class MRILogic implements GameLogic<Integer> {
         pawn.setPathOptional(false);
         for(int i = 0; i < 4; i++){
             if(pawn.getnumPathOp() == i){
-                int u =(dice.content - (dice.content - ( - 8 + pawn.getCurrentOptional()))) + (10 + (i*17));
-                pawn.setCurrent(u);
+                int u = ( - 7 + pawn.getCurrentOptional()) + (10 + (i*17));
+                pawn.setCurrent(u-1);
                 break;
             }
         }

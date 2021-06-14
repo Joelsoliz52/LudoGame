@@ -139,11 +139,11 @@ public class MRIPath implements Path {
     private void addOptionalAX(Color[] colores){
         int i = 0;
         int pos = 0;
-        OptionalAX = new int[4][36];
+        OptionalAX = new int[4][32];
 
         while(pos < tam){
             if(colores[pos] == Color.BLUE){
-                int[] a1 =  { 4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4 };
+                int[] a1 =  { 4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4 };
                 while(i < a1.length){
                     OptionalAX[pos][i] = a1[i];
                     i++;
@@ -151,7 +151,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.GREEN){
-                int[] a2 = { 10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8 };
+                int[] a2 = { 10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7 };
                 while(i < a2.length){
                     OptionalAX[pos][i] = a2[i];
                     i++;
@@ -159,7 +159,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.RED){
-                int[] a3 = { 14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14 };
+                int[] a3 = { 14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14 };
                 while(i < a3.length){
                     OptionalAX[pos][i] = a3[i];
                     i++;
@@ -167,7 +167,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.YELLOW){
-                int[] a4 = { 8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10 };
+                int[] a4 = { 8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11 };
                 while(i < a4.length){
                     OptionalAX[pos][i] = a4[i];
                     i++;
@@ -189,11 +189,11 @@ public class MRIPath implements Path {
     private void addOptionalAY(Color[] colores){
         int i = 0;
         int pos = 0;
-        OptionalAY = new int[4][36];
+        OptionalAY = new int[4][32];
 
         while(pos < tam){
             if(colores[pos] == Color.BLUE){
-                int[] a1 =  { 8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10 };
+                int[] a1 =  { 8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11 };
                 while(i < a1.length){
                     OptionalAY[pos][i] = a1[i];
                     i++;
@@ -201,7 +201,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.GREEN){
-                int[] a2 = { 4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4 };
+                int[] a2 = { 4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4 };
                 while(i < a2.length){
                     OptionalAY[pos][i] = a2[i];
                     i++;
@@ -209,7 +209,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.RED){
-                int[] a3 = { 10,11,12,13,14,14,14,14,14,14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8 };
+                int[] a3 = { 10,11,12,13,14,14,14,14,14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7 };
                 while(i < a3.length){
                     OptionalAY[pos][i] = a3[i];
                     i++;
@@ -217,7 +217,7 @@ public class MRIPath implements Path {
                 i = 0;
             }
             if(colores[pos] == Color.YELLOW){
-                int[] a4 = { 14,14,14,14,14,13,12,11,10,8,7,6,5,4,4,4,4,4,4,4,4,4,4,5,6,7,8,10,11,12,13,14,14,14,14,14 };
+                int[] a4 = { 14,14,14,14,14,13,12,11,8,7,6,5,4,4,4,4,4,4,4,4,4,5,6,7,10,11,12,13,14,14,14,14 };
                 while(i < a4.length){
                     OptionalAY[pos][i] = a4[i];
                     i++;

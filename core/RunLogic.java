@@ -271,8 +271,6 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
-            graphics.drawString( "dado es " + dice.content, 690, 150);
             if (player.getFlagTraps()){
                 graphics.drawString("Lose Turn ", 700, 200);
                 currentPlayer = (currentPlayer + 1) % tam;
@@ -290,9 +288,9 @@ public class RunLogic implements GameLogic<Integer>{
                     currentPlayer = tam;
                 }
                 pos++;
-            }else{
-                graphics.drawString("Number on ", 700, 200);
-                graphics.drawString("dice is " + dice.content, 700, 250);
+            } else {
+                graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+                graphics.drawString( "dado es " + dice.content, 690, 150);
             }
         }
 

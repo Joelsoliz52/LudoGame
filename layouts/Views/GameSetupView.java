@@ -52,12 +52,16 @@ public class GameSetupView extends View {
     // TextField
     private final TextInput playerNameInput = new TextInput();
     
+    // MusicBackground
+    private MusicBackground music;
+    
     private GameSetupView(GameModes gameMode) {
         this.gameMode = gameMode;
         ImagePanel background = new ImagePanel("CreationBoards.jpg");
 
         playerNameInput.setup(30, 155, 170, 30);
-
+        music = new MusicBackground("");
+        
         this.add(playerNameInput);
 
         this.setupButtons();
@@ -169,7 +173,10 @@ public class GameSetupView extends View {
         resetPlayersNumberButton.onClick(e -> reset());
         backButton.onClick(e -> {
             this.setPrevView(gameMode == GameModes.CLASSIC ? ChooseModeView.getInstance() : ChooseModGameView.getInstance());
+            ChooseModGameView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
+            ChooseModGameView.getInstance().getMusic().start();
             this.goBack();
+            music.suspend();
             gameSetupView.dispose();
             gameSetupView = null;
         });
@@ -254,5 +261,13 @@ public class GameSetupView extends View {
         }
 
         return gameSetupView;
+    }
+    
+    public void setMusic(MusicBackground music){
+        this.music = music;
+    }
+
+    public MusicBackground getMusic(){
+        return music;
     }
 }

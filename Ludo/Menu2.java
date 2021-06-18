@@ -107,13 +107,12 @@ public class Menu2 extends Frame implements ActionListener{
         if(e.getSource() == bb){
             lastMenu.setVisible(false);
             Menu2 m;
-				m = new Menu2();
-				m.setBounds(ancho/(17/4),alto/(241/47),720,450);
-	            m.setVisible(true);
-	            m.setResizable(false);
-	            b1.setEnabled(true);
-	            b2.setEnabled(true);
-		
+            m = new Menu2();
+            m.setBounds(ancho/(17/4),alto/(241/47),720,450);
+            m.setVisible(true);
+            m.setResizable(false);
+            b1.setEnabled(true);
+            b2.setEnabled(true);	
         }
     }
     public void paint(Graphics gr) {

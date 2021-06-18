@@ -9,19 +9,15 @@ import components.MusicBackground;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 
 public class ChooseModeView extends View{
     private static ChooseModeView chooseModeView;
     private final BasicButton classicModeButton = new BasicButton("Juego Clasico");
     private final BasicButton modifiedModeButton = new BasicButton("Juego Mod");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
-    
     private ChooseModeView() {
         ImagePanel background = new ImagePanel("7299.jpg");
-    
+
         BasicLabel title = new BasicLabel("Escoger modo de juego:");
         title.setup(20, 10);
 
@@ -40,21 +36,24 @@ public class ChooseModeView extends View{
     }
 
     private void setActions() {
-        MusicBackground music = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundInitGame.mp3");
-        MusicBackground music2 = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3");
         classicModeButton.onClick(e -> {
             this.setNextView(GameSetupView.getInstance(GameModes.CLASSIC));
             this.goNext();
-            music2.start();
+            GameSetupView.getInstance(GameModes.CLASSIC).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
+            GameSetupView.getInstance(GameModes.CLASSIC).getMusic().start();
         });
         modifiedModeButton.onClick(e -> {
             this.setNextView(ChooseModGameView.getInstance());
+            ChooseModGameView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
+            ChooseModGameView.getInstance().getMusic().start();
             this.goNext();
+            
         });
         backButton.onClick(e -> {
-                this.setPrevView(MainView.getInstance());
-                this.goBack();
-                music.start();
+            this.setPrevView(MainView.getInstance());
+            MainView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundInitGame.mp3"));
+            MainView.getInstance().getMusic().start();
+            this.goBack();
         });
     }
 
@@ -65,4 +64,5 @@ public class ChooseModeView extends View{
 
         return chooseModeView;
     }
+    
 }

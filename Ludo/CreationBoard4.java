@@ -222,7 +222,7 @@ public class CreationBoard4 extends JDialog implements ActionListener{
             }
         }
         if(pos == tam){
-        	pos = 0;
+            pos = 0;
             butons.botonesF();
             board = new MRIBoard(new Position(80, 50), colores);
             board.tam = tam;

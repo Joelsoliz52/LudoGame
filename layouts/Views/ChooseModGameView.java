@@ -17,15 +17,11 @@ public class ChooseModGameView extends View {
     private static ChooseModGameView chooseModGameView;
     private final ImagePanel background = new ImagePanel("7299.jpg");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
-    private MusicBackground music;
-    private MusicBackground music1;
-    private MusicBackground music2;
+    private MusicBackground music = new MusicBackground("");
     private ChooseModGameView() {
         BasicLabel titleLabel = new BasicLabel("Escoge uno:");
         ImagePanel mriBoard = new ImagePanel("mriBoard.jpg", 30, 50, new Dimension(310, 210));
         ImagePanel runBoard = new ImagePanel("runBoard.jpg", 180, 50, new Dimension(310, 210));
-        music = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3");
-        music.start();
         titleLabel.setup(30, 0);
         backButton.setup(105, 165, 100, 30, Color.BLACK);
 
@@ -53,26 +49,24 @@ public class ChooseModGameView extends View {
                 if (checkSquareLimits(e.getX(), 30, 130, e.getY())) {
                     setNextView(GameSetupView.getInstance(GameModes.MRI));
                     goNext();
-                    music.stop();
-                    music1 = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundMRI.mp3");
-                    music1.start();
+                    music.suspend();
+                    GameSetupView.getInstance(GameModes.MRI).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundMRI.mp3"));
+                    GameSetupView.getInstance(GameModes.MRI).getMusic().start();
                 }
                 if (checkSquareLimits(e.getX(), 180, 280, e.getY())) {
                     setNextView(GameSetupView.getInstance(GameModes.RUN));
                     goNext();
-                    music.stop();
-                    music2 = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundRun.mp3");
-                    music2.start();
+                    music.suspend();
+                    GameSetupView.getInstance(GameModes.RUN).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundRun.mp3"));
+                    GameSetupView.getInstance(GameModes.RUN).getMusic().start();
                 }
             }
         });
         
         backButton.onClick(e -> {
             this.setPrevView(ChooseModeView.getInstance());
+            music.suspend();
             this.goBack();
-            music.stop();
-            music1.stop();
-            music2.stop();
         });
     }
 
@@ -82,5 +76,13 @@ public class ChooseModGameView extends View {
         }
 
         return chooseModGameView;
+    }
+    
+    public MusicBackground getMusic(){
+        return music;
+    }
+    
+    public void setMusic(MusicBackground music){
+        this.music = music;
     }
 }

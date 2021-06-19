@@ -132,5 +132,14 @@ public class BuildPlayers {
 
         return null;
     }
-    
+
+    public Player getPlayer (Color color) {
+        for(Player player : players) {
+            if (player.getColor() == color) {
+                return player;
+            }
+        }
+
+        return null;
+    }
 }

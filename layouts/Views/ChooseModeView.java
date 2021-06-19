@@ -15,7 +15,7 @@ public class ChooseModeView extends View{
     private final BasicButton modifiedModeButton = new BasicButton("Juego Mod");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
 
-    private ChooseModeView() {
+    public ChooseModeView() {
         ImagePanel background = new ImagePanel("7299.jpg");
 
         BasicLabel title = new BasicLabel("Escoger modo de juego:");

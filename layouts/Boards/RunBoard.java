@@ -449,7 +449,7 @@ public class RunBoard implements Board {
      */
     private void drawText(Graphics2D graphics) {
     	graphics.setFont(new Font("serif", Font.BOLD, 40));
-        int pos = 0;
+
         HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
         map.put(Color.RED, false);
         map.put(Color.BLUE, false);
@@ -461,19 +461,16 @@ public class RunBoard implements Board {
             }
         }
         if(map.get(Color.RED)){
-            graphics.drawString(bd.players[pos].getName(), 500, 650);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.RED).getName(), 500, 650);
         }
         if(map.get(Color.BLUE)){
-            graphics.drawString(bd.players[pos].getName(), 90, 40);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.BLUE).getName(), 90, 40);
         }
         if(map.get(Color.YELLOW)){
-            graphics.drawString(bd.players[pos].getName(), 90, 650);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.YELLOW).getName(), 90, 650);
         }
         if(map.get(Color.GREEN)){
-            graphics.drawString(bd.players[pos].getName(), 500, 40);
+            graphics.drawString(bd.getPlayer(Color.GREEN).getName(), 500, 40);
         }
         graphics.setFont(new Font("serif", Font.BOLD, 30));
         graphics.drawString("Instrucciones:", 750,300);

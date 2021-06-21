@@ -5,7 +5,6 @@ import components.BasicLabel;
 import components.utils.enums.ButtonTypes;
 import utilities.GameModes;
 import components.ImagePanel;
-import components.MusicBackground;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,8 +28,7 @@ public class ChooseModeView extends View{
         this.add(classicModeButton);
         this.add(modifiedModeButton);
         this.add(backButton);
-        this.setup(background, new Dimension(220, 200));
-
+        this.setup(background, new Dimension(220, 200), null);
         this.setActions();
         this.repaint();
     }
@@ -39,20 +37,14 @@ public class ChooseModeView extends View{
         classicModeButton.onClick(e -> {
             this.setNextView(GameSetupView.getInstance(GameModes.CLASSIC));
             this.goNext();
-            GameSetupView.getInstance(GameModes.CLASSIC).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
-            GameSetupView.getInstance(GameModes.CLASSIC).getMusic().start();
         });
         modifiedModeButton.onClick(e -> {
             this.setNextView(ChooseModGameView.getInstance());
-            ChooseModGameView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
-            ChooseModGameView.getInstance().getMusic().start();
             this.goNext();
             
         });
         backButton.onClick(e -> {
             this.setPrevView(MainView.getInstance());
-            MainView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundInitGame.mp3"));
-            MainView.getInstance().getMusic().start();
             this.goBack();
         });
     }

@@ -29,7 +29,7 @@ public class ChooseModGameView extends View {
         this.add(backButton);
         this.add(runBoard);
         this.add(mriBoard);
-        this.setup(background, new Dimension(310, 210));
+        this.setup(background, new Dimension(310, 210), null);
         runBoard.setOpaque(false);
         mriBoard.setOpaque(false);
 
@@ -49,23 +49,16 @@ public class ChooseModGameView extends View {
                 if (checkSquareLimits(e.getX(), 30, 130, e.getY())) {
                     setNextView(GameSetupView.getInstance(GameModes.MRI));
                     goNext();
-                    music.suspend();
-                    GameSetupView.getInstance(GameModes.MRI).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundMRI.mp3"));
-                    GameSetupView.getInstance(GameModes.MRI).getMusic().start();
                 }
                 if (checkSquareLimits(e.getX(), 180, 280, e.getY())) {
                     setNextView(GameSetupView.getInstance(GameModes.RUN));
                     goNext();
-                    music.suspend();
-                    GameSetupView.getInstance(GameModes.RUN).setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundRun.mp3"));
-                    GameSetupView.getInstance(GameModes.RUN).getMusic().start();
                 }
             }
         });
         
         backButton.onClick(e -> {
             this.setPrevView(ChooseModeView.getInstance());
-            music.suspend();
             this.goBack();
         });
     }

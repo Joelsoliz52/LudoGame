@@ -3,7 +3,9 @@ package layouts.Views;
 import components.BasicButton;
 import components.MusicBackgroundV2;
 import components.utils.enums.ButtonTypes;
+import core.BoardFactory;
 import core.GameMoves;
+import interfaces.GameCallback;
 import interfaces.GameLogic;
 import utilities.Constants;
 import utilities.GameModes;
@@ -12,21 +14,28 @@ import utilities.Helper;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.HashMap;
 
 public class GameView extends View {
     private static GameView gameView;
-    private final GameMoves gm;
+    private GameMoves gm;
     private final BasicButton menuButton = new BasicButton("MENU", ButtonTypes.INVERTED);
+    private final GameModes gameMode;
+    private final HashMap<Color, String> players;
 
-    private GameView(GameLogic<Integer> logic, Dimension size, GameModes gameMode) {
+    private GameView(GameModes gameMode, HashMap<Color, String> players) {
         MusicBackgroundV2 musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
-        init();
-        gm = new GameMoves(logic, size);
+        this.gameMode = gameMode;
+        this.players = players;
+
+        this.init();
+        this.initializeGameMoves();
+
         this.setupMenuButton(gameMode);
         this.add(menuButton);
         this.add(gm);
         gm.setOpaque(false);
-        this.setup(null, size, musicBackground);
+        this.setup(null, this.getSizeByMode(), musicBackground);
         this.setActions();
         this.repaint();
     }
@@ -35,6 +44,12 @@ public class GameView extends View {
         this.setTitle(Constants.TitleGame);
         this.setUndecorated(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void initializeGameMoves() {
+        GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.players).getBoard();
+        logic.setGameCallback(this::initializeGameMoves);
+        gm = new GameMoves(logic, this.getSizeByMode());
     }
 
     private void setupMenuButton(GameModes gameMode) {
@@ -62,16 +77,8 @@ public class GameView extends View {
         });
     }
 
-    public static GameView getInstance(GameLogic<Integer> logic, GameModes gameMode) {
-        if (gameView == null) {
-            gameView = new GameView(logic, GameView.getSizeByMode(gameMode), gameMode);
-        }
-
-        return gameView;
-    }
-
-    public static Dimension getSizeByMode(GameModes gameMode) {
-        switch (gameMode) {
+    private Dimension getSizeByMode() {
+        switch (this.gameMode) {
             case CLASSIC:
                 return new Dimension(1150, 700);
             case MRI:
@@ -79,5 +86,13 @@ public class GameView extends View {
             default:
                 return new Dimension(1200, 700);
         }
+    }
+
+    public static GameView getInstance(GameModes gameMode, HashMap<Color, String> playersColors) {
+        if (gameView == null) {
+            gameView = new GameView(gameMode, playersColors);
+        }
+
+        return gameView;
     }
 }

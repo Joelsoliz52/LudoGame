@@ -8,6 +8,7 @@ import entities.Player;
 import entities.Position;
 import interfaces.Board;
 import interfaces.Comodin;
+import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.RunBoard;
 import utilities.ListaSEC;
@@ -32,6 +33,7 @@ public class RunLogic implements GameLogic<Integer>{
     private ListaSEC<Position> positions;
     public Pawn currentPawn;
     public boolean newPositionPawn;
+    private GameCallback callback;
     public RunLogic(Board board){
         if (board == null) {
             this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
@@ -262,11 +264,15 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 600, 150);
             graphics.drawString("Felicidades.", 600, 200);
-            currentPlayer = 1;
-            board = new RunBoard(new Position(80, 50), new Color[tam]);
-            players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
-            dice.content = 0;
-            flag = 0;
+
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (this.callback != null)
+                this.callback.onRestart();
         } else if(dice.content != 0){
             if(pos == tam){
                 pos = 0;
@@ -328,6 +334,10 @@ public class RunLogic implements GameLogic<Integer>{
             player.setFlagBonus(0);
             player.setFlagTraps(0);
         }
+    }
+
+    public void setGameCallback(GameCallback callback) {
+        this.callback = callback;
     }
 
     /**

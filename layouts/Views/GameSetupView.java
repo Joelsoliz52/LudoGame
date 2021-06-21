@@ -166,8 +166,7 @@ public class GameSetupView extends View {
             gameSetupView = null;
         });
         startButton.onClick(e -> {
-            GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.playersColors).getBoard();
-            this.setNextView(GameView.getInstance(logic, this.gameMode));
+            this.setNextView(GameView.getInstance(this.gameMode, this.playersColors));
             this.goNext();
             gameSetupView.dispose();
             gameSetupView = null;

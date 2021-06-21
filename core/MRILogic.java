@@ -9,6 +9,7 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Board;
+import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.MRIBoard;
 
@@ -28,6 +29,8 @@ public class MRILogic implements GameLogic<Integer> {
     private int kill;
     public int tam;
     private int pos;
+    private GameCallback callback;
+
     /**
      * MRILogic constructor.
      */
@@ -277,11 +280,15 @@ public class MRILogic implements GameLogic<Integer> {
             graphics.drawString("Ganaste " + players.players[pos].getName()  + ".", 690, 100);
             graphics.drawString( "Felicitaciones, ", 690, 150);
             graphics.drawString( "Eres el jefe.", 690, 200);
-            currentPlayer = 1;
-            board = new MRIBoard(new Position(80, 50), new Color[tam]);
-            players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
-            dice.content = 0;
-            flag = 0;
+
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (this.callback != null)
+                this.callback.onRestart();
         } else if (dice.content != 0) {
             if(pos == tam){
                 pos = 0;
@@ -304,6 +311,10 @@ public class MRILogic implements GameLogic<Integer> {
         }
 
         kill = 0;
+    }
+
+    public void setGameCallback(GameCallback callback) {
+        this.callback = callback;
     }
 
     @Override

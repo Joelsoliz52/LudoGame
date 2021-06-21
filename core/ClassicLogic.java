@@ -8,6 +8,7 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Board;
+import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.ClassicBoard;
 /**
@@ -26,6 +27,8 @@ public class ClassicLogic implements GameLogic<Integer> {
     private int kill;
     private int pos;
     public int tam;
+    private GameCallback callback;
+
     /**
      * ClassicLogic constructor.
      */
@@ -213,12 +216,15 @@ public class ClassicLogic implements GameLogic<Integer> {
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString("Ganaste " + player.getName() + ".", 600, 150);
             graphics.drawString("Felicitaciones.", 600, 200);
-            currentPlayer = 1;
-            board = new ClassicBoard(new Position(80, 50), new Color[tam]);
-            players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
-            dice.content = 0;
-            flag = 0;
-            kill = 0;
+
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (this.callback != null)
+                this.callback.onRestart();
         } else if(dice.content != 0) {
             if(pos == tam){
                 pos = 0;
@@ -239,7 +245,11 @@ public class ClassicLogic implements GameLogic<Integer> {
         }
         kill=0;
     }
-    
+
+    public void setGameCallback(GameCallback callback) {
+        this.callback = callback;
+    }
+
     public BuildPlayers getBuildPlayers(){
         return players;
     }

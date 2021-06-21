@@ -1,14 +1,11 @@
 package layouts.Views;
 
-import components.BasicButton;
-import components.BasicLabel;
-import components.TextInput;
+import components.*;
 import components.utils.enums.ButtonTypes;
 import core.BoardFactory;
 import interfaces.GameLogic;
 import utilities.GameModes;
 import utilities.Helper;
-import components.ImagePanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -50,13 +47,14 @@ public class GameSetupView extends View {
     private GameSetupView(GameModes gameMode) {
         this.gameMode = gameMode;
         ImagePanel background = new ImagePanel("CreationBoards.jpg");
+        MusicBackgroundV2 musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
 
         playerNameInput.setup(30, 155, 170, 30);
         this.add(playerNameInput);
 
         this.setupButtons();
         this.setupLabels();
-        this.setup(background, new Dimension(400, 480), null);
+        this.setup(background, new Dimension(400, 480), musicBackground);
 
         this.setActions();
         this.repaint();

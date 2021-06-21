@@ -51,7 +51,7 @@ public class View extends JFrame {
             this.music.stopMusic();
 
         nextView.setVisible(true);
-        if (this.prevView.music != null)
+        if (this.nextView.music != null)
             this.nextView.music.playMusic();
     }
 }

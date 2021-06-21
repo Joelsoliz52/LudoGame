@@ -20,9 +20,9 @@ public class MusicPlayer {
     public void pause() throws MusicPlayerException {
         if (this.player != null) {
             try {
+                this.isPlayInLoop = false;
                 this.pauseLocation = this.FIS.available();
                 this.player.close();
-                this.isPlayInLoop = false;
             } catch (Exception exception) {
                 String message = getExceptionMessage(MusicPlayerActions.PAUSE);
                 throw new MusicPlayerException(message, this.fileLocation, exception);
@@ -46,7 +46,10 @@ public class MusicPlayer {
         new Thread(() -> {
             try {
                 this.player.play();
-            } catch (JavaLayerException exception) {
+
+                if(this.isPlayInLoop)
+                    this.play(this.fileLocation);
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }).start();
@@ -54,10 +57,7 @@ public class MusicPlayer {
 
     public void playInLoop(String path) throws MusicPlayerException {
         this.isPlayInLoop = true;
-
-        while (this.isPlayInLoop) {
-            this.play(path);
-        }
+        this.play(path);
     }
 
     public void resume() throws MusicPlayerException {
@@ -84,11 +84,11 @@ public class MusicPlayer {
     public void stop() throws MusicPlayerException {
         if (this.player != null) {
             try {
+                this.isPlayInLoop = false;
                 this.player.close();
 
                 this.pauseLocation = 0;
                 this.songTotalLength = 0;
-                this.isPlayInLoop = false;
             } catch (Exception exception) {
                 String message = getExceptionMessage(MusicPlayerActions.STOP);
                 throw new MusicPlayerException(message, this.fileLocation, exception);

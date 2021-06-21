@@ -1,11 +1,13 @@
 package layouts.Views;
 
 import components.BasicButton;
+import components.MusicBackgroundV2;
 import components.utils.enums.ButtonTypes;
 import core.GameMoves;
 import interfaces.GameLogic;
 import utilities.Constants;
 import utilities.GameModes;
+import utilities.Helper;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -14,16 +16,17 @@ import java.awt.Dimension;
 public class GameView extends View {
     private static GameView gameView;
     private final GameMoves gm;
-    private BasicButton menuButton = new BasicButton("MENU", ButtonTypes.INVERTED);
+    private final BasicButton menuButton = new BasicButton("MENU", ButtonTypes.INVERTED);
 
     private GameView(GameLogic<Integer> logic, Dimension size, GameModes gameMode) {
+        MusicBackgroundV2 musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
         init();
         gm = new GameMoves(logic, size);
         this.setupMenuButton(gameMode);
         this.add(menuButton);
         this.add(gm);
         gm.setOpaque(false);
-        this.setup(null, size, null);
+        this.setup(null, size, musicBackground);
         this.setActions();
         this.repaint();
     }

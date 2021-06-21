@@ -59,4 +59,17 @@ public class Helper {
     public static boolean checkIfLimitsContainsNumber(int number, int min, int max) {
         return min <= number && number <= max;
     }
+
+    public static String getFileMusic(GameModes gameMode) {
+        switch (gameMode) {
+            case CLASSIC:
+                return "soundClassic.mp3";
+            case MRI:
+                return "soundMRI.mp3";
+            case RUN:
+                return "soundRun.mp3";
+            default:
+                return "";
+        }
+    }
 }

@@ -257,7 +257,6 @@ public class ClassicBoard implements Board {
     private void drawText(Graphics2D graphics) {
         
         graphics.setFont(new Font("serif", Font.BOLD, 40));
-        int pos = 0;
         HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
         map.put(Color.RED, false);
         map.put(Color.BLUE, false);
@@ -268,20 +267,18 @@ public class ClassicBoard implements Board {
                 map.replace(player.getColor(), true);
             }
         }
+
         if(map.get(Color.RED)){
-            graphics.drawString(bd.players[pos].getName(), 370, 540);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.RED).getName(), 370, 540);
         }
         if(map.get(Color.BLUE)){
-            graphics.drawString(bd.players[pos].getName(), 90, 35);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.BLUE).getName(), 90, 35);
         }
         if(map.get(Color.YELLOW)){
-            graphics.drawString(bd.players[pos].getName(), 90, 540);
-            pos++;
+            graphics.drawString(bd.getPlayer(Color.YELLOW).getName(), 90, 540);
         }
         if(map.get(Color.GREEN)){
-            graphics.drawString(bd.players[pos].getName(), 370, 35);
+            graphics.drawString(bd.getPlayer(Color.GREEN).getName(), 370, 35);
         }
         graphics.drawString("Instrucciones:", 600,300);
         graphics.drawString("1.Presionar enter para lanzar", 550,350);
@@ -348,7 +345,7 @@ public class ClassicBoard implements Board {
      * Returns pawns path of the Classic Game.
      * @return Pawns path.
      */
-    public Path getPath() { return new ClassicPath(tam, colores); }
+    public Path getPath() { return new ClassicPath(colores.length, colores); }
 
     /**
      * Returns width of the boxes.

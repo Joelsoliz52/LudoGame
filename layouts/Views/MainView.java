@@ -38,7 +38,7 @@ public class MainView extends View {
         exitButton.onClick(e -> System.exit(0));
     }
 
-    public static MainView getInstance(){
+    public static MainView getInstance() {
         if (mainView == null) {
             mainView = new MainView();
         }

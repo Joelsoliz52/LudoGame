@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class Helper {
     private final static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final static ArrayList<String> imageExtensions = new ArrayList<>(Arrays.asList("jpg", "jpeg", "png"));
+    private final static ArrayList<String> musicExtensions = new ArrayList<>(Arrays.asList("mp3", "m4a"));
     private final static String gifExtension = "gif";
 
     public static int randomNumber(int maxNumber) {
@@ -43,6 +44,10 @@ public class Helper {
 
             if (fileExtension.equals(gifExtension)) {
                 return "/resources/gifs/";
+            }
+
+            if (musicExtensions.contains(fileExtension)) {
+                return "/resources/musicas/";
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             return "./";

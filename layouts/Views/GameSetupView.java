@@ -9,15 +9,11 @@ import interfaces.GameLogic;
 import utilities.GameModes;
 import utilities.Helper;
 import components.ImagePanel;
-import components.MusicBackground;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.HashMap;
 
 public class GameSetupView extends View {
@@ -51,22 +47,16 @@ public class GameSetupView extends View {
 
     // TextField
     private final TextInput playerNameInput = new TextInput();
-    
-    // MusicBackground
-    private MusicBackground music;
-    
     private GameSetupView(GameModes gameMode) {
         this.gameMode = gameMode;
         ImagePanel background = new ImagePanel("CreationBoards.jpg");
 
         playerNameInput.setup(30, 155, 170, 30);
-        music = new MusicBackground("");
-        
         this.add(playerNameInput);
 
         this.setupButtons();
         this.setupLabels();
-        this.setup(background, new Dimension(400, 480));
+        this.setup(background, new Dimension(400, 480), null);
 
         this.setActions();
         this.repaint();
@@ -173,10 +163,7 @@ public class GameSetupView extends View {
         resetPlayersNumberButton.onClick(e -> reset());
         backButton.onClick(e -> {
             this.setPrevView(gameMode == GameModes.CLASSIC ? ChooseModeView.getInstance() : ChooseModGameView.getInstance());
-            ChooseModGameView.getInstance().setMusic(new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundClassic.mp3"));
-            ChooseModGameView.getInstance().getMusic().start();
             this.goBack();
-            music.suspend();
             gameSetupView.dispose();
             gameSetupView = null;
         });
@@ -184,6 +171,8 @@ public class GameSetupView extends View {
             GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.playersColors).getBoard();
             this.setNextView(GameView.getInstance(logic, this.gameMode));
             this.goNext();
+            gameSetupView.dispose();
+            gameSetupView = null;
         });
     }
 
@@ -261,13 +250,5 @@ public class GameSetupView extends View {
         }
 
         return gameSetupView;
-    }
-    
-    public void setMusic(MusicBackground music){
-        this.music = music;
-    }
-
-    public MusicBackground getMusic(){
-        return music;
     }
 }

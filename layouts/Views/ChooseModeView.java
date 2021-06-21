@@ -41,7 +41,6 @@ public class ChooseModeView extends View{
         modifiedModeButton.onClick(e -> {
             this.setNextView(ChooseModGameView.getInstance());
             this.goNext();
-            
         });
         backButton.onClick(e -> {
             this.setPrevView(MainView.getInstance());
@@ -56,5 +55,4 @@ public class ChooseModeView extends View{
 
         return chooseModeView;
     }
-    
 }

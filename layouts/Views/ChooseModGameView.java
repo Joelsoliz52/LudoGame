@@ -3,7 +3,6 @@ package layouts.Views;
 import components.BasicButton;
 import components.BasicLabel;
 import components.ImagePanel;
-import components.MusicBackground;
 import components.utils.enums.ButtonTypes;
 import utilities.GameModes;
 import utilities.Helper;
@@ -17,7 +16,7 @@ public class ChooseModGameView extends View {
     private static ChooseModGameView chooseModGameView;
     private final ImagePanel background = new ImagePanel("7299.jpg");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
-    private MusicBackground music = new MusicBackground("");
+
     private ChooseModGameView() {
         BasicLabel titleLabel = new BasicLabel("Escoge uno:");
         ImagePanel mriBoard = new ImagePanel("mriBoard.jpg", 30, 50, new Dimension(310, 210));
@@ -69,13 +68,5 @@ public class ChooseModGameView extends View {
         }
 
         return chooseModGameView;
-    }
-    
-    public MusicBackground getMusic(){
-        return music;
-    }
-    
-    public void setMusic(MusicBackground music){
-        this.music = music;
     }
 }

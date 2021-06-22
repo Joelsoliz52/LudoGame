@@ -265,14 +265,10 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 600, 150);
             graphics.drawString("Felicidades.", 600, 200);
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             if (this.callback != null)
                 this.callback.onRestart();
+
+            return;
         } else if(dice.content != 0){
             if(pos == tam){
                 pos = 0;

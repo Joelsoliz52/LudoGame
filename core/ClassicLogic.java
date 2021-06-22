@@ -11,6 +11,10 @@ import interfaces.Board;
 import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.ClassicBoard;
+import layouts.Views.GameView;
+
+import javax.swing.*;
+
 /**
  * Logic of the Classic Game.
  *
@@ -217,14 +221,10 @@ public class ClassicLogic implements GameLogic<Integer> {
             graphics.drawString("Ganaste " + player.getName() + ".", 600, 150);
             graphics.drawString("Felicitaciones.", 600, 200);
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             if (this.callback != null)
                 this.callback.onRestart();
+
+            return;
         } else if(dice.content != 0) {
             if(pos == tam){
                 pos = 0;
@@ -244,6 +244,10 @@ public class ClassicLogic implements GameLogic<Integer> {
             pos++;
         }
         kill=0;
+    }
+
+    private void showMessage(String title, String message) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void setGameCallback(GameCallback callback) {

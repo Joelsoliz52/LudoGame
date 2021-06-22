@@ -20,6 +20,7 @@ public class GameView extends View {
     private static GameView gameView;
     private GameMoves gm;
     private final BasicButton menuButton = new BasicButton("MENU", ButtonTypes.INVERTED);
+    private final BasicButton restartButton = new BasicButton("Reiniciar", ButtonTypes.INVERTED);
     private final GameModes gameMode;
     private final HashMap<Color, String> players;
 
@@ -29,12 +30,12 @@ public class GameView extends View {
         this.players = players;
 
         this.init();
-        this.initializeGameMoves();
+        this.setupButtons(gameMode);
+        this.add(this.menuButton);
+        this.add(this.restartButton);
 
-        this.setupMenuButton(gameMode);
-        this.add(menuButton);
-        this.add(gm);
-        gm.setOpaque(false);
+        this.restartButton.setVisible(false);
+        this.initializeGameMoves();
         this.setup(null, this.getSizeByMode(), musicBackground);
         this.setActions();
         this.repaint();
@@ -48,19 +49,31 @@ public class GameView extends View {
 
     private void initializeGameMoves() {
         GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.players).getBoard();
-        logic.setGameCallback(this::initializeGameMoves);
+        logic.setGameCallback(() -> this.restartButton.setVisible(true));
         gm = new GameMoves(logic, this.getSizeByMode());
+        add(gm);
+        gm.setOpaque(false);
     }
 
-    private void setupMenuButton(GameModes gameMode) {
+    private void onRestart() {
+        gm.setVisible(false);
+        remove(gm);
+        initializeGameMoves();
+        this.restartButton.setVisible(false);
+        repaint();
+    }
+
+    private void setupButtons(GameModes gameMode) {
         switch (gameMode) {
             case CLASSIC:
                 menuButton.setup(960,580, 100, 30, Color.BLACK);
+                restartButton.setup(800, 580, 150, 30, Color.BLACK);
                 break;
             case MRI:
             case RUN:
             default:
                 menuButton.setup(1045,600, 100, 30, Color.BLACK);
+                restartButton.setup(875, 580, 150, 30, Color.BLACK);
                 break;
         }
     }
@@ -75,6 +88,7 @@ public class GameView extends View {
             gameView.dispose();
             gameView = null;
         });
+        this.restartButton.onClick(e -> this.onRestart());
     }
 
     private Dimension getSizeByMode() {

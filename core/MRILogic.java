@@ -281,14 +281,10 @@ public class MRILogic implements GameLogic<Integer> {
             graphics.drawString( "Felicitaciones, ", 690, 150);
             graphics.drawString( "Eres el jefe.", 690, 200);
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             if (this.callback != null)
                 this.callback.onRestart();
+
+            return;
         } else if (dice.content != 0) {
             if(pos == tam){
                 pos = 0;

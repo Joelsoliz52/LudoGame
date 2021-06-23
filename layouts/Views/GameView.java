@@ -48,9 +48,8 @@ public class GameView extends View {
     }
 
     private void initializeGameMoves() {
-        GameLogic<Integer> logic = new BoardFactory(this.gameMode, this.players).getBoard();
-        logic.setGameCallback(() -> this.restartButton.setVisible(true));
-        this.gm = new GameMoves(logic, this.getSizeByMode());
+        this.gm = new GameMoves(this.gameMode, this.players, this.getSizeByMode());
+        this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
         add(this.gm);
         this.gm.setOpaque(false);
         this.gm.setFocusable(true);
@@ -59,9 +58,7 @@ public class GameView extends View {
     }
 
     private void onRestart() {
-        gm.setVisible(false);
-        remove(gm);
-        initializeGameMoves();
+        this.gm.initializeGame();
         this.restartButton.setVisible(false);
         repaint();
     }

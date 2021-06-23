@@ -6,11 +6,11 @@ package core;
 
 import javax.swing.JPanel;
 
+import interfaces.GameCallback;
 import interfaces.GameLogic;
+import utilities.GameModes;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,17 +31,33 @@ import javax.swing.JOptionPane;
 public class GameMoves extends JPanel implements KeyListener, ActionListener, MouseListener {
     // Fields of the class.
     private static final long serialVersionUID = 1L;
-    private final GameLogic<Integer> logic;
+    private GameLogic<Integer> logic;
+    private GameModes gameMode;
+    private HashMap<Color, String> players;
+    private GameCallback callback;
 
     public GameMoves(GameLogic<Integer> logic) {
-        this(logic, new Dimension(1200, 700));
+        init(new Dimension(1200, 700));
+        this.logic = logic;
+    }
+
+    public GameMoves(GameModes gameMode, HashMap<Color, String> players) {
+        this(gameMode, players, new Dimension(1200, 700));
     }
 
     /**
      * GameMoves constructor.
-     * @param logic Logic of the game.
+     * @param gameMode Logic of the game.
      */
-    public GameMoves(GameLogic<Integer> logic, Dimension size) {
+    public GameMoves(GameModes gameMode, HashMap<Color, String> players, Dimension size) {
+        this.gameMode  = gameMode;
+        this.players = players;
+        this.initializeGame();
+
+        this.init(size);
+    }
+
+    private void init(Dimension size) {
         setFocusTraversalKeysEnabled(false);
         requestFocus();
         setPreferredSize(size);
@@ -48,8 +65,6 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
         setMaximumSize(size);
         setSize(size);
         setLayout(null);
-
-        this.logic = logic;
     }
 
     /**
@@ -94,6 +109,19 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     @Override
     public void paint(Graphics graphics) {
         logic.paint((Graphics2D) graphics);
+    }
+
+    public void setGameCallback(GameCallback callback) {
+        this.callback = callback;
+    }
+
+    public void onRestart() {
+        this.callback.onRestart();
+    }
+
+    public void initializeGame() {
+        this.logic = new BoardFactory(this.gameMode, this.players).getBoard();;
+        this.logic.setGameCallback(this::onRestart);
     }
 
     // Auto-generated method

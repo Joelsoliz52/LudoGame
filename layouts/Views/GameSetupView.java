@@ -174,8 +174,9 @@ public class GameSetupView extends View {
     }
 
     private void onAddPlayerName() {
-        if (playersNames != null && current < playersNames.length) {
-            playersNames[current] = playerNameInput.cleanInput();
+        String playerName = playerNameInput.cleanInput();
+        if (playersNames != null && current < playersNames.length && !playerName.equals("")) {
+            playersNames[current] = playerName;
             current++;
 
             if (current == playersNames.length) {

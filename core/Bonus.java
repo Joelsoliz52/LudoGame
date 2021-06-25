@@ -16,20 +16,16 @@ public class Bonus implements Comodin{
         Player player = returnPlayer1(players, pawn);
         if(trustPositionPawn(player, x, y)){
             if(al == 1){
-                System.out.println("escudo");
                 bonusShield(pawn);
                 player.setFlagBonus(1);
             }else{
                 if(al == 2){
-                    System.out.println("salto");
                     bonusJumperTime(pawn, player);
                     player.setFlagBonus(2);
                 }else{
                     if(al == 3){
-                        System.out.println("doble dado");
                         bonusNewThrowDice(player);
                     }else{
-                        System.out.println("avanzaste");
                         bonusSpeed(logic.getDice(), pawn, player);
                         player.setFlagBonus(4);
                     }

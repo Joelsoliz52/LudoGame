@@ -274,7 +274,7 @@ public class MRILogic implements GameLogic<Integer> {
 
         if (player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(680, 100, 380, 130);
+            graphics.fillRect(680, 60, 380, 150);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString("Ganaste " + players.players[pos].getName()  + ".", 690, 100);

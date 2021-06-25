@@ -23,17 +23,17 @@ public class Traps implements Comodin{
         Position pos3 = new Position(8, 18);
         Position pos4 = new Position(18, 8);
         int al = aleatori();
-        Player player = returnPlayer(players, x, y);
+        Player player = returnPlayer(players, pawnA);
         if(!pos.equals(pos1) && !pos.equals(pos2) && !pos.equals(pos3) && !pos.equals(pos4)){
             pos.setFlagTraps(true);
         }
-        if(trustPositionPawn(player, x, y) && (!pos.getFlagTraps())){
+        if(trustPositionPawn2(pawnA, players) && (!pos.getFlagTraps())){
             if (al ==1){
                 JOptionPane.showMessageDialog(null, "escoge una casilla");
                 logic.setdoubleClicked(true);
             }else{
                 if(al == 2){
-                    putTrapLoseTurn(players, x, y);
+                    putTrapLoseTurn(player);
                 }else if(al == 3){
                     JOptionPane.showMessageDialog(null, "escoge una ficha");
                     logic.setnewPositionPawn(true);
@@ -43,21 +43,20 @@ public class Traps implements Comodin{
         }else if(logic.getnewPositionPawn()){
             logic.setnewPositionPawn(false);
             newPositionPawn(pawnA, x, y, players);
-        }else if(pos.getFlagTraps() && !pawnA.getFlag()){
+        }else if(pos.getFlagTraps() && !pawnA.getFlag()&& player!=null){
             int al2 = (int)(Math.random()*4)+1;
             if(al2 == 1){
                 putTrapReturnInit(pawnA);
                 player.setFlagTraps(3);
             }else{
                 if(al2 == 2){
-                    putTrapRecoil(player, x, y, logic.getDice());
+                    putTrapRecoil(logic.getDice(), pawnA);
                     player.setFlagTraps(4);
                 }else if(al2 == 3){
                     putTrapFreezePawn(pawnA);
                     player.setFlagTraps(5);
                 }else{
-                    Pawn pawn = returnPawn(player, pos);
-                    putTrapMine(players, pawn);
+                    putTrapMine(players, pawnA);
                     player.setFlagTraps(6);
                 }
             }
@@ -73,7 +72,6 @@ public class Traps implements Comodin{
 
     /**
      * Metodo trampa para volver al inicio
-     * @param pawn
      */
     public void putTrapReturnInit(Pawn pawn){
         pawn.setCurrent(-1);
@@ -81,30 +79,23 @@ public class Traps implements Comodin{
 
     /**
      * Metodo para colocar una trampa de retroceso
-     * @param player, x, y, dice
      */
-    public void putTrapRecoil(Player player, int x, int y, Dice<Integer> dice){
+    public void putTrapRecoil(Dice<Integer> dice, Pawn pawn){
         dice.throwDice();
         int pos = dice.content;
-        Position current = new Position(x, y);
-        if(trustPositionPawn(player, x, y)){
-            Pawn pawn = returnPawn(player, current);
-            pawn.setCurrent(pawn.getCurrent() - pos);
-        }
+        pawn.setCurrent(pawn.getCurrent() - pos);
     }
 
     /**
      * Metodo para colocar una trampa de perdida de turno
-     * @param players, x, y
+     * @param player
      */
-    public void putTrapLoseTurn(Player[] players, int x, int y){
-        Player player = returnPlayer(players, x, y);
+    public void putTrapLoseTurn(Player player){
         player.setFlagTraps(1);
     }
 
     /**
      * Metodo para colocar una trampa de congelar una ficha
-     * @param pawn
      */
     public void putTrapFreezePawn(Pawn pawn){
         pawn.setFreezePawn(true);
@@ -116,31 +107,33 @@ public class Traps implements Comodin{
      */
     public void newPositionPawn(Pawn pawn1, int x, int y, Player[] players){
         Position pos1 = pawn1.getPosition();
-        Player player1 = returnPlayer(players, pawn1.getPosition().getX(), pawn1.getPosition().getY());
+        Player player1 = returnPlayer(players, pawn1);
         Position pos = new Position (x,y);
         Pawn pawn2 = returnPawn(players, pos);
         Player player2 = returnPlayer(players, x, y);
         Position pos2 = pawn2.getPosition();
 
         int a =0; int b=0;
-        while(a <84){
-            int A = pawn1.getPath().getAX()[player1.getTurn()-1][a];
-            int B = pawn1.getPath().getAY()[player1.getTurn()-1][a];
-            if(pos2.equals(new Position(A,B))){
-                break;
+        if(pawn2.getPath() != null){
+            while(a <84){
+                int A = pawn1.getPath().getAX()[player1.getTurn()-1][a];
+                int B = pawn1.getPath().getAY()[player1.getTurn()-1][a];
+                if(pos2.equals(new Position(A,B))){
+                    break;
+                }
+                a++;
             }
-            a++;
+            while(b<84){
+                int A = pawn2.getPath().getAX()[player2.getTurn()-1][b];
+                int B = pawn2.getPath().getAY()[player2.getTurn()-1][b];
+                if(pos1.equals(new Position(A,B))){
+                    break;
+                }
+                b++;
+                }
+            pawn1.setCurrent(a);
+            pawn2.setCurrent(b);
         }
-        while(b<84){
-            int A = pawn2.getPath().getAX()[player2.getTurn()-1][b];
-            int B = pawn2.getPath().getAY()[player2.getTurn()-1][b];
-            if(pos1.equals(new Position(A,B))){
-                break;
-            }
-            b++;
-        }
-        pawn1.setCurrent(a);
-        pawn2.setCurrent(b);
     }
 
     /***
@@ -188,11 +181,26 @@ public class Traps implements Comodin{
 
     /**
      * Metodo sobreescrito
-     * @param player, x, y
-     * @return verifica la posicion de una ficha cen choque con una trampa
+     * @param players, x, y
+     * @return verifica la posicion de una ficha
      */
+    public boolean trustPositionPawn2(Pawn pawn, Player[] players){
+        int i = 0;
+        while(i < players.length){
+            int pos = 0;
+            Pawn[] pawns = players[i].getPawns();
+            while(pos < pawns.length){
+                if(pawn.equals(players[i].getPawns()[pos])){
+                    return true;
+                }
+                pos++;
+            }
+            i++;
+        }
+        return false;
+    }
+    
     public boolean trustPositionPawn(Player player, int x, int y){
-        boolean test = false;
         int i = 0;
         Position pos = new Position(x, y);
         while(i < player.getPawns().length){
@@ -201,23 +209,7 @@ public class Traps implements Comodin{
             }
             i++;
         }
-        return test;
-    }
-
-    /**
-     * Metodo para verificar la posicion de una ficha
-     * @param player, pos
-     * @return retorna una ficha en una posicion que pueda haber o no una trampa
-     */
-    private Pawn returnPawn(Player player, Position pos){
-        int i = 0;
-        while(i < player.getPawns().length){
-            if(pos.equals(player.getPawns()[i].getPosition())){
-                return player.getPawns()[i];
-            }
-            i++;
-        }
-        return null;
+        return false;
     }
 
     /**
@@ -263,6 +255,27 @@ public class Traps implements Comodin{
             i++;
         }
         return player;
+    }
+    
+    /**
+     * Metodo para devolver un jugador mediante una posicion
+     * @param players, x, y
+     * @return Player
+     */
+    private Player returnPlayer(Player[] players, Pawn pawn){
+        int i = 0;
+        while(i < players.length){
+            int pos = 0;
+            Pawn[] pawns = players[i].getPawns();
+            while(pos < pawns.length){
+                if(pawn.equals(players[i].getPawns()[pos])){
+                    return players[i];
+                }
+                pos++;
+            }
+            i++;
+        }
+        return null;
     }
 
     /**

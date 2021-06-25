@@ -8,7 +8,6 @@ import entities.Player;
 import entities.Position;
 import interfaces.Board;
 import interfaces.Comodin;
-import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.RunBoard;
 import utilities.ListaSEC;
@@ -33,7 +32,6 @@ public class RunLogic implements GameLogic<Integer>{
     private ListaSEC<Position> positions;
     public Pawn currentPawn;
     public boolean newPositionPawn;
-    private GameCallback callback;
     public RunLogic(Board board){
         if (board == null) {
             this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
@@ -82,8 +80,8 @@ public class RunLogic implements GameLogic<Integer>{
                     flag = 1;
                     break;
                 }
-            }
-            else {
+            }else if(players.getPlayer(currentPlayer).getColor() == Color.GREEN ||
+                    players.getPlayer(currentPlayer).getColor() == Color.YELLOW){
                 if (current != -1 && current != 79 && (current + dice.content) < 80) {
                     flag = 1;
                     break;
@@ -153,9 +151,10 @@ public class RunLogic implements GameLogic<Integer>{
      * @param y Y position of the click.
      */
     public void doubleMouseClicked(int x, int y) {
-        if (!getnewPositionPawn()){
-            positionbox.add(new Position(x,y));}
-        else{
+        boolean confpos = confirmPosition (x, y, currentPawn);
+        if (!getnewPositionPawn() && confpos){
+            positionbox.add(new Position(x,y));
+        }else if (confpos){
             comodin = new Traps();
             chooseCasilla(comodin, x, y,currentPawn);
         }
@@ -209,12 +208,11 @@ public class RunLogic implements GameLogic<Integer>{
                 flag = 0;
                 break;
             }else if(player.getPawns()[i].getFreezePawn()){
-                if(player.getloseTurn() <= loseTurn){
+                if(player.getloseTurn() < 1){
                     player.setloseTurn(player.getloseTurn()+1);
                 }else{
                     player.getPawns()[i].setFreezePawn(false);
                     player.setloseTurn(0);
-                    loseTurn = (int)(Math.random()*3)+1;
                 }
             }
         }
@@ -259,16 +257,16 @@ public class RunLogic implements GameLogic<Integer>{
         Player player = players.getPlayer(currentPlayer);
         if(player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(590, 100, 380,130);
+            graphics.fillRect(680, 100, 380,130);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 600, 150);
-            graphics.drawString("Felicidades.", 600, 200);
-
-            if (this.callback != null)
-                this.callback.onRestart();
-
-            return;
+            graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 690, 150);
+            graphics.drawString("Felicidades.", 690, 200);
+            currentPlayer = 1;
+            board = new RunBoard(new Position(80, 50), new Color[tam]);
+            players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
+            dice.content = 0;
+            flag = 0;
         } else if(dice.content != 0){
             if(pos == tam){
                 pos = 0;
@@ -278,33 +276,29 @@ public class RunLogic implements GameLogic<Integer>{
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             if (player.getFlagTraps()==1){
-                graphics.drawString(players.players[pos].getName()+ " " +"perdiste turno", 690, 100);
-                currentPlayer = (currentPlayer + 1) % tam;
+                graphics.drawString(players.players[pos].getName()+ " " +"perdiste ", 690, 100);
+                graphics.drawString( "turno", 690, 150);
+                flag = 0;
                 if(player.getloseTurn() <= loseTurn){
                     player.setloseTurn(player.getloseTurn()+1);
                 }else{
                     player.setFlagTraps(0);
                     player.setloseTurn(0);
-                    loseTurn = (int)(Math.random()*3)+1;
                 }
-                //if(!ifExistAliance(aliance)) {
-                //	currentPlayer = currentPlayer+1;
-                //}
-                if(currentPlayer == 0){
-                    currentPlayer = tam;
-                }
-                pos++;
-
             }else if(player.getFlagTraps()==3) {
-                graphics.drawString(players.players[pos].getName()+ " " +"regresaste al inicio", 690, 100);
+                graphics.drawString(players.players[pos].getName()+ " " +"regresaste ", 690, 100);
+                graphics.drawString( "al inicio", 690, 150);
             }else if(player.getFlagTraps()==4) {
                 graphics.drawString(players.players[pos].getName()+ " " +"retrocediste", 690, 100);
             }else if(player.getFlagTraps()==5) {
-                graphics.drawString(players.players[pos].getName()+ " " +"ficha congelada", 690, 100);
+                graphics.drawString(players.players[pos].getName()+ " " +"ficha ", 690, 100);
+                graphics.drawString( "congelada", 690, 150);
             }else if(player.getFlagTraps()==6) {
-                graphics.drawString(players.players[pos].getName()+ " " +"caiste en una mina", 690, 100);
+                graphics.drawString(players.players[pos].getName()+ " " +"caiste ", 690, 100);
+                graphics.drawString( "en una mina", 690, 150);
             }else if(player.getFlagBonus()==1) {
-                graphics.drawString(players.players[pos].getName()+ " " +"ganaste un escudo", 690, 100);
+                graphics.drawString(players.players[pos].getName()+ " " +"ganaste ", 690, 100);
+                graphics.drawString( "un escudo", 690, 150);
             }else if(player.getFlagBonus()==2) {
                 graphics.drawString(players.players[pos].getName()+ " " +"salto", 690, 100);
                 graphics.drawString( "en el tiempo", 690, 150);
@@ -319,7 +313,7 @@ public class RunLogic implements GameLogic<Integer>{
             }
         }
 
-        if(flag == 0 && dice.content != 0  && dice.content != 6 && (player.getFlagTraps()!=1) && player.getFlagBonus()!=3) {
+        if(flag == 0 && dice.content != 0  && dice.content != 6 && player.getFlagBonus()!=3) {
             currentPlayer = (currentPlayer + 1) % tam;
 
             if(currentPlayer == 0){
@@ -330,10 +324,6 @@ public class RunLogic implements GameLogic<Integer>{
             player.setFlagBonus(0);
             player.setFlagTraps(0);
         }
-    }
-
-    public void setGameCallback(GameCallback callback) {
-        this.callback = callback;
     }
 
     /**
@@ -457,6 +447,25 @@ public class RunLogic implements GameLogic<Integer>{
             i++;
         }
         return pos;
+    }
+    
+    public boolean confirmPosition (int x, int y, Pawn pawn){
+        int a = 0;
+        Position pos = new Position(x, y);
+        Position pos1 = new Position(0, 9);
+        Position pos2 = new Position(9, 0);
+        Position pos3 = new Position(8, 18);
+        Position pos4 = new Position(18, 8);
+        if(!pos.equals(pos1) && !pos.equals(pos2) && !pos.equals(pos3) && !pos.equals(pos4)){
+            while(a < 76){
+            int A = pawn.getPath().getOptionalAX()[0][a];
+            int B = pawn.getPath().getOptionalAY()[0][a];
+            if(pos.equals(new Position(A,B))){
+                return true;
+            }
+            a++;
+        }}
+        return false;
     }
 
     /**

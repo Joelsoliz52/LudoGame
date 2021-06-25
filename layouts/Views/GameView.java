@@ -72,7 +72,7 @@ public class GameView extends View {
             case MRI:
             case RUN:
             default:
-                menuButton.setup(1045,600, 100, 30, Color.BLACK);
+                menuButton.setup(1045,580, 100, 30, Color.BLACK);
                 restartButton.setup(875, 580, 150, 30, Color.BLACK);
                 break;
         }

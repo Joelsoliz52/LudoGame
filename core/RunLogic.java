@@ -35,6 +35,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     public Pawn currentPawn;
     public boolean newPositionPawn;
     private GameCallback callback;
+    private boolean passTurnFlag = false;
 
     public RunLogic(Board board){
         if (board == null) {
@@ -145,6 +146,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
                         j++;
                     }
                 }
+                flag=0;
             }
         }
     }
@@ -209,7 +211,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
             if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1 && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
-                flag = 0;
+                //flag = 0;
                 break;
             }else if(player.getPawns()[i].getFreezePawn()){
                 if(player.getloseTurn() < 1){
@@ -317,17 +319,22 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             }
         }
 
-        if(flag == 0 && dice.content != 0  && dice.content != 6 && player.getFlagBonus()!=3) {
-            currentPlayer = (currentPlayer + 1) % tam;
+        if (passTurnFlag) {
+            if (flag == 0 && dice.content != 0 && dice.content != 6 && player.getFlagBonus() != 3) {
+                currentPlayer = (currentPlayer + 1) % tam;
 
-            if(currentPlayer == 0){
-                currentPlayer = tam;
+                if (currentPlayer == 0) {
+                    currentPlayer = tam;
+                }
+                pos++;
             }
-            pos++;}
-        if(player.getFlagBonus()!=0 || player.getFlagTraps()!=0 && player.getFlagTraps()!=1){
-            player.setFlagBonus(0);
-            player.setFlagTraps(0);
+            if (player.getFlagBonus() != 0 || player.getFlagTraps() != 0 && player.getFlagTraps() != 1) {
+                player.setFlagBonus(0);
+                player.setFlagTraps(0);
+            }
         }
+
+        passTurnFlag = false;
     }
 
     public void setGameCallback(GameCallback callback) {
@@ -336,7 +343,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     @Override
     public void passTurn() {
-
+        passTurnFlag = true;
     }
 
     /**

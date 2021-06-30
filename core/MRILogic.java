@@ -31,6 +31,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
     public int tam;
     private int pos;
     private GameCallback callback;
+    private boolean passTurnFlag = false;
 
     /**
      * MRILogic constructor.
@@ -298,16 +299,20 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             graphics.drawString( "dado es " + dice.content, 690, 150);
         }
 
-        if (flag == 0 && dice.content != 0 && dice.content != 6 && kill == 0) {
-            currentPlayer = (currentPlayer + 1) % tam;
+        if (passTurnFlag) {
+            if (flag == 0 && dice.content != 0 && dice.content != 6 && kill == 0) {
+                currentPlayer = (currentPlayer + 1) % tam;
 
-            if (currentPlayer == 0){
-                currentPlayer = tam;
+                if (currentPlayer == 0) {
+                    currentPlayer = tam;
+                }
+                pos++;
             }
-            pos++;
+
+            kill = 0;
         }
 
-        kill = 0;
+        passTurnFlag = false;
     }
 
     public void setGameCallback(GameCallback callback) {
@@ -316,7 +321,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
 
     @Override
     public void passTurn() {
-
+        passTurnFlag = true;
     }
 
     @Override

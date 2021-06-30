@@ -31,7 +31,7 @@ public class RunPath implements Path, Serializable {
         AX = new int[4][84];
 
         while(pos < tam){
-            if(colores[pos] == Color.BLUE){
+            if(colores[pos].equals(Color.BLUE)){
                 int[] a1 = {3,4,4,4,4,5,6,7,7,7,7,7,7,8,9,10,10,10,10,10,10,11,12,13,14,15,16,17,18,18,18,18,18,18,18,18,18,17,16,15,14,13,12,11,11,11,11,11,11,10,9,8,8,8,8,8,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0,0,1,2,3,4,4,4,4,5,6,7,8};
                 while(i < 84){
                     AX[pos][i] = a1[i];
@@ -39,7 +39,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.GREEN){
+            if(colores[pos].equals(Color.GREEN)){
                 int[] a2 = {15,14,13,13,13,13,13,13,14,15,16,17,18,18,18,18,18,18,18,18,18,17,16,15,14,13,12,11,11,11,11,11,11,10,9,8,8,8,8,8,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,7,7,7,7,7,8,9,10,10,10,10,10,10,10,10,10};
                 while(i < 80){
                     AX[pos][i] = a2[i];
@@ -47,7 +47,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.RED){
+            if(colores[pos].equals(Color.RED)){
                 int[] a3 = {15,14,14,14,14,13,12,11,11,11,11,11,11,10,9,8,8,8,8,8,8,7,6,5,4,3,2,1,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,7,7,7,7,7,8,9,10,10,10,10,10,10,11,12,13,14,15,16,17,18,18,18,18,18,18,18,18,18,17,16,15,14,14,14,14,13,12,11,10};
                 while(i < 84){
                     AX[pos][i] = a3[i];
@@ -55,7 +55,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.YELLOW){
+            if(colores[pos].equals(Color.YELLOW)){
                 int[] a4 = {3,4,5,5,5,5,5,5,4,3,2,1,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,7,7,7,7,7,8,9,10,10,10,10,10,10,11,12,13,14,15,16,17,18,18,18,18,18,18,18,18,18,17,16,15,14,13,12,11,11,11,11,11,11,10,9,8,8,8,8,8,8,8,8,8};
                 while(i < 80){
                     AX[pos][i] = a4[i];
@@ -79,7 +79,7 @@ public class RunPath implements Path, Serializable {
         int i = 0;
         AY = new int[4][84];
         while(pos < tam){
-            if(colores[pos] == Color.BLUE){
+            if(colores[pos].equals(Color.BLUE)){
                 int[] a1 = {2,2,3,4,5,5,5,5,4,3,2,1,0,0,0,0,1,2,3,4,5,5,5,5,5,5,5,5,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,14,15,16,17,18,18,18,18,17,16,15,14,13,13,13,13,13,13,13,13,13,12,11,10,9,8,7,6,5,5,5,5,5,6,7,8,8,8,8,8};
                 while(i < 84){
                     AY[pos][i] = a1[i];
@@ -87,7 +87,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.GREEN){
+            if(colores[pos].equals(Color.GREEN)){
                 int[] a2 = {0,0,0,1,2,3,4,5,5,5,5,5,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,14,15,16,17,18,18,18,18,17,16,15,14,13,13,13,13,13,13,13,13,13,12,11,10,9,8,7,6,5,5,5,5,5,5,5,5,4,3,2,1,0,0,0,0,1,2,3,4,5,6,7,8};
                 while(i < 80){
                     AY[pos][i] = a2[i];
@@ -95,7 +95,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.RED){
+            if(colores[pos].equals(Color.RED)){
                 int[] a3 = {16,16,15,14,13,13,13,13,14,15,16,17,18,18,18,18,17,16,15,14,13,13,13,13,13,13,13,13,13,12,11,10,9,8,7,6,5,5,5,5,5,5,5,5,4,3,2,1,0,0,0,0,1,2,3,4,5,5,5,5,5,5,5,5,5,6,7,8,9,10,11,12,13,13,13,13,13,12,11,10,10,10,10,10};
                 while(i < 84){
                     AY[pos][i] = a3[i];
@@ -103,7 +103,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos] == Color.YELLOW){
+            if(colores[pos].equals(Color.YELLOW)){
                 int[] a4 = {18,18,18,17,16,15,14,13,13,13,13,13,13,12,11,10,9,8,7,6,5,5,5,5,5,5,5,5,4,3,2,1,0,0,0,0,1,2,3,4,5,5,5,5,5,5,5,5,5,6,7,8,9,10,11,12,13,13,13,13,13,13,13,13,14,15,16,17,18,18,18,18,17,16,15,14,13,12,11,10};
 
                 while(i < 80){

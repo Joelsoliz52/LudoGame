@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import interfaces.Path;
 
@@ -11,7 +12,7 @@ import interfaces.Path;
  * @author JoelS
  * @version 1
  */
-public class Player {
+public class Player implements Serializable {
     // Fields of the class.
     private int coin;
     private Color color;

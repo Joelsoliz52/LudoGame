@@ -6,8 +6,9 @@ import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
 import java.awt.*;
+import java.io.Serializable;
 
-public class Bonus implements Comodin{
+public class Bonus implements Comodin, Serializable {
     private Position pos;
     public Bonus(){}
     public Bonus(Player[] players, int x, int y, RunLogic logic,Pawn pawn){

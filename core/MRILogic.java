@@ -3,6 +3,7 @@ package core;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
 import entities.Dice;
 import entities.Pawn;
@@ -19,7 +20,7 @@ import layouts.Boards.MRIBoard;
  * @author JoelS
  * @version 2
  */
-public class MRILogic implements GameLogic<Integer> {
+public class MRILogic implements GameLogic<Integer>, Serializable {
     // Fields of the class.
     public BuildPlayers players;
     private Board board;
@@ -311,6 +312,11 @@ public class MRILogic implements GameLogic<Integer> {
 
     public void setGameCallback(GameCallback callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void passTurn() {
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package layouts.Boards;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -16,7 +17,7 @@ import layouts.Paths.ClassicPath;
  * @author JoelS
  * @version 1
  */
-public class ClassicBoard implements Board {
+public class ClassicBoard implements Board, Serializable {
     // Fields of the class.
     private final int height;
     private final entities.Position position;
@@ -24,7 +25,7 @@ public class ClassicBoard implements Board {
     private Color[] colores;
     public BuildPlayers bd;
     private String fondo = "/utilities/ClassicBoard.jpg";
-    private Image imagen;
+    private transient Image imagen;
     public int tam;
     /**
      * ClassicBoard constructor.
@@ -56,8 +57,7 @@ public class ClassicBoard implements Board {
         int[] yPoints3 = { y + (6 * height), y + (6 * height), y + 15 + (7 * width) };
         int[] xPoints4 = { x + (6 * width), x + (9 * width), x + 15 + (7 * width) };
         int[] yPoints4 = { y + (9 * height), y + (9 * height), y + 15 + (7 * width)};
-        
-        paint(graphics);
+
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 15 * width, 15 * height);
         drawQuarters(graphics, x, y);
@@ -269,7 +269,8 @@ public class ClassicBoard implements Board {
         }
 
         if(map.get(Color.RED)){
-            graphics.drawString(bd.getPlayer(Color.RED).getName(), 370, 540);
+            Player player = bd.getPlayer(Color.RED);
+            graphics.drawString(player.getName(), 370, 540);
         }
         if(map.get(Color.BLUE)){
             graphics.drawString(bd.getPlayer(Color.BLUE).getName(), 90, 35);

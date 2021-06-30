@@ -24,4 +24,5 @@ public interface GameLogic<T> {
     void setnewPositionPawn(boolean newPositionPawn);
     void paint(Graphics2D graphics);
     void setGameCallback(GameCallback callback);
+    void passTurn();
 }

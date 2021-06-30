@@ -1,6 +1,8 @@
 package utilities;
 
-public class ListaSEC <V>{
+import java.io.Serializable;
+
+public class ListaSEC <V> implements Serializable {
     private NodoSE<V> prin;
     private int prop;
     public ListaSEC(){

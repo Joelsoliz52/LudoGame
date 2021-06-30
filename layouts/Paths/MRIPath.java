@@ -3,6 +3,7 @@ package layouts.Paths;
 import interfaces.Path;
 
 import java.awt.*;
+import java.io.Serializable;
 
 
 /**
@@ -11,7 +12,7 @@ import java.awt.*;
  * @author JoelS
  * @version 2
  */
-public class MRIPath implements Path {
+public class MRIPath implements Path, Serializable {
     private int[][] AX;
     private int[][] AY;
     private int[][] OptionalAX;

@@ -1,5 +1,8 @@
 package utilities;
-public class NodoSE<V>{
+
+import java.io.Serializable;
+
+public class NodoSE<V> implements Serializable {
     private V info;
     private NodoSE<V> suce;
     public NodoSE(){

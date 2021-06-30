@@ -3,6 +3,8 @@ package core;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.io.Serializable;
+
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -21,7 +23,7 @@ import javax.swing.*;
  * @author JoelS
  * @version 1
  */
-public class ClassicLogic implements GameLogic<Integer> {
+public class ClassicLogic implements GameLogic<Integer>, Serializable {
     // Fields of the class.
     public BuildPlayers players;
     private Board board;
@@ -29,9 +31,9 @@ public class ClassicLogic implements GameLogic<Integer> {
     private final Dice<Integer> dice;
     private int flag;
     private int kill;
-    private int pos;
     public int tam;
     private GameCallback callback;
+    private boolean passTurnFlag = false;
 
     /**
      * ClassicLogic constructor.
@@ -47,7 +49,6 @@ public class ClassicLogic implements GameLogic<Integer> {
         dice.content = 0;
         flag = 0;
         kill = 0;
-        pos = 0;
         players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
     }
 
@@ -226,24 +227,27 @@ public class ClassicLogic implements GameLogic<Integer> {
 
             return;
         } else if(dice.content != 0) {
-            if(pos == tam){
-                pos = 0;
-            }
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(590, 100, 360,120);
+            graphics.fillRect(590, 100, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName() + " " + "tu numero de", 600, 150);
+            graphics.drawString(players.players[currentPlayer - 1].getName() + " " + "tu numero de", 600, 150);
             graphics.drawString("dado es " + dice.content, 600, 200);
+            System.out.println("Paint: "+ currentPlayer);
         }
-        if(flag == 0 && dice.content != 0 && dice.content != 6 && kill == 0) {
-            currentPlayer = (currentPlayer + 1) % tam;
-            if(currentPlayer == 0){
-                currentPlayer = tam;
+
+        if (passTurnFlag) {
+            if(flag == 0 && dice.content != 6 && dice.content != 0 && kill == 0) {
+                currentPlayer = (currentPlayer + 1) % tam;
+                if(currentPlayer == 0){
+                    currentPlayer = tam;
+                }
+                System.out.println("Pass turn: "+ currentPlayer);
             }
-            pos++;
+            kill=0;
         }
-        kill=0;
+
+        passTurnFlag = false;
     }
 
     private void showMessage(String title, String message) {
@@ -252,6 +256,11 @@ public class ClassicLogic implements GameLogic<Integer> {
 
     public void setGameCallback(GameCallback callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void passTurn() {
+        passTurnFlag = true;
     }
 
     public BuildPlayers getBuildPlayers(){

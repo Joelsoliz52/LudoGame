@@ -5,6 +5,7 @@ package core;
 
 import java.awt.Graphics;
 import java.awt.Color;
+import java.io.Serializable;
 import javax.swing.JOptionPane;
 import entities.Dice;
 import entities.Pawn;
@@ -12,7 +13,7 @@ import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
 
-public class Traps implements Comodin{
+public class Traps implements Comodin, Serializable {
     private Position pos;
     public Traps(){}
 

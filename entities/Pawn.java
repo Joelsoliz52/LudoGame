@@ -3,6 +3,8 @@ package entities;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
+
 import interfaces.Path;
 
 /**
@@ -12,7 +14,7 @@ import interfaces.Path;
  * @author JoelS
  * @version 2
  */
-public class Pawn {
+public class Pawn implements Serializable {
     private final Path path;
     private Position position;
     private int current;

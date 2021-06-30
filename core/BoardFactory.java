@@ -14,10 +14,11 @@ import layouts.Paths.RunPath;
 import utilities.GameModes;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoardFactory {
+public class BoardFactory implements Serializable {
     private final ArrayList<Player> playersList = new ArrayList<>();
     private Board board;
     private BuildPlayers builder;

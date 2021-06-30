@@ -10,14 +10,17 @@ import interfaces.GameCallback;
 import interfaces.GameLogic;
 import utilities.GameModes;
 
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Serializable;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -28,13 +31,13 @@ import javax.swing.JOptionPane;
  * @author JoelS
  * @version 1
  */
-public class GameMoves extends JPanel implements KeyListener, ActionListener, MouseListener {
+public class GameMoves extends JPanel implements KeyListener, ActionListener, MouseListener, Serializable {
     // Fields of the class.
     private static final long serialVersionUID = 1L;
     private GameLogic<Integer> logic;
     private GameModes gameMode;
     private HashMap<Color, String> players;
-    private GameCallback callback;
+    private transient GameCallback callback;
 
     public GameMoves(GameLogic<Integer> logic) {
         init(new Dimension(1200, 700));
@@ -77,6 +80,7 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
             logic.getDice().throwDice();
             repaint();
             logic.onKeyPressed();
+            logic.passTurn();
         }
     }
 
@@ -88,10 +92,12 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     public void mouseClicked(MouseEvent e) {
         if(logic.getFlag() == 1) {
             if (e.getClickCount() == 1) {
-            int x = (e.getX() - 80) / 30;
-            int y = (e.getY() - 50) / 30;
-            logic.onMouseClicked(x, y);
-            repaint();}
+                int x = (e.getX() - 80) / 30;
+                int y = (e.getY() - 50) / 30;
+                logic.onMouseClicked(x, y);
+                repaint();
+                logic.passTurn();
+            }
         }else if(logic.getdoubleClicked()){
             if (e.getClickCount() == 2) {
                 int x = (e.getX()-80) / 30;
@@ -99,6 +105,7 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
                 logic.setdoubleClicked(false);
                 logic.doubleMouseClicked(x, y);
                 JOptionPane.showMessageDialog(null, "Se ha producido un doble click en "+ x +", "+ y);
+                logic.passTurn();
             }
         }
     }
@@ -121,7 +128,7 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
 
     public void initializeGame() {
         this.logic = new BoardFactory(this.gameMode, this.players).getBoard();;
-        this.logic.setGameCallback(this::onRestart);
+        this.logic.setGameCallback((GameCallback & Serializable) this::onRestart);
     }
 
     // Auto-generated method

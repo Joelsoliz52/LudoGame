@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,7 +16,7 @@ import interfaces.Path;
  * @author JoelS
  * @version 1
  */
-public class BuildPlayers {
+public class BuildPlayers implements Serializable {
     // Fields of the class.
     public Player[] players;
     private final Board board;
@@ -45,25 +46,25 @@ public class BuildPlayers {
         while(pos < tam){
             Player player = players[pos];
             while(j < 4){
-                if(players[pos].getColor() == Color.RED){
+                if(players[pos].getColor().equals(Color.RED)){
                     Pawn pawn = player.getPawns()[j];
                     int posX = board.getInitialX()[2][j];
                     int posY = board.getInitialY()[2][j];
                     pawn.draw(graphics, posX, posY, player);
                 }
-                if(players[pos].getColor() == Color.BLUE){
+                if(players[pos].getColor().equals(Color.BLUE)){
                     Pawn pawn = player.getPawns()[j];
                     int posX = board.getInitialX()[0][j];
                     int posY = board.getInitialY()[0][j];
                     pawn.draw(graphics, posX, posY, player);
                 }
-                if(players[pos].getColor() == Color.GREEN){
+                if(players[pos].getColor().equals(Color.GREEN)){
                     Pawn pawn = player.getPawns()[j];
                     int posX = board.getInitialX()[1][j];
                     int posY = board.getInitialY()[1][j];
                     pawn.draw(graphics, posX, posY, player);
                 }
-                if(players[pos].getColor() == Color.YELLOW){
+                if(players[pos].getColor().equals(Color.YELLOW)){
                     Pawn pawn = player.getPawns()[j];
                     int posX = board.getInitialX()[3][j];
                     int posY = board.getInitialY()[3][j];
@@ -135,7 +136,7 @@ public class BuildPlayers {
 
     public Player getPlayer (Color color) {
         for(Player player : players) {
-            if (player.getColor() == color) {
+            if (player.getColor().equals(color)) {
                 return player;
             }
         }

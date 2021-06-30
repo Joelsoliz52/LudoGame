@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 import entities.Dice;
 import entities.Pawn;
@@ -18,7 +19,7 @@ import utilities.ListaSEC;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class RunLogic implements GameLogic<Integer>{
+public class RunLogic implements GameLogic<Integer>, Serializable {
     public BuildPlayers players;
     private Board board;
     private Comodin comodin;
@@ -331,6 +332,11 @@ public class RunLogic implements GameLogic<Integer>{
 
     public void setGameCallback(GameCallback callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void passTurn() {
+
     }
 
     /**

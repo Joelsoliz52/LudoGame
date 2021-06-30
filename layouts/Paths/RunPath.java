@@ -1,10 +1,11 @@
 package layouts.Paths;
 
 import java.awt.*;
+import java.io.Serializable;
 
 import interfaces.Path;
 
-public class RunPath implements Path {
+public class RunPath implements Path, Serializable {
     private int[][] AX;
     private int[][] AY;
     private int tam;

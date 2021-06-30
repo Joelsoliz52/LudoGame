@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Panel;
 import java.awt.RenderingHints;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -23,7 +24,7 @@ import layouts.Paths.RunPath;
  * @author daniel
  * @version 1
  */
-public class RunBoard implements Board {
+public class RunBoard implements Board, Serializable {
     // Fields of the class.
     private final int height;
     private final entities.Position position;
@@ -32,7 +33,7 @@ public class RunBoard implements Board {
     public BuildPlayers bd;
     public int tam;
     private String fondo = "/utilities/RunBoard.jpg";
-	private Image imagen;
+	private transient Image imagen;
     /**
      * RunBoard constructor.
      * @param position2 Initial position of the board.
@@ -62,7 +63,7 @@ public class RunBoard implements Board {
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
-        paint(graphics);
+        // paint(graphics);
 
         graphics.setColor(Color.WHITE);
         drawPathColor(graphics, x, y);

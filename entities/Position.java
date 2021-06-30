@@ -1,6 +1,7 @@
 package entities;
 
- 
+
+import java.io.Serializable;
 
 /**
  * Entity Position
@@ -9,7 +10,7 @@ package entities;
  * @author JoelS
  * @version 1
  */
-public class Position {
+public class Position implements Serializable {
     // Fields of the class
     private final int x;
     private final int y;

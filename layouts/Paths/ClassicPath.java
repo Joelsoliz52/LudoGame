@@ -2,6 +2,7 @@ package layouts.Paths;
 
     
 import java.awt.*;
+import java.io.Serializable;
 
 import interfaces.Path;
 /**
@@ -10,7 +11,7 @@ import interfaces.Path;
  * @author JoelS
  * @version 1
  */
-public class ClassicPath implements Path {
+public class ClassicPath implements Path, Serializable {
     private int[][] AX;
     private int[][] AY;
     private int tam;

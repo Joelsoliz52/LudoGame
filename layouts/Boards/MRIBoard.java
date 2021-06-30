@@ -1,6 +1,7 @@
 package layouts.Boards;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -16,14 +17,14 @@ import layouts.Paths.MRIPath;
  * @author JoelS
  * @version 1
  */
-public class MRIBoard implements Board {
+public class MRIBoard implements Board, Serializable {
     // Fields of the class.
     private final int height;
     private final entities.Position position;
     private final int width;
     public int tam;
     private String fondo = "/utilities/MRIBoard.jpg";
-	private Image imagen;
+	private transient Image imagen;
     public BuildPlayers bd;
     private Color[] colores;
     /**
@@ -55,7 +56,7 @@ public class MRIBoard implements Board {
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
-        paint(graphics);
+        //paint(graphics);
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 19 * width, 19 * height);
         drawQuarters(graphics, x, y);

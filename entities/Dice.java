@@ -1,5 +1,7 @@
 package entities;
 
+import java.io.Serializable;
+
 /**
  * Entity Dice
  * Logic of the dice.
@@ -9,7 +11,7 @@ package entities;
  * @author JoelS
  * @version 1
  */
-public class Dice<T> {
+public class Dice<T> implements Serializable {
     // Fields of the class.
     private final String type;
     private T[] values;
@@ -58,7 +60,7 @@ public class Dice<T> {
     /**
      * Dice values according to dice type.
      */
-    private static class DiceValues {
+    private static class DiceValues implements Serializable {
         public static Integer[] intDice = { 1, 2, 3, 4, 5, 6 };
     }
 }

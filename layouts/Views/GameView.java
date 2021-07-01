@@ -146,7 +146,9 @@ public class GameView extends View {
                 this.gm = (GameMoves) inputStream.readObject();
                 this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
                 this.add(this.gm);
+                this.musicBackground.stopMusic();
                 this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(this.gameMode));
+                this.musicBackground.playMusic();
                 this.setupButtons(this.gameMode);
                 this.setup(this.background, this.getSizeByMode(), this.musicBackground);
                 inputStream.close();

@@ -24,8 +24,6 @@ public class ClassicBoard implements Board, Serializable {
     private final int width;
     private Color[] colores;
     public BuildPlayers bd;
-    private String fondo = "/utilities/ClassicBoard.jpg";
-    private transient Image imagen;
     public int tam;
     /**
      * ClassicBoard constructor.
@@ -34,8 +32,6 @@ public class ClassicBoard implements Board, Serializable {
     public ClassicBoard(entities.Position position, Color[] colores) {
         this.position = position;
         this.colores = colores;
-        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
-        imagen = img.getImage();
         height = 30;
         width = 30;
     }
@@ -305,11 +301,7 @@ public class ClassicBoard implements Board, Serializable {
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
         RenderingHints.VALUE_ANTIALIAS_ON);
     }
-    
-    public void paint(Graphics2D gr2d) {
-		gr2d.drawImage(imagen, 0, 0, 1150, 700, new Panel());
-	}
-    
+
     /**
      * Returns height of the boxes.
      * @return Height of the boxes.

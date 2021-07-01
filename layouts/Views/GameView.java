@@ -1,6 +1,7 @@
 package layouts.Views;
 
 import components.BasicButton;
+import components.ImagePanel;
 import components.MusicBackgroundV2;
 import components.utils.enums.ButtonTypes;
 import core.BoardFactory;
@@ -25,13 +26,15 @@ public class GameView extends View {
     private final BasicButton restartButton = new BasicButton("Reiniciar", ButtonTypes.INVERTED);
     private final BasicButton saveGameButton = new BasicButton("Guardar juego", ButtonTypes.INVERTED);
     private final BasicButton loadGameButton = new BasicButton("Cargar juego", ButtonTypes.INVERTED);
-    private final GameModes gameMode;
+    private final ImagePanel background = new ImagePanel("");
+    private MusicBackgroundV2 musicBackground;
+    private GameModes gameMode;
     private final HashMap<Color, String> players;
 
     private GameView(GameModes gameMode, HashMap<Color, String> players) {
-        MusicBackgroundV2 musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
         this.gameMode = gameMode;
         this.players = players;
+        this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
 
         this.init();
         this.setupButtons(gameMode);
@@ -42,7 +45,8 @@ public class GameView extends View {
 
         this.restartButton.setVisible(false);
         this.initializeGameMoves();
-        this.setup(null, this.getSizeByMode(), musicBackground);
+        this.setBackgroundByGameMode();
+        this.setup(background, this.getSizeByMode(), musicBackground);
         this.setActions();
         this.repaint();
     }
@@ -61,6 +65,22 @@ public class GameView extends View {
         this.gm.setFocusable(true);
         this.gm.addKeyListener(this.gm);
         this.gm.addMouseListener(this.gm);
+    }
+
+    private void setBackgroundByGameMode() {
+        switch (gameMode) {
+            case CLASSIC:
+                background.setBackground("classicBoardBackground.jpg");
+                break;
+            case MRI:
+                background.setBackground("mriBoardBackground.jpg");
+                break;
+            case RUN:
+                background.setBackground("runBoardBackground.jpg");
+                break;
+            default:
+                break;
+        }
     }
 
     private void onRestart() {
@@ -100,11 +120,11 @@ public class GameView extends View {
             try {
                 // Guardar juego - sobreescribir juego
                 // leemos string - guardar
-                URL fileURL = getClass().getResource("/resources/savedGames/gameOne.obj");
+                URL fileURL = getClass().getResource("/resources/savedGames");
                 String path = fileURL.toString().replace("file:/", "").replace("/", "\\");
-                System.out.println("FILE: "+ path);
-                FileOutputStream fileToSave = new FileOutputStream(path);
+                FileOutputStream fileToSave = new FileOutputStream(path+"\\gameOne.obj");
                 ObjectOutputStream outputStream = new ObjectOutputStream(fileToSave);
+                outputStream.writeObject(this.gameMode);
                 outputStream.writeObject(this.gm);
                 outputStream.close();
                 fileToSave.close();
@@ -118,12 +138,17 @@ public class GameView extends View {
             try {
                 URL fileURL = getClass().getResource("/resources/savedGames/gameOne.obj");
                 String path = fileURL.toString().replace("file:/", "").replace("/", "\\");
-                System.out.println("FILE: "+ path);
                 FileInputStream fileToLoad = new FileInputStream(path);
                 ObjectInputStream inputStream = new ObjectInputStream(fileToLoad);
                 this.remove(this.gm);
+                this.remove(this.background);
+                this.gameMode = (GameModes) inputStream.readObject();
                 this.gm = (GameMoves) inputStream.readObject();
+                this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
                 this.add(this.gm);
+                this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(this.gameMode));
+                this.setupButtons(this.gameMode);
+                this.setup(this.background, this.getSizeByMode(), this.musicBackground);
                 inputStream.close();
                 fileToLoad.close();
                 System.out.println("Game loaded");

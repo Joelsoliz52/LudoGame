@@ -39,14 +39,7 @@ public class ImagePanel extends JPanel {
     public ImagePanel(String name, String description, int x, int y, Dimension dimension) {
         position = new Position(x, y);
         this.dimension = dimension;
-        String path = Helper.getBasePath(name) + name;
-
-        try {
-            image = createImageIcon(path, description).getImage();
-            init();
-        } catch (FileNotFoundException ex) {
-            image = null;
-        }
+        resetImage(name, description);
     }
 
     private ImageIcon createImageIcon(String path, String description) throws FileNotFoundException {
@@ -59,6 +52,18 @@ public class ImagePanel extends JPanel {
         }
     }
 
+    private void resetImage(String name, String description) {
+        String path = Helper.getBasePath(name) + name;
+
+        try {
+            image = createImageIcon(path, description).getImage();
+            init();
+        } catch (FileNotFoundException ex) {
+            image = null;
+        }
+
+    }
+
     private void init() {
         Dimension size = dimension != null ? dimension : new Dimension(image.getWidth(null), image.getHeight(null));
         setPreferredSize(size);
@@ -68,14 +73,16 @@ public class ImagePanel extends JPanel {
         setLayout(null);
     }
 
+    public void setBackground(String name) {
+        resetImage(name, "background-image");
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         if (image != null) {
             g.drawImage(image, position.getX(), position.getY(), this);
-            setOpaque(false);
-        } else {
-            setOpaque(true);
         }
+        setOpaque(false);
     }
 }

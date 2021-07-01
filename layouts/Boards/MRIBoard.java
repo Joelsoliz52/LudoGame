@@ -23,8 +23,6 @@ public class MRIBoard implements Board, Serializable {
     private final entities.Position position;
     private final int width;
     public int tam;
-    private String fondo = "/utilities/MRIBoard.jpg";
-	private transient Image imagen;
     public BuildPlayers bd;
     private Color[] colores;
     /**
@@ -34,8 +32,6 @@ public class MRIBoard implements Board, Serializable {
     public MRIBoard(entities.Position position2, Color[] colores) {
         position = position2;
         this.colores = colores;
-        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
-        imagen = img.getImage();
         height = 30;
         width = 30;
     }
@@ -56,7 +52,7 @@ public class MRIBoard implements Board, Serializable {
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
 
-        //paint(graphics);
+
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 19 * width, 19 * height);
         drawQuarters(graphics, x, y);
@@ -427,10 +423,6 @@ public class MRIBoard implements Board, Serializable {
         graphics.setColor(color);
         graphics.fillPolygon(xPoints, yPoints, 3);
     }
-
-    public void paint(Graphics2D gr2d) {
-		gr2d.drawImage(imagen, 0, 0, 1200, 700, new Panel());
-	}
     
     /**
      * Returns height of the boxes.

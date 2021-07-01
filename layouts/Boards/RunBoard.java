@@ -32,8 +32,6 @@ public class RunBoard implements Board, Serializable {
     private Color[] colores;
     public BuildPlayers bd;
     public int tam;
-    private String fondo = "/utilities/RunBoard.jpg";
-	private transient Image imagen;
     /**
      * RunBoard constructor.
      * @param position2 Initial position of the board.
@@ -41,8 +39,6 @@ public class RunBoard implements Board, Serializable {
     public RunBoard(entities.Position position2, Color[] colores) {
         this.position = position2;
         this.colores = colores;
-        ImageIcon img =  new ImageIcon(getClass().getResource(fondo));
-        imagen = img.getImage();
         height = 30;
         width = 30;
     }
@@ -62,8 +58,6 @@ public class RunBoard implements Board, Serializable {
         int[] yPoints3 = { y + (8 * height), y + (8 * height), y + 15 + (9 * width) };
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
-
-        // paint(graphics);
 
         graphics.setColor(Color.WHITE);
         drawPathColor(graphics, x, y);
@@ -483,10 +477,6 @@ public class RunBoard implements Board, Serializable {
         RenderingHints.VALUE_ANTIALIAS_ON);
 
     }
-    
-    public void paint(Graphics2D gr2d) {
-		gr2d.drawImage(imagen, 0, 0, 1200, 700, new Panel());
-	}
     
     public int getHeight() { return height; }
 

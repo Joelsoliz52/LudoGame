@@ -83,71 +83,54 @@ public class RunBoard implements Board, Serializable {
         for(int j = 0; j < 2; j++) {
             graphics.drawRect(x + ((j + 3) * width),y + (2 * height), width, height);
             graphics.drawRect(x + ((j + 14) * width),y + (16 * height), width, height);
-
-        }
-        for(int j = 0; j < 3; j++) {
-            graphics.drawRect(x + ((j + 13) * width),y, width, height);
-            graphics.drawRect(x + ((j + 3) * width),y + (18 * height), width, height);
-
+            graphics.drawRect(x + ((j + 14) * width),y+(2 * height), width, height);
+            graphics.drawRect(x + ((j + 3) * width),y + (16 * height), width, height);
         }
         for(int j = 0; j < 4; j++) {
             graphics.drawRect(x + ((j + 7) * width),y, width, height);
             graphics.drawRect(x + ((j + 8) * width),y + (18 * height), width, height);
-
+            graphics.drawRect(x + ((j+5) * width), y + (10 * height), width, height);
+            graphics.drawRect(x + ((j+10) * width), y + (8 * height), width, height);
         }
         for(int j = 0; j < 5; j++) {
             graphics.drawRect(x + ((j + 4) * width), y + (8 * height), width, height);
             graphics.drawRect(x + ((j + 10) * width), y + (10 * height), width, height);
         }
-
         for(int j = 0; j < 6; j++) {
-
             graphics.drawRect(x + (7 * width), y + ((j) * height), width, height);
-            graphics.drawRect(x + (13 * width), y + ((j) * height), width, height);
             graphics.drawRect(x + (11 * width), y + ((j + 13) * height), width, height);
-            graphics.drawRect(x + (5 * width), y + ((j + 13) * height), width, height);
+            graphics.drawRect(x + (8 * width), y + ((j + 13) * height), width, height);
+            graphics.drawRect(x + (10 * width), y + ((j) * height), width, height);
         }
-
-
-            for (int j = 0; j < 7; j++) {
-
-                graphics.drawRect(x + (4 * width), y + ((j + 2) * height), width, height);
-                graphics.drawRect(x + (14 * width), y + ((j + 10) * height), width, height);
-
-
-            }
-            for (int j = 0; j < 8; j++) {
-
-                graphics.drawRect(x + ((j) * width), y + (5 * height), width, height);
-                graphics.drawRect(x + ((j + 10) * width), y + (5 * height), width, height);
-                graphics.drawRect(x + ((j + 11) * width), y + (13 * height), width, height);
-            }
-            for (int j = 0; j < 9; j++) {
-
-                graphics.drawRect(x + ((j) * width), y + (13 * height), width, height);
-                graphics.drawRect(x + (10 * width), y + ((j) * height), width, height);
-                graphics.drawRect(x , y + ((j + 5) * height), width, height);
-                graphics.drawRect(x + (18 * width), y + ((j + 5) * height), width, height);
-                graphics.drawRect(x + (8 * width), y + ((j + 10) * height), width, height);
-            }
-
-
+        for(int j = 0; j < 7; j++){
+            graphics.drawRect(x + (4 * width), y + ((j + 10) * height), width, height);
+            graphics.drawRect(x + (14 * width), y + ((j+2)* height), width, height);
+            graphics.drawRect(x + (4 * width), y + ((j + 2) * height), width, height);
+            graphics.drawRect(x + (14 * width), y + ((j + 10) * height), width, height);
+        }
+        for (int j = 0; j < 8; j++) {
+            graphics.drawRect(x + ((j) * width), y + (5 * height), width, height);
+            graphics.drawRect(x + ((j + 10) * width), y + (5 * height), width, height);
+            graphics.drawRect(x + ((j + 11) * width), y + (13 * height), width, height);
+        }
+        for (int j = 0; j < 9; j++) {
+            graphics.drawRect(x + ((j) * width), y + (13 * height), width, height);
+            graphics.drawRect(x , y + ((j + 5) * height), width, height);
+            graphics.drawRect(x + (18 * width), y + ((j + 5) * height), width, height);
+        }
+        
         graphics.drawRect(x, y, 19 * width, 19 * height);
 
         // Blue
-
         graphics.drawRect(x, y, 3 * width, 3 * height);
 
         //Green
-
         graphics.drawRect(x + (16 * width), y, 3 * width, 3 * height);
 
         // Yellow
-
         graphics.drawRect(x, y + (16 * height), 3 * width, 3 * height);
 
         // Red
-
         graphics.drawRect(x + (16 * width), y + (16 * height), 3 * width, 3 * height);
 
 
@@ -160,55 +143,43 @@ public class RunBoard implements Board, Serializable {
     private void drawPathColor(Graphics2D graphics, int x, int y) {
         graphics.setColor(Color.LIGHT_GRAY);
 
-        for (int j = 0; j < 2; j++) {
+        for(int j = 0; j < 2; j++){
+            graphics.fillRect(x + ((j + 3) * width), y + (16 * height), width, height);
+            graphics.fillRect(x + ((j + 14) * width), y + (2 * height), width, height);
             graphics.fillRect(x + ((j + 3) * width), y + (2 * height), width, height);
             graphics.fillRect(x + ((j + 14) * width), y + (16 * height), width, height);
-
-        }
-        for (int j = 0; j < 3; j++) {
-            graphics.fillRect(x + ((j + 13) * width), y, width, height);
-            graphics.fillRect(x + ((j + 3) * width), y + (18 * height), width, height);
-
         }
         for (int j = 0; j < 4; j++) {
             graphics.fillRect(x + ((j + 7) * width), y, width, height);
             graphics.fillRect(x + ((j + 8) * width), y + (18 * height), width, height);
-
         }
-        for (int j = 0; j < 5; j++) {
-            //graphics.fillRect(x + ((j + 4) * width), y + (8 * height), width, height);
+        for(int j = 0; j < 5; j++){
+            graphics.fillRect(x + ((j + 4) * width), y + (8 * height), width, height);
+            graphics.fillRect(x + ((j + 10) * width), y + (8 * height), width, height);
+            graphics.fillRect(x + ((j + 4) * width), y + (10 * height), width, height);
             graphics.fillRect(x + ((j + 10) * width), y + (10 * height), width, height);
         }
-
         for (int j = 0; j < 6; j++) {
-
             graphics.fillRect(x + (7 * width), y + ((j) * height), width, height);
-            graphics.fillRect(x + (13 * width), y + ((j) * height), width, height);
             graphics.fillRect(x + (11 * width), y + ((j + 13) * height), width, height);
-            graphics.fillRect(x + (5 * width), y + ((j + 13) * height), width, height);
+            graphics.fillRect(x + (10 * width), y + (j * height), width, height);
+            graphics.fillRect(x + (8 * width), y + ((j+13) * height), width, height);
         }
-
-
         for (int j = 0; j < 7; j++) {
-
-            //graphics.fillRect(x + (4 * width), y + ((j + 2) * height), width, height);
+            graphics.fillRect(x + (4 * width), y + ((j + 2) * height), width, height);
             graphics.fillRect(x + (14 * width), y + ((j + 10) * height), width, height);
-
-
+            graphics.fillRect(x + (14 * width), y + ((j + 2) * height), width, height);
+            graphics.fillRect(x + (4 * width), y + ((j + 10) * height), width, height);
         }
         for (int j = 0; j < 8; j++) {
-
             graphics.fillRect(x + ((j) * width), y + (5 * height), width, height);
-            graphics.fillRect(x + ((j + 10) * width), y + (5 * height), width, height);
             graphics.fillRect(x + ((j + 11) * width), y + (13 * height), width, height);
         }
         for (int j = 0; j < 9; j++) {
-
-            graphics.fillRect(x + ((j) * width), y + (13 * height), width, height);
-            graphics.fillRect(x + (10 * width), y + ((j) * height), width, height);
-            graphics.fillRect(x , y + ((j + 5) * height), width, height);
+            graphics.fillRect(x + (j * width), y + (13 * height), width, height);
             graphics.fillRect(x + (18 * width), y + ((j + 5) * height), width, height);
-            graphics.fillRect(x + (8 * width), y + ((j + 10) * height), width, height);
+            graphics.fillRect(x , y + ((j+5) * height), width, height);
+            graphics.fillRect(x + ((j+10) * width), y + (5 * height), width, height);
         }
         
         graphics.setColor(Color.BLACK);
@@ -226,15 +197,16 @@ public class RunBoard implements Board, Serializable {
             graphics.fillRect(x + ((j + 3) * width), y + (2 * height), width, height);
         }
         graphics.setColor(Color.GREEN);
-        for (int j = 0; j < 6; j++) {
-            graphics.fillRect(x + (13 * width), y + ((j) * height), width, height);
+        for (int j = 0; j < 7; j++) {
+            graphics.fillRect(x + (14 * width), y + ((j+2) * height), width, height);
         }
         for (int j = 0; j < 2; j++) {
-            graphics.fillRect(x + ((j + 14) * width), y , width, height);
+            graphics.fillRect(x + ((j + 14) * width), y+(2*height) , width, height);
         }
         for (int j = 0; j < 4; j++) {
-            graphics.fillRect(x + (10 * width), y + ((j + 5) * height), width, height);
+            graphics.fillRect(x + ((j+10) * width), y + (8 * height), width, height);
         }
+        
         graphics.setColor(Color.RED);
         for (int j = 0; j < 5; j++) {
             graphics.fillRect(x + ((j + 10) * width), y + (10 * height), width, height);
@@ -244,17 +216,17 @@ public class RunBoard implements Board, Serializable {
             graphics.fillRect(x + ((j + 14) * width), y + (16 * height), width, height);
         }
         graphics.setColor(Color.YELLOW);
-        for (int j = 0; j < 6; j++) {
-            graphics.fillRect(x + (5 * width), y + ((j + 13) * height), width, height);
+        for (int j = 0; j < 7; j++) {
+            graphics.fillRect(x + (4 * width), y + ((j + 10) * height), width, height);
         }
         for (int j = 0; j < 2; j++) {
-            graphics.fillRect(x + ((j + 3) * width), y + (18 * height), width, height);
+            graphics.fillRect(x + ((j + 3) * width), y + (16 * height), width, height);
         }
         for (int j = 0; j < 4; j++) {
-            graphics.fillRect(x + (8 * width), y + ((j + 10) * height), width, height);
+            graphics.fillRect(x + ((j+5) * width), y + (10 * height), width, height);
         }
+        
     }
-
 
     /**
      * Draw pawn initial horizontal boxes.

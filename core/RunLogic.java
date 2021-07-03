@@ -79,19 +79,10 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
         for (int i = 0; i < 4; i++) {
             int current = players.getPlayer(currentPlayer).getPawns()[i].getCurrent();
 
-            if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
-                    players.getPlayer(currentPlayer).getColor() == Color.RED){
-                if (current != -1 && current != 83 && (current + dice.content) < 84) {
+            if (current != -1 && current != 83 && (current + dice.content) < 84) {
                     flag = 1;
                     break;
                 }
-            }else if(players.getPlayer(currentPlayer).getColor() == Color.GREEN ||
-                    players.getPlayer(currentPlayer).getColor() == Color.YELLOW){
-                if (current != -1 && current != 79 && (current + dice.content) < 80) {
-                    flag = 1;
-                    break;
-                }
-            }
         }
         if (flag == 0) {
             for (int i = 0; i < tam; i++) {
@@ -203,11 +194,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
         for (int i = 0; i < 4; i++) {
             Position posPawn = player.getPawns()[i].getPosition();
             int current = player.getPawns()[i].getCurrent();
-            int num;
-
-            if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
-                    players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
-            else { num = 80; }
+            int num = 84;
 
             if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1 && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
@@ -227,12 +214,8 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             Pawn pawn = player.getPawns()[value];
             pawn.setCurrent(pawn.getCurrent() + dice.content);
             int current = pawn.getCurrent();
-
-            if(player.getColor() == Color.BLUE || player.getColor() == Color.RED){
-                if (current == 83) player.incrementCoin();
-            } else {
-                if (current == 79) player.incrementCoin();
-            }
+    
+            if (current == 83) player.incrementCoin();
         }
 
         return value;

@@ -399,15 +399,14 @@ public class MRIBoard implements Board, Serializable {
             graphics.drawString(bd.getPlayer(Color.GREEN).getName(), 500, 40);
         }
         graphics.setFont(new Font("serif", Font.BOLD, 30));
-        graphics.drawString("Instrucciones:", 750,300);
-        graphics.drawString("1.Presionar enter para lanzar", 700,340);
-        graphics.drawString("el dado.", 700,380);
-        graphics.drawString("2.Haga click sobre una ficha", 700,420);
-        graphics.drawString("para moverla.", 700,460);
-        graphics.drawString("3.Casillas grises: te ayuadran", 700,500);
-        graphics.drawString("a salir del camino principal y ", 700,540);
-        graphics.drawString("evitaras ser comido.", 700,580);
-        graphics.drawString("4.Sin errores, se feliz.", 700,620);
+        graphics.drawString("Instrucciones:", 750,270);
+        graphics.drawString("1.Presionar enter para lanzar", 700,310);
+        graphics.drawString("el dado.", 700,350);
+        graphics.drawString("2.Haga click sobre una ficha", 700,390);
+        graphics.drawString("para moverla.", 700,430);
+        graphics.drawString("3.Casillas grises: te ayuadran", 700,470);
+        graphics.drawString("a salir del camino principal y ", 700,510);
+        graphics.drawString("evitaras ser comido.", 700,550);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
         RenderingHints.VALUE_ANTIALIAS_ON);
     }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.Stack;
 
 import entities.Dice;
 import entities.Pawn;
@@ -13,7 +14,7 @@ import interfaces.Board;
 import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.ClassicBoard;
-import layouts.Views.GameView;
+import utilities.Tuple;
 
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
     public int tam;
     private GameCallback callback;
     private boolean passTurnFlag = false;
-
+    private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
     /**
      * ClassicLogic constructor.
      */
@@ -86,6 +87,10 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
                 }
             }
         }
+
+        if (flag == 0) {
+            this.stack.push(new Tuple<>(currentPlayer, null, null));
+        }
     }
 
     /**
@@ -125,6 +130,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
                 Position position = pawn1.getPosition();
 
                 if (position.equals(new Position(tem1, tem2))) {
+                    stack.push(new Tuple<>(currentPlayer, null, pawn1));
                     pawn1.setCurrent(-1);
                     kill = 1;
                     k = 1;
@@ -153,6 +159,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
 
                 if (posPawn.equals(pos1) || posPawn.equals(pos2)) {
                     pawn.setCurrent(0);
+                    stack.push(new Tuple<>(currentPlayer, pawn, null));
                     flag = 0;
                     break;
                 }
@@ -184,6 +191,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
         if (value != -1) {
             Pawn pawn = player.getPawns()[value];
             pawn.setCurrent(pawn.getCurrent() + dice.content);
+            stack.push(new Tuple<>(currentPlayer, pawn, null));
             int current = pawn.getCurrent();
             int k = 0;
 
@@ -231,7 +239,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
             graphics.fillRect(590, 100, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[currentPlayer - 1].getName() + " " + "tu numero de", 600, 150);
+            graphics.drawString(player.getName() + " " + "tu numero de", 600, 150);
             graphics.drawString("dado es " + dice.content, 600, 200);
             System.out.println("Paint: "+ currentPlayer);
         }
@@ -261,6 +269,27 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
     @Override
     public void passTurn() {
         passTurnFlag = true;
+    }
+
+    @Override
+    public void undoMovement() {
+        if (!stack.empty()) {
+            Tuple<Integer, Pawn, Pawn> lastMovement = this.stack.pop();
+
+            currentPlayer = lastMovement.getEntityOne();
+
+            if (lastMovement.getEntityTwo() == null && lastMovement.getEntityThree() == null) {
+                return;
+            }
+
+            if (lastMovement.getEntityTwo() == null) {
+                Tuple<Integer, Pawn, Pawn> possibleLastMovement = this.stack.pop();
+                possibleLastMovement.getEntityTwo().undoMovement();
+                lastMovement.getEntityThree().undoMovement();
+            } else {
+                lastMovement.getEntityTwo().undoMovement();
+            }
+        }
     }
 
     public BuildPlayers getBuildPlayers(){

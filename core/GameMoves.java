@@ -6,6 +6,8 @@ package core;
 
 import javax.swing.JPanel;
 
+import components.BasicButton;
+import components.utils.enums.ButtonTypes;
 import interfaces.GameCallback;
 import interfaces.GameLogic;
 import utilities.GameModes;
@@ -38,7 +40,6 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     private GameModes gameMode;
     private HashMap<Color, String> players;
     private transient GameCallback callback;
-
     public GameMoves(GameLogic<Integer> logic) {
         init(new Dimension(1200, 700));
         this.logic = logic;
@@ -56,7 +57,6 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
         this.gameMode  = gameMode;
         this.players = players;
         this.initializeGame();
-
         this.init(size);
     }
 
@@ -127,7 +127,7 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     }
 
     public void initializeGame() {
-        this.logic = new BoardFactory(this.gameMode, this.players).getBoard();;
+        this.logic = new BoardFactory(this.gameMode, this.players).getBoard();
         this.logic.setGameCallback((GameCallback & Serializable) this::onRestart);
     }
 
@@ -165,5 +165,9 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-    
+
+    public void undoMovement() {
+        this.logic.undoMovement();
+        repaint();
+    }
 }

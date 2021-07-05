@@ -25,4 +25,5 @@ public interface GameLogic<T> {
     void paint(Graphics2D graphics);
     void setGameCallback(GameCallback callback);
     void passTurn();
+    void undoMovement();
 }

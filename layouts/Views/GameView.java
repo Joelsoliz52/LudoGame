@@ -4,10 +4,7 @@ import components.BasicButton;
 import components.ImagePanel;
 import components.MusicBackgroundV2;
 import components.utils.enums.ButtonTypes;
-import core.BoardFactory;
 import core.GameMoves;
-import interfaces.GameCallback;
-import interfaces.GameLogic;
 import utilities.Constants;
 import utilities.GameModes;
 import utilities.Helper;
@@ -26,6 +23,8 @@ public class GameView extends View {
     private final BasicButton restartButton = new BasicButton("Reiniciar", ButtonTypes.INVERTED);
     private final BasicButton saveGameButton = new BasicButton("Guardar juego", ButtonTypes.INVERTED);
     private final BasicButton loadGameButton = new BasicButton("Cargar juego", ButtonTypes.INVERTED);
+    private final BasicButton undoButton = new BasicButton("Retroceder", ButtonTypes.INVERTED);
+
     private final ImagePanel background = new ImagePanel("");
     private MusicBackgroundV2 musicBackground;
     private GameModes gameMode;
@@ -42,6 +41,7 @@ public class GameView extends View {
         this.add(this.restartButton);
         this.add(this.saveGameButton);
         this.add(this.loadGameButton);
+        this.add(this.undoButton);
 
         this.restartButton.setVisible(false);
         this.initializeGameMoves();
@@ -92,18 +92,20 @@ public class GameView extends View {
     private void setupButtons(GameModes gameMode) {
         switch (gameMode) {
             case CLASSIC:
-                menuButton.setup(960,580, 100, 30, Color.BLACK);
-                restartButton.setup(800, 580, 150, 30, Color.BLACK);
-                saveGameButton.setup(600, 580, 150, 30, Color.BLACK);
-                loadGameButton.setup(600, 10, 150, 30, Color.BLACK);
+                this.menuButton.setup(960,580, 100, 30, Color.BLACK);
+                this.restartButton.setup(800, 580, 150, 30, Color.BLACK);
+                this.saveGameButton.setup(600, 580, 150, 30, Color.BLACK);
+                this.loadGameButton.setup(600, 10, 150, 30, Color.BLACK);
+                this.undoButton.setup(800, 10, 150, 30, Color.BLACK);
                 break;
             case MRI:
             case RUN:
             default:
-                menuButton.setup(1045,580, 100, 30, Color.BLACK);
-                restartButton.setup(875, 580, 150, 30, Color.BLACK);
-                saveGameButton.setup(700, 580, 150, 30, Color.BLACK);
-                loadGameButton.setup(700, 10, 150, 30, Color.BLACK);
+                this.menuButton.setup(1045,580, 100, 30, Color.BLACK);
+                this.restartButton.setup(875, 580, 150, 30, Color.BLACK);
+                this.saveGameButton.setup(700, 580, 150, 30, Color.BLACK);
+                this.loadGameButton.setup(700, 10, 150, 30, Color.BLACK);
+                this.undoButton.setup(875, 10, 150, 30, Color.BLACK);
                 break;
         }
     }
@@ -160,6 +162,7 @@ public class GameView extends View {
             }
             repaint();
         });
+        this.undoButton.onClick(e -> this.gm.undoMovement());
     }
 
     private Dimension getSizeByMode() {

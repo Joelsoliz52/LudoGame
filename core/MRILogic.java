@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.Stack;
 
 import entities.Dice;
 import entities.Pawn;
@@ -13,6 +14,7 @@ import interfaces.Board;
 import interfaces.GameCallback;
 import interfaces.GameLogic;
 import layouts.Boards.MRIBoard;
+import utilities.Tuple;
 
 /**
  * Logic of the First Custom Game.
@@ -29,9 +31,9 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
     private int flag;
     private int kill;
     public int tam;
-    private int pos;
     private GameCallback callback;
     private boolean passTurnFlag = false;
+    private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
 
     /**
      * MRILogic constructor.
@@ -87,6 +89,10 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 }
             }
         }
+
+        if (flag == 0) {
+            this.stack.push(new Tuple<>(currentPlayer, null, null));
+        }
     }
 
     /**
@@ -124,7 +130,9 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 Position position = pawn1.getPosition();
 
                 if (position.equals(new Position(tem1, tem2))) {
+                    stack.push(new Tuple<>(currentPlayer, null, pawn1));
                     pawn1.setCurrent(-1);
+                    pawn1.setCheckPoint(0, -1, false);
                     kill = 1;
                     k = 1;
                     break;
@@ -160,6 +168,8 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 for (Position pos: possiblePositions) {
                     if (posPawn.equals(pos)) {
                         pawn.setCurrent(0);
+                        stack.push(new Tuple<>(currentPlayer, pawn, null));
+                        pawn.setCheckPoint(0, 0, false);
                         flag = 0;
                         break;
                     }
@@ -192,6 +202,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
         if (value != -1) {
             Pawn pawn = player.getPawns()[value];
             pawn.setCurrent(pawn.getCurrent() + dice.content);
+            stack.push(new Tuple<>(currentPlayer, pawn, null));
             int current = pawn.getCurrent();
             int k = 0;
             pawn.setCurrentOptional(pawn.getCurrentOptional()+dice.content);
@@ -199,20 +210,20 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 player.incrementCoin();
 
             if((dice.content==2||dice.content==4||dice.content==6)&& pawn.getOptional()==1){
+                pawn.setOptional(2);
                 optionalInitial(pawn,current);
                 current = pawn.getCurrent();
-                pawn.setOptional(2);
             }else if (pawn.getOptional()==1){
                 pawn.setOptional(0);
             }
             if((pawn.getCurrentOptional() > 7)&& pawn.getOptional()==2){
+                pawn.setOptional(0);
                 optionalFinal(pawn);
                 current = pawn.getCurrent();
-                pawn.setOptional(0);
             }
-
             if(((current == 3)||(current == 20)||(current == 37)||(current == 54))&&pawn.getOptional()==0){
                 pawn.setOptional(1);
+                pawn.setCheckPoint(1, pawn.getCurrent(), false);
             }
 
             if(((current % 17) != 0) && (current < 67) && (!pawn.getPathOptional())){
@@ -222,6 +233,14 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                         pawn.setPathOptional(false);
                         break;}
                 }
+            }
+
+            if (pawn.getOptional() == 2 && pawn.getCurrentOptional() <= 7) {
+                pawn.setCheckPoint(2, pawn.getCurrentOptional(), true);
+            }
+
+            if (pawn.getOptional() == 0 && !((current == 3)||(current == 20)||(current == 37)||(current == 54))) {
+                pawn.setCheckPoint(0, pawn.getCurrent(), false);
             }
         }
 
@@ -263,6 +282,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             }
         }
         pawn.setCurrentOptional(0);
+        pawn.setCheckPoint(0, pawn.getCurrent(), false);
     }
 
     /**
@@ -279,7 +299,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             graphics.fillRect(680, 60, 380, 150);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString("Ganaste " + players.players[pos].getName()  + ".", 690, 100);
+            graphics.drawString("Ganaste " + player.getName()  + ".", 690, 100);
             graphics.drawString( "Felicitaciones, ", 690, 150);
             graphics.drawString( "Eres el jefe.", 690, 200);
 
@@ -288,14 +308,11 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
 
             return;
         } else if (dice.content != 0) {
-            if(pos == tam){
-                pos = 0;
-            }
             graphics.setColor(Color.WHITE);
             graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+            graphics.drawString(player.getName() + " " +"tu numero de", 690, 100);
             graphics.drawString( "dado es " + dice.content, 690, 150);
         }
 
@@ -306,7 +323,6 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 if (currentPlayer == 0) {
                     currentPlayer = tam;
                 }
-                pos++;
             }
 
             kill = 0;
@@ -322,6 +338,27 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
     @Override
     public void passTurn() {
         passTurnFlag = true;
+    }
+
+    @Override
+    public void undoMovement() {
+        if (!stack.empty()) {
+            Tuple<Integer, Pawn, Pawn> lastMovement = this.stack.pop();
+
+            currentPlayer = lastMovement.getEntityOne();
+
+            if (lastMovement.getEntityTwo() == null && lastMovement.getEntityThree() == null) {
+                return;
+            }
+
+            if (lastMovement.getEntityTwo() == null) {
+                Tuple<Integer, Pawn, Pawn> posibleLastMovement = this.stack.pop();
+                posibleLastMovement.getEntityTwo().undoMovement();
+                lastMovement.getEntityThree().undoMovement();
+            } else {
+                lastMovement.getEntityTwo().undoMovement();
+            }
+        }
     }
 
     @Override

@@ -7,12 +7,11 @@ import entities.Dice;
 import entities.Pawn;
 import entities.Player;
 import entities.Position;
-import interfaces.Board;
-import interfaces.Comodin;
-import interfaces.GameCallback;
-import interfaces.GameLogic;
+import interfaces.*;
 import layouts.Boards.RunBoard;
 import utilities.ListaSEC;
+import utilities.Tuple;
+
 /**
  * Write a description of class RunLogic here.
  * 
@@ -27,7 +26,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     private final Dice<Integer> dice;
     private int flag;
     public int tam;
-    private int pos;
     private int loseTurn;
     public boolean doubleClicked;
     public ArrayList<Position> positionbox;
@@ -36,8 +34,20 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     public boolean newPositionPawn;
     private GameCallback callback;
     private boolean passTurnFlag = false;
+    private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
+    private final ComodinCallback comodinCallback;
 
     public RunLogic(Board board){
+        comodinCallback = new ComodinCallback() {
+            public void onCallback(Pawn pawn) {
+                stack.push(new Tuple<>(currentPlayer, pawn, null));
+            }
+
+            @Override
+            public void onCallback(Pawn pawn1, Pawn pawn2) {
+                stack.push(new Tuple<>(currentPlayer, pawn1, pawn2));
+            }
+        };
         if (board == null) {
             this.board = board = new RunBoard(new Position(80, 50), new Color[tam]);
         } else {
@@ -79,14 +89,14 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
         for (int i = 0; i < 4; i++) {
             int current = players.getPlayer(currentPlayer).getPawns()[i].getCurrent();
 
-            if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
-                    players.getPlayer(currentPlayer).getColor() == Color.RED){
+            if(players.getPlayer(currentPlayer).getColor().equals(Color.BLUE) ||
+                    players.getPlayer(currentPlayer).getColor().equals(Color.RED)){
                 if (current != -1 && current != 83 && (current + dice.content) < 84) {
                     flag = 1;
                     break;
                 }
-            }else if(players.getPlayer(currentPlayer).getColor() == Color.GREEN ||
-                    players.getPlayer(currentPlayer).getColor() == Color.YELLOW){
+            }else if(players.getPlayer(currentPlayer).getColor().equals(Color.GREEN) ||
+                    players.getPlayer(currentPlayer).getColor().equals(Color.YELLOW)){
                 if (current != -1 && current != 79 && (current + dice.content) < 80) {
                     flag = 1;
                     break;
@@ -101,6 +111,10 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
                     flag=1;
                     break;
                 }
+            }
+
+            if (flag == 0) {
+                this.stack.push(new Tuple<>(currentPlayer, null, null));
             }
         }
     }
@@ -183,6 +197,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
                 if (posPawn.equals(pos1) || posPawn.equals(pos2)) {
                     pawn.setCurrent(0);
+                    this.stack.push(new Tuple<>(currentPlayer, pawn, null));
                     flag = 0;
                     break;
                 }
@@ -205,8 +220,8 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             int current = player.getPawns()[i].getCurrent();
             int num;
 
-            if(players.getPlayer(currentPlayer).getColor() == Color.BLUE ||
-                    players.getPlayer(currentPlayer).getColor() == Color.RED){num = 84;}
+            if(players.getPlayer(currentPlayer).getColor().equals(Color.BLUE) ||
+                    players.getPlayer(currentPlayer).getColor().equals(Color.RED)){num = 84;}
             else { num = 80; }
 
             if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1 && !player.getPawns()[i].getFreezePawn()) {
@@ -225,10 +240,11 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
         if (value != -1) {
             Pawn pawn = player.getPawns()[value];
+            this.stack.push(new Tuple<>(currentPlayer, pawn, null));
             pawn.setCurrent(pawn.getCurrent() + dice.content);
             int current = pawn.getCurrent();
 
-            if(player.getColor() == Color.BLUE || player.getColor() == Color.RED){
+            if(player.getColor().equals(Color.BLUE) || player.getColor().equals(Color.RED)){
                 if (current == 83) player.incrementCoin();
             } else {
                 if (current == 79) player.incrementCoin();
@@ -247,9 +263,9 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
      */
     private void chooseCasilla(Comodin comodin, int x, int y, Pawn pawn){
         if(comodin instanceof Traps){
-            comodin = new Traps(this.players.players, x, y, this, pawn);
+            comodin = new Traps(this.players.players, x, y, this, pawn, comodinCallback);
         }else{
-            comodin = new Bonus(this.players.players, x, y, this, pawn);
+            comodin = new Bonus(this.players.players, x, y, this, pawn, comodinCallback);
         }
     }
 
@@ -266,7 +282,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             graphics.fillRect(680, 100, 380,130);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
-            graphics.drawString("Ganaste " + players.players[pos].getName() + ".", 690, 150);
+            graphics.drawString("Ganaste " + player.getName() + ".", 690, 150);
             graphics.drawString("Felicidades.", 690, 200);
             if (this.callback != null)
                 this.callback.onRestart();
@@ -274,15 +290,12 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             return;
 
         } else if(dice.content != 0){
-            if(pos == tam){
-                pos = 0;
-            }
             graphics.setColor(Color.WHITE);
             graphics.fillRect(680, 58, 360, 120);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             if (player.getFlagTraps()==1){
-                graphics.drawString(players.players[pos].getName()+ " " +"perdiste ", 690, 100);
+                graphics.drawString(player.getName()+ " " +"perdiste ", 690, 100);
                 graphics.drawString( "turno", 690, 150);
                 flag = 0;
                 if(player.getloseTurn() <= loseTurn){
@@ -292,29 +305,29 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
                     player.setloseTurn(0);
                 }
             }else if(player.getFlagTraps()==3) {
-                graphics.drawString(players.players[pos].getName()+ " " +"regresaste ", 690, 100);
+                graphics.drawString(player.getName()+ " " +"regresaste ", 690, 100);
                 graphics.drawString( "al inicio", 690, 150);
             }else if(player.getFlagTraps()==4) {
-                graphics.drawString(players.players[pos].getName()+ " " +"retrocediste", 690, 100);
+                graphics.drawString(player.getName()+ " " +"retrocediste", 690, 100);
             }else if(player.getFlagTraps()==5) {
-                graphics.drawString(players.players[pos].getName()+ " " +"ficha ", 690, 100);
+                graphics.drawString(player.getName()+ " " +"ficha ", 690, 100);
                 graphics.drawString( "congelada", 690, 150);
             }else if(player.getFlagTraps()==6) {
-                graphics.drawString(players.players[pos].getName()+ " " +"caiste ", 690, 100);
+                graphics.drawString(player.getName()+ " " +"caiste ", 690, 100);
                 graphics.drawString( "en una mina", 690, 150);
             }else if(player.getFlagBonus()==1) {
-                graphics.drawString(players.players[pos].getName()+ " " +"ganaste ", 690, 100);
+                graphics.drawString(player.getName()+ " " +"ganaste ", 690, 100);
                 graphics.drawString( "un escudo", 690, 150);
             }else if(player.getFlagBonus()==2) {
-                graphics.drawString(players.players[pos].getName()+ " " +"salto", 690, 100);
+                graphics.drawString(player.getName()+ " " +"salto", 690, 100);
                 graphics.drawString( "en el tiempo", 690, 150);
             }else if(player.getFlagBonus()==3) {
-                graphics.drawString(players.players[pos].getName()+ " " +"lanza", 690, 100);
+                graphics.drawString(player.getName()+ " " +"lanza", 690, 100);
                 graphics.drawString( "nuevamente dado", 690, 150);
             }else if(player.getFlagBonus()==4) {
-                graphics.drawString(players.players[pos].getName()+ " " +"avanzaste", 690, 100);
+                graphics.drawString(player.getName()+ " " +"avanzaste", 690, 100);
             }else {
-                    graphics.drawString(players.players[pos].getName()+ " " +"tu numero de", 690, 100);
+                    graphics.drawString(player.getName()+ " " +"tu numero de", 690, 100);
                     graphics.drawString( "dado es " + dice.content, 690, 150);
             }
         }
@@ -326,7 +339,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
                 if (currentPlayer == 0) {
                     currentPlayer = tam;
                 }
-                pos++;
             }
             if (player.getFlagBonus() != 0 || player.getFlagTraps() != 0 && player.getFlagTraps() != 1) {
                 player.setFlagBonus(0);
@@ -344,6 +356,30 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     @Override
     public void passTurn() {
         passTurnFlag = true;
+    }
+
+    @Override
+    public void undoMovement() {
+        if (!stack.empty()) {
+            Tuple<Integer, Pawn, Pawn> lastMovement = this.stack.pop();
+            System.out.println("Player: " + lastMovement.getEntityOne());
+            currentPlayer = lastMovement.getEntityOne();
+
+            if (lastMovement.getEntityTwo() == null && lastMovement.getEntityThree() == null) {
+                return;
+            }
+
+            if (lastMovement.getEntityTwo() == null) {
+                Tuple<Integer, Pawn, Pawn> posibleLastMovement = this.stack.pop();
+                posibleLastMovement.getEntityTwo().undoMovement();
+                lastMovement.getEntityThree().undoMovement();
+            } else if (lastMovement.getEntityTwo() != null && lastMovement.getEntityThree() != null) {
+                lastMovement.getEntityTwo().undoMovement();
+                lastMovement.getEntityThree().undoMovement();
+            } else {
+                lastMovement.getEntityTwo().undoMovement();
+            }
+        }
     }
 
     /**

@@ -5,13 +5,19 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
+import interfaces.ComodinCallback;
+import interfaces.GameCallback;
+
 import java.awt.*;
 import java.io.Serializable;
 
 public class Bonus implements Comodin, Serializable {
     private Position pos;
+    private ComodinCallback callback;
+    
     public Bonus(){}
-    public Bonus(Player[] players, int x, int y, RunLogic logic,Pawn pawn){
+    public Bonus(Player[] players, int x, int y, RunLogic logic,Pawn pawn, ComodinCallback callback){
+        this.callback = callback;
         int al = aleatori();
         pos = new Position(x, y);
         Player player = returnPlayer1(players, pawn);
@@ -55,13 +61,17 @@ public class Bonus implements Comodin, Serializable {
         if(alc == 1){
             if(pawn.getCurrent()+10 > 79 && (player.getColor()==Color.GREEN || player.getColor()==Color.YELLOW)){
                 pawn.setCurrent(78);
+                callback.onCallback(pawn);
             }else if(pawn.getCurrent()+10 > 83 && (player.getColor()==Color.BLUE || player.getColor()==Color.RED)){
                 pawn.setCurrent(82);
+                callback.onCallback(pawn);
             }else{
                 pawn.setCurrent(pawn.getCurrent() + 10);
+                callback.onCallback(pawn);
             }
         }else{
-                pawn.setCurrent(pawn.getCurrent()-10);
+            pawn.setCurrent(pawn.getCurrent()-10);
+            callback.onCallback(pawn);
         }
         
     }
@@ -82,9 +92,13 @@ public class Bonus implements Comodin, Serializable {
         int pos = dice.content;
         if(pawn.getCurrent()+pos > 79 && (player.getColor()==Color.GREEN || player.getColor()==Color.YELLOW)){
             pawn.setCurrent(78);
+            callback.onCallback(pawn);
         }else if(player.getColor() == Color.GREEN || player.getColor() == Color.YELLOW){
             pawn.setCurrent(pawn.getCurrent() + pos);
-        }else{pawn.setCurrent(pawn.getCurrent() + pos);
+            callback.onCallback(pawn);
+        }else{
+            pawn.setCurrent(pawn.getCurrent() + pos);
+            callback.onCallback(pawn);
         }
         
     }
@@ -131,5 +145,4 @@ public class Bonus implements Comodin, Serializable {
 	public void paint(Graphics gr, int h, int w, int x, int y, Color color) {
 		// TODO Auto-generated method stub
 	}
-    
 }

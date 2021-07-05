@@ -12,12 +12,17 @@ import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
+import interfaces.ComodinCallback;
+import interfaces.GameCallback;
+import utilities.Tuple;
 
 public class Traps implements Comodin, Serializable {
     private Position pos;
+    private ComodinCallback callback;
     public Traps(){}
 
-    public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA){
+    public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA, ComodinCallback callback){
+        this.callback = callback;
         Position pos = new Position(x, y);
         Position pos1 = new Position(0, 9);
         Position pos2 = new Position(9, 0);
@@ -76,6 +81,7 @@ public class Traps implements Comodin, Serializable {
      */
     public void putTrapReturnInit(Pawn pawn){
         pawn.setCurrent(-1);
+
     }
 
     /**
@@ -85,6 +91,7 @@ public class Traps implements Comodin, Serializable {
         dice.throwDice();
         int pos = dice.content;
         pawn.setCurrent(pawn.getCurrent() - pos);
+        callback.onCallback(pawn);
     }
 
     /**
@@ -134,6 +141,7 @@ public class Traps implements Comodin, Serializable {
                 }
             pawn1.setCurrent(a);
             pawn2.setCurrent(b);
+            callback.onCallback(pawn1, pawn2);
         }
     }
 
@@ -168,9 +176,11 @@ public class Traps implements Comodin, Serializable {
                 for(int j=0; j < 3; j++){
                     if(players[pos1].getPawns()[i].getPosition().equals(pawnsadelante[j])){
                         players[pos1].getPawns()[i].setCurrent(players[pos1].getPawns()[i].getCurrent()+3);
+                        callback.onCallback(pawn);
                     }
                     if(players[pos1].getPawns()[i].getPosition().equals(pawnatras[j])){
                         players[pos1].getPawns()[i].setCurrent(players[pos1].getPawns()[i].getCurrent()-3);
+                        callback.onCallback(pawn);
                     }
                 }
                 i++;

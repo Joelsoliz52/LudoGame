@@ -9,11 +9,10 @@ import utilities.Constants;
 import utilities.GameModes;
 import utilities.Helper;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.*;
-import java.net.URL;
 import java.util.HashMap;
 
 public class GameView extends View {
@@ -119,49 +118,64 @@ public class GameView extends View {
         });
         this.restartButton.onClick(e -> this.onRestart());
         this.saveGameButton.onClick(e -> {
+
             try {
-                // Guardar juego - sobreescribir juego
-                // leemos string - guardar
-                URL fileURL = getClass().getResource("/resources/savedGames");
-                String path = fileURL.toString().replace("file:/", "").replace("/", "\\");
-                FileOutputStream fileToSave = new FileOutputStream(path+"\\gameOne.obj");
-                ObjectOutputStream outputStream = new ObjectOutputStream(fileToSave);
-                outputStream.writeObject(this.gameMode);
-                outputStream.writeObject(this.gm);
-                outputStream.close();
-                fileToSave.close();
-                System.out.println("Game saved");
+                JFileChooser fileSelector = new JFileChooser();
+                fileSelector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileSelector.showOpenDialog(this);
+                File file = fileSelector.getSelectedFile();
+
+                if ((file == null) || (file.getName().equals(""))) {
+                    JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
+                }else {
+                    FileOutputStream fileToSave = new FileOutputStream(file.getPath());
+                    ObjectOutputStream outputStream = new ObjectOutputStream(fileToSave);
+                    outputStream.writeObject(this.gameMode);
+                    outputStream.writeObject(this.gm);
+                    outputStream.close();
+                    fileToSave.close();
+                    System.out.println("Game saved");
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 System.out.println("Game don't saved");
             }
         });
         this.loadGameButton.onClick(e -> {
+
             try {
-                URL fileURL = getClass().getResource("/resources/savedGames/gameOne.obj");
-                String path = fileURL.toString().replace("file:/", "").replace("/", "\\");
-                FileInputStream fileToLoad = new FileInputStream(path);
-                ObjectInputStream inputStream = new ObjectInputStream(fileToLoad);
-                this.remove(this.gm);
-                this.remove(this.background);
-                this.gameMode = (GameModes) inputStream.readObject();
-                this.gm = (GameMoves) inputStream.readObject();
-                this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
-                this.add(this.gm);
-                this.musicBackground.stopMusic();
-                this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(this.gameMode));
-                this.musicBackground.playMusic();
-                this.setupButtons(this.gameMode);
-                this.setup(this.background, this.getSizeByMode(), this.musicBackground);
-                inputStream.close();
-                fileToLoad.close();
-                System.out.println("Game loaded");
+                JFileChooser fileSelector = new JFileChooser();
+                fileSelector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileSelector.showOpenDialog(this);
+                File file = fileSelector.getSelectedFile();
+
+                if ((file == null) || (file.getName().equals(""))) {
+                    JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
+                }else {
+                    FileInputStream fileToLoad = new FileInputStream(file.getPath());
+                    ObjectInputStream inputStream = new ObjectInputStream(fileToLoad);
+                    this.remove(this.gm);
+                    this.remove(this.background);
+                    this.gameMode = (GameModes) inputStream.readObject();
+                    this.gm = (GameMoves) inputStream.readObject();
+                    this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
+                    this.add(this.gm);
+                    this.musicBackground.stopMusic();
+                    this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(this.gameMode));
+                    this.musicBackground.playMusic();
+                    this.setupButtons(this.gameMode);
+                    this.setup(this.background, this.getSizeByMode(), this.musicBackground);
+                    inputStream.close();
+                    fileToLoad.close();
+                    System.out.println("Game loaded");
+                }
             } catch (Exception ioException) {
                 ioException.printStackTrace();
                 System.out.println("Game don't loaded");
             }
             repaint();
         });
+
         this.undoButton.onClick(e -> this.gm.undoMovement());
     }
 

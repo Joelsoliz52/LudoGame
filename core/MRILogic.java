@@ -155,8 +155,6 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             Pawn pawn = player.getPawns()[i];
 
             if (pawn.getCurrent() == -1) {
-                // Select pawn is not working fine:
-                // * Specific position click is mandatory for move the pawn
                 Position posPawn = pawn.getPosition();
                 Position[] possiblePositions = {
                         new Position(x, y),
@@ -253,7 +251,6 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
      * @param current Current pawn path position.
      */
     private void optionalInitial(Pawn pawn, int current){
-        pawn.setCurrentOptional(0);
         pawn.setPathOptional(true);
         int j = 0;
         if(current == (20 + dice.content)){j = 1; pawn.setnumPathOp(1);}
@@ -342,6 +339,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
 
     @Override
     public void undoMovement() {
+
         if (!stack.empty()) {
             Tuple<Integer, Pawn, Pawn> lastMovement = this.stack.pop();
 

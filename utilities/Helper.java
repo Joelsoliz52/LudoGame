@@ -15,10 +15,6 @@ public class Helper {
     private final static ArrayList<String> musicExtensions = new ArrayList<>(Arrays.asList("mp3", "m4a"));
     private final static String gifExtension = "gif";
 
-    public static int randomNumber(int maxNumber) {
-        return (int) (Math.random()*maxNumber) + 1;
-    }
-
     public static Position calculateCenteredPosition(Dimension viewSize) {
         int x = (screenSize.width - viewSize.width) / 2;
         int y = (screenSize.height - viewSize.height) / 2;

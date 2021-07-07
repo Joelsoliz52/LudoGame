@@ -31,6 +31,7 @@ public class Pawn implements Serializable {
     private final Stack<Integer> pawnMovements = new Stack<>();
     private final Stack<Tuple<Integer, Integer, Boolean>> pawnOptionalMovements = new Stack<>();
     private boolean classicGame = true;
+    private boolean UndoMovementOptional;
     /**
      * Pawn constructor.
      * @param height Height of pawn boxes.
@@ -48,6 +49,7 @@ public class Pawn implements Serializable {
         numPathOp = 0;
         flagBonus = false;
         freezePawn = false;
+        UndoMovementOptional = true;
         pawnMovements.push(current);
         pawnOptionalMovements.push(new Tuple<>(optional, current, pathOptional));
     }
@@ -73,10 +75,17 @@ public class Pawn implements Serializable {
             if(!pathOptional) {
                 x = path.getAX()[player.getTurn() - 1][current];
                 y = path.getAY()[player.getTurn() - 1][current];
+                setUndoMovementOptional(true);
             }
             else{
-                x = path.getOptionalAX()[player.getTurn() - 1][currentOptional];
-                y = path.getOptionalAY()[player.getTurn() - 1][currentOptional];
+                if (UndoMovementOptional) {
+                    x = path.getOptionalAX()[player.getTurn() - 1][current];
+                    y = path.getOptionalAY()[player.getTurn() - 1][current];
+                    setUndoMovementOptional(true);
+                }else {
+                    x = path.getOptionalAX()[player.getTurn() - 1][currentOptional];
+                    y = path.getOptionalAY()[player.getTurn() - 1][currentOptional];
+                }
             }
         }
         position = new Position(x, y);
@@ -186,6 +195,7 @@ public class Pawn implements Serializable {
     }
 
     public void undoMovement() {
+        setUndoMovementOptional(false);
         if (this.classicGame) {
             this.pawnMovements.pop();
             this.current = this.pawnMovements.lastElement();
@@ -204,30 +214,8 @@ public class Pawn implements Serializable {
             this.pathOptional = true;
         }
         this.optional = lastMovement.getEntityOne();
-
-        /*Tuple<Integer, Integer, Boolean> lastMovement = this.pawnMovements.lastElement();
-
-        if (lastMovement.getEntityOne() == 2) {
-            System.out.println("Optional: " + lastMovement.getEntityTwo());
-            this.currentOptional = lastMovement.getEntityTwo();
-            this.pathOptional = lastMovement.getEntityThree();
-        }
-
-        if (lastMovement.getEntityOne() != 2) {
-            if (deletedMovement.getEntityOne() == 2) {
-                System.out.println(lastMovement.getEntityOne() + "::"+ lastMovement.getEntityTwo());
-                Tuple<Integer, Integer, Boolean> temp = this.pawnMovements.pop();
-                lastMovement = pawnMovements.lastElement();
-
-                System.out.println(temp.getEntityOne() + "::"+ temp.getEntityTwo());
-                System.out.println(lastMovement.getEntityOne() + "::"+ lastMovement.getEntityTwo());
-            }
-            System.out.println("Not optional: " + lastMovement.getEntityTwo());
-            this.current = lastMovement.getEntityTwo();
-            this.pathOptional = lastMovement.getEntityThree();
-        }
-
-        this.optional = lastMovement.getEntityOne();*/
-
+    }
+    public void setUndoMovementOptional(boolean UndoMovementOptional){
+        this.UndoMovementOptional = UndoMovementOptional;
     }
 }

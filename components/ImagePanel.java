@@ -24,16 +24,8 @@ public class ImagePanel extends JPanel {
         this(name, 0, 0, dimension);
     }
 
-    public ImagePanel(String name, int x, int y) {
-        this(name, "background-image", x, y);
-    }
-
     public ImagePanel(String name, int x, int y, Dimension dimension) {
         this(name, "background-image", x, y, dimension);
-    }
-
-    public ImagePanel(String name, String description, int x, int y) {
-        this(name, description, x, y, null);
     }
 
     public ImagePanel(String name, String description, int x, int y, Dimension dimension) {

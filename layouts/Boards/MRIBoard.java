@@ -3,9 +3,6 @@ package layouts.Boards;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
-
-import javax.swing.ImageIcon;
-
 import core.BuildPlayers;
 import entities.Player;
 import interfaces.Board;
@@ -376,7 +373,7 @@ public class MRIBoard implements Board, Serializable {
      */
     private void drawText(Graphics2D graphics) {
         graphics.setFont(new Font("serif", Font.BOLD, 40));
-        HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
+        HashMap<Color, Boolean> map = new HashMap<>();
         map.put(Color.RED, false);
         map.put(Color.BLUE, false);
         map.put(Color.YELLOW, false);

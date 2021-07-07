@@ -1,13 +1,7 @@
 package core;
 
- 
-
-//import org.jshadow.interfaces.GameLogic;
-
 import javax.swing.JPanel;
 
-import components.BasicButton;
-import components.utils.enums.ButtonTypes;
 import interfaces.GameCallback;
 import interfaces.GameLogic;
 import utilities.GameModes;
@@ -40,14 +34,6 @@ public class GameMoves extends JPanel implements KeyListener, ActionListener, Mo
     private GameModes gameMode;
     private HashMap<Color, String> players;
     private transient GameCallback callback;
-    public GameMoves(GameLogic<Integer> logic) {
-        init(new Dimension(1200, 700));
-        this.logic = logic;
-    }
-
-    public GameMoves(GameModes gameMode, HashMap<Color, String> players) {
-        this(gameMode, players, new Dimension(1200, 700));
-    }
 
     /**
      * GameMoves constructor.

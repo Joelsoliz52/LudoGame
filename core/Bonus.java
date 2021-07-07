@@ -6,10 +6,13 @@ import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
 import interfaces.ComodinCallback;
-import interfaces.GameCallback;
 
 import java.awt.*;
 import java.io.Serializable;
+
+/**
+ * Class to activate bonus
+ */
 
 public class Bonus implements Comodin, Serializable {
     private Position pos;
@@ -42,27 +45,30 @@ public class Bonus implements Comodin, Serializable {
     }
     
     /**
-     * Metodo para elegir al azar un bonus
+     * Method to choose a random bonus
      */
     public int aleatori(){return (int)(Math.random()*4)+1;}
+
     /**
-     * Metodo escudo para cualquier trampa
-     * @param pawn, x, y
+     * Method to obtain shield against any trap
+     * @param pawn, pawn that won bonus.
      */
     public void bonusShield(Pawn pawn){
     	pawn.setFlag(true);
     }
     
     /**
-     * Metodo salto de tiempo
+     * Method for having time jump bonus
+     * @param pawn, pawn that won bonus
+     * @param player, player that won bonus
      */
     public void bonusJumperTime(Pawn pawn, Player player){
         int alc = (int)(Math.random()*2)+1;
         if(alc == 1){
-            if(pawn.getCurrent()+10 > 79 && (player.getColor()==Color.GREEN || player.getColor()==Color.YELLOW)){
+            if(pawn.getCurrent()+10 > 79 && (player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW))){
                 pawn.setCurrent(78);
                 callback.onCallback(pawn);
-            }else if(pawn.getCurrent()+10 > 83 && (player.getColor()==Color.BLUE || player.getColor()==Color.RED)){
+            }else if(pawn.getCurrent()+10 > 83 && (player.getColor().equals(Color.BLUE) || player.getColor().equals(Color.RED))){
                 pawn.setCurrent(82);
                 callback.onCallback(pawn);
             }else{
@@ -77,8 +83,8 @@ public class Bonus implements Comodin, Serializable {
     }
      
     /**
-     * Metodo para lanzar nuevamente dado
-     * @param player, pawn, x, y
+     * Method to roll dice again
+     * @param player, player that won bonus
      */
     public void bonusNewThrowDice(Player player){
         player.setFlagBonus(3);
@@ -86,14 +92,17 @@ public class Bonus implements Comodin, Serializable {
     
     /**
      * Method for having bonus velocity
+     * @param dice, amount to advance
+     * @param pawn, pawn that won bonus
+     * @param player, player that won bonus
      */
     public void bonusSpeed(Dice<Integer> dice, Pawn pawn, Player player){
         dice.throwDice();
         int pos = dice.content;
-        if(pawn.getCurrent()+pos > 79 && (player.getColor()==Color.GREEN || player.getColor()==Color.YELLOW)){
+        if(pawn.getCurrent()+pos > 79 && (player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW))){
             pawn.setCurrent(78);
             callback.onCallback(pawn);
-        }else if(player.getColor() == Color.GREEN || player.getColor() == Color.YELLOW){
+        }else if(player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW)){
             pawn.setCurrent(pawn.getCurrent() + pos);
             callback.onCallback(pawn);
         }else{
@@ -121,8 +130,8 @@ public class Bonus implements Comodin, Serializable {
     }
     
     /**
-     * Metodo para devuelve posicion ficha segun x y y se usa en bonus speed, jumptime
-     * @param player, x, y
+     * Method to return position of the pawn according to x and y
+     * @param player, player that won bonus
      * @return boolean
      */
     public boolean trustPositionPawn(Player player, int x, int y){
@@ -136,13 +145,10 @@ public class Bonus implements Comodin, Serializable {
         }
         return false;
     }
+
     /**
-     * Metodo sobreescrito de comodin 
+     * Method that returns the position of the trap that was obtained
      */
     public Position getPos(){return pos;}
 
-	@Override
-	public void paint(Graphics gr, int h, int w, int x, int y, Color color) {
-		// TODO Auto-generated method stub
-	}
 }

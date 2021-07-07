@@ -21,13 +21,10 @@ public class Player implements Serializable {
     private String name;
     private int flagBonus;
     private int flagTraps;
-    private boolean flagAliance;
     private int loseTurn;
     /**
      * Player constructor.
-     * @param color Player color.
      * @param height Height of the boxes.
-     * @param turn Player turn.
      * @param width Width of the boxes.
      * @param path Path of the pawns.
      */
@@ -37,7 +34,6 @@ public class Player implements Serializable {
         pawns = new Pawn[4];
         flagBonus = 0;
         flagTraps = 0;
-        flagAliance = false;
         loseTurn = 0;
         for(int i = 0; i < 4; i++) {
              pawns[i] = new Pawn(height, width, path);
@@ -78,50 +74,35 @@ public class Player implements Serializable {
     public void setTurn(int turn) { this.turn = turn; }
     
     /**
-     * Retorna una bandera de bonus
-     * @return
+     * Return a bonus flag
+     * @return flag
      */
     public int getFlagBonus(){return flagBonus;}
     
     /**
-     * Retorna una bandera de trampa
-     * @return
+     * Return a trap flag
+     * @return flag
      */
     public int getFlagTraps(){return flagTraps;}
-    
+
     /**
-     * Retorna una bandera de alianza
-     * @return
-     */
-    public boolean getFlagAliance(){return flagAliance;}
-    
-    /**
-     * Retorna un entero de perdida de turno
-     * @return
+     * Returns an integer turn loss
+     * @return integer
      */
     public int getloseTurn(){return loseTurn;}
     
     /**
-     * Modifica una bandera de bonus
-     * @return
+     * Modify a bonus flag
      */
     public void setFlagBonus(int flagBonus){this.flagBonus = flagBonus;}
     
     /**
-     * Modifica una bandera de trampa
-     * @return
+     * Modify a trap flag
      */
     public void setFlagTraps(int flagTraps){this.flagTraps = flagTraps;}
-    
+
     /**
-     * Modifica una bandera de alianza
-     * @return
-     */
-    public void setFlagAliance(boolean flagAliance){this.flagAliance = flagAliance;}
-    
-    /**
-     * Modifica un entero de perdida de turno
-     * @return
+     * Modifies an integer turn loss
      */
     public void setloseTurn(int loseTurn){this.loseTurn = loseTurn;}
     

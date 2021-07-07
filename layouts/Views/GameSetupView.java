@@ -2,8 +2,6 @@ package layouts.Views;
 
 import components.*;
 import components.utils.enums.ButtonTypes;
-import core.BoardFactory;
-import interfaces.GameLogic;
 import utilities.GameModes;
 import utilities.Helper;
 
@@ -229,6 +227,7 @@ public class GameSetupView extends View {
     }
 
     private void reset() {
+        current = 0;
         playersNames = null;
         playersColors = Helper.getPlayersColors();
         setEnabledPlayersNumberButtons(true);

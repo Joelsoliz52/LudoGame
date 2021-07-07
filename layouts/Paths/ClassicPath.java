@@ -17,8 +17,8 @@ public class ClassicPath implements Path, Serializable {
     private int tam;
     public ClassicPath(int tam, Color[] colores){
         this.tam = tam;
-        addAX(AX, colores);
-        addAY(AY, colores);
+        addAX(colores);
+        addAY(colores);
         getAX();
         getAY();
     }
@@ -31,7 +31,7 @@ public class ClassicPath implements Path, Serializable {
         return AX;
     }
     
-    private void addAX(int[][] x, Color[] colores){
+    private void addAX(Color[] colores){
         int i = 0;
         int pos = 0;
         AX = new int[4][57];
@@ -81,7 +81,7 @@ public class ClassicPath implements Path, Serializable {
         return AY;
     }
 
-    private void addAY(int[][] y, Color[] colores){
+    private void addAY(Color[] colores){
         int pos = 0;
         int i = 0;
         AY = new int[4][57];

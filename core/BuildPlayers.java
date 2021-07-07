@@ -32,7 +32,7 @@ public class BuildPlayers implements Serializable {
         this.tam = tam;
         players = new Player[tam];
         Path p = board.getPath();
-        addPalyers(players, height, width, p);
+        addPlayers(players, height, width, p);
         getturnPlayers(players);
     }
 
@@ -81,13 +81,13 @@ public class BuildPlayers implements Serializable {
     }
     
     /**
-     * Metodo para agregar nuevos jugadores para modificarlos por color y nombre 
-     * @param players
-     * @param height
-     * @param width
-     * @param p
+     * Method to add the new players
+     * @param players new players.
+     * @param height Height of the boxes.
+     * @param width Width of the boxes.
+     * @param p Path of the pawns.
      */
-    private void addPalyers(Player[] players, int height, int width, Path p){
+    private void addPlayers(Player[] players, int height, int width, Path p){
         int pos = 0;
         while(pos < players.length){
             players[pos] = new Player("", height, width, p);
@@ -97,15 +97,15 @@ public class BuildPlayers implements Serializable {
 
     /**
      * Method for add players with an arrayList.
-     * @param players
+     * @param players all players.
      */
     public void addPlayers(ArrayList<Player> players) {
         this.players = players.toArray(new Player[0]);
     }
 
     /**
-     * Metodo para dar un turno especifico para cada jugador
-     * @param players
+     * Method for give a specific turn to each player
+     * @param players all players.
      */
     private void getturnPlayers(Player[] players){
         int turn = 1;
@@ -134,6 +134,11 @@ public class BuildPlayers implements Serializable {
         return null;
     }
 
+    /**
+     * Search a player by color.
+     * @param color Player color.
+     * @return Returns the player if it exists, otherwise returns null.
+     */
     public Player getPlayer (Color color) {
         for(Player player : players) {
             if (player.getColor().equals(color)) {

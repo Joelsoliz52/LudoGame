@@ -1,10 +1,5 @@
 package core;
-/**
- * Clase de trampas para poner o activar una trampa
- */
 
-import java.awt.Graphics;
-import java.awt.Color;
 import java.io.Serializable;
 import javax.swing.JOptionPane;
 import entities.Dice;
@@ -13,8 +8,9 @@ import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
 import interfaces.ComodinCallback;
-import interfaces.GameCallback;
-import utilities.Tuple;
+/**
+ * Class to set or activate trap
+ */
 
 public class Traps implements Comodin, Serializable {
     private Position pos;
@@ -23,7 +19,7 @@ public class Traps implements Comodin, Serializable {
 
     public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA, ComodinCallback callback){
         this.callback = callback;
-        Position pos = new Position(x, y);
+        pos = new Position(x, y);
         Position pos1 = new Position(0, 9);
         Position pos2 = new Position(9, 0);
         Position pos3 = new Position(8, 18);
@@ -72,12 +68,18 @@ public class Traps implements Comodin, Serializable {
     }
 
     /**
-     * Metodo para seleccionar una trampa al azar
+     * Method to choose a random trap
      */
     public int aleatori(){return (int)(Math.random()*3)+1;}
 
+    @Override
+    public boolean trustPositionPawn(Player player, int x, int y) {
+        return false;
+    }
+
     /**
-     * Metodo trampa para volver al inicio
+     * Method to return to start
+     * @param pawn Pawn that fell into the trap.
      */
     public void putTrapReturnInit(Pawn pawn){
         pawn.setCurrent(-1);
@@ -85,7 +87,9 @@ public class Traps implements Comodin, Serializable {
     }
 
     /**
-     * Metodo para colocar una trampa de retroceso
+     * Method of going back
+     * @param dice amount to go back.
+     * @param pawn Pawn that fell into the trap.
      */
     public void putTrapRecoil(Dice<Integer> dice, Pawn pawn){
         dice.throwDice();
@@ -96,22 +100,26 @@ public class Traps implements Comodin, Serializable {
 
     /**
      * Metodo para colocar una trampa de perdida de turno
-     * @param player
+     * @param player Player who fell into the trap.
      */
     public void putTrapLoseTurn(Player player){
         player.setFlagTraps(1);
     }
 
     /**
-     * Metodo para colocar una trampa de congelar una ficha
+     * Method to freeze a pawn.
+     * @param pawn Pawn that fell into the trap.
      */
     public void putTrapFreezePawn(Pawn pawn){
         pawn.setFreezePawn(true);
     }
 
     /**
-     * Metodo para cambiar de posicion una ficha escoger ficha
-     * @param pawn1, x, y, players
+     * Method to change the position of a pawn with another
+     * @param pawn1, current player's pawn.
+     * @param x X position of the pawn chosen.
+     * @param y Y position of the pawn chosen.
+     * @param players All the players, to know which one is in position.
      */
     public void newPositionPawn(Pawn pawn1, int x, int y, Player[] players){
         Position pos1 = pawn1.getPosition();
@@ -147,7 +155,8 @@ public class Traps implements Comodin, Serializable {
 
     /***
      * Method for place traps mine
-     * @param players, pawn
+     * @param players All the players, to know which one is in position.
+     * @param pawn Pawn that fell into the mine.
      */
     public void putTrapMine(Player[] players, Pawn pawn){
         Position[] pawnsadelante = new Position [3];
@@ -191,9 +200,10 @@ public class Traps implements Comodin, Serializable {
     }
 
     /**
-     * Metodo sobreescrito
-     * @param players, x, y
-     * @return verifica la posicion de una ficha
+     * Method that checks position
+     * @param pawn Pawn whose position is verified.
+     * @param players All players.
+     * @return verification
      */
     public boolean trustPositionPawn2(Pawn pawn, Player[] players){
         int i = 0;
@@ -210,23 +220,12 @@ public class Traps implements Comodin, Serializable {
         }
         return false;
     }
-    
-    public boolean trustPositionPawn(Player player, int x, int y){
-        int i = 0;
-        Position pos = new Position(x, y);
-        while(i < player.getPawns().length){
-            if(pos.equals(player.getPawns()[i].getPosition())){
-                return true;
-            }
-            i++;
-        }
-        return false;
-    }
 
     /**
-     * Metodo para verificar la posicion de una ficha en casillas de comodin
-     * @param players, pos1
-     * @return retorna la ficha que se encuentre en dichas posiciones
+     * Method to check the position of a pawn in wild card squares.
+     * @param players Players whose pawn positions will be seen.
+     * @param pos1 where to find a pawn.
+     * @return pawn that is in position
      */
     private Pawn returnPawn(Player[] players, Position pos1){
         int i = 0;
@@ -246,8 +245,10 @@ public class Traps implements Comodin, Serializable {
     }
 
     /**
-     * Metodo para devolver un jugador mediante una posicion
-     * @param players, x, y
+     * Method to return a player by a position
+     * @param players All players
+     * @param x X position
+     * @param y Y position
      * @return Player
      */
     private Player returnPlayer(Player[] players, int x, int y){
@@ -269,8 +270,9 @@ public class Traps implements Comodin, Serializable {
     }
     
     /**
-     * Metodo para devolver un jugador mediante una posicion
-     * @param players, x, y
+     * Method to return a player through a pawn
+     * @param players All players
+     * @param pawn Pawn to compare
      * @return Player
      */
     private Player returnPlayer(Player[] players, Pawn pawn){
@@ -290,18 +292,11 @@ public class Traps implements Comodin, Serializable {
     }
 
     /**
-     * Medoto que devuelve la posicion de la trampa que se obtuvo
+     * Method that returns the position of the trap that was obtained
      */
     public Position getPos(){
         return pos;
     }
 
-    /**
-     * Metodo sobre escrito para dibujar un cuadrado del color del jugador
-     * @param gr, int, int, int, int, Color
-     */
-    public void paint(Graphics gr, int h, int w, int x, int y, Color color) {
-        gr.setColor(color);
-        gr.drawRect(x, y, w, h);
-    }
+
 }

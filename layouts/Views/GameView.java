@@ -134,11 +134,9 @@ public class GameView extends View {
                     outputStream.writeObject(this.gm);
                     outputStream.close();
                     fileToSave.close();
-                    System.out.println("Game saved");
                 }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-                System.out.println("Game don't saved");
             }
         });
         this.loadGameButton.onClick(e -> {
@@ -167,11 +165,9 @@ public class GameView extends View {
                     this.setup(this.background, this.getSizeByMode(), this.musicBackground);
                     inputStream.close();
                     fileToLoad.close();
-                    System.out.println("Game loaded");
                 }
             } catch (Exception ioException) {
                 ioException.printStackTrace();
-                System.out.println("Game don't loaded");
             }
             repaint();
         });

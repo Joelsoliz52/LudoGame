@@ -54,14 +54,14 @@ public class Position implements Serializable {
     }
     
     /**
-     * Retorna el valor boolean de la bandera de trampa
+     * Returns the boolean value of the trap flag
      * @return boolean
      */
     public boolean getFlagTraps(){return flagTraps;}
     
     /**
-     * Modifica el valor de la bandera trampa en caso de ser necesario
-     * @param flagTraps
+     * Modify the value of the trap flag if necessary
+     * @param flagTraps trap flag
      */
     public void setFlagTraps(boolean flagTraps){this.flagTraps = flagTraps;}
 }

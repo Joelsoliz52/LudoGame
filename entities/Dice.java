@@ -50,13 +50,6 @@ public class Dice<T> implements Serializable {
         }
     }
     
-    /** 
-     * Begin a player pay in array of aliance through its turn.
-       */
-    public int throwDiceRun(){
-        return (int)(Math.random()*4)+1;
-    }
-    
     /**
      * Dice values according to dice type.
      */

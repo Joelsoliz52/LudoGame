@@ -16,8 +16,6 @@ import interfaces.GameLogic;
 import layouts.Boards.ClassicBoard;
 import utilities.Tuple;
 
-import javax.swing.*;
-
 /**
  * Logic of the Classic Game.
  *
@@ -108,7 +106,6 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
                 moveInitPawn(player, x, y);
             }
         } else {
-            //arreglar
             movePawn(player, x, y);
         }
     }
@@ -125,7 +122,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
             for (int j = 0; j < 4; j++) {
                 int tem1 = board.getPath().getAX()[currentPlayer - 1][current];
                 int tem2 = board.getPath().getAY()[currentPlayer - 1][current];
-                //arreglar
+
                 Pawn pawn1 = players.getPlayer(i).getPawns()[j];
                 Position position = pawn1.getPosition();
 
@@ -198,11 +195,9 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
             if (current == 56)
                 player.incrementCoin();
 
-            // safeZone: 0, 8, 13, 21, 26, 34, 39, 47
-            //arreglar
             if ((current % 13) != 0 && (current % 13) != 8 && current < 51) {
                 for (int i = 1; i <= tam; i++) {
-                   //arreglar
+
                    k = killPawn(i, k, current);
 
                     if (k == 1)
@@ -224,7 +219,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
         Player player = players.getPlayer(currentPlayer);
         if(player.getCoin() == 4) {
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(590, 100, 380,180);
+            graphics.fillRect(590, 100, 380,160);
             graphics.setColor(player.getColor());
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString("Ganaste " + player.getName() + ".", 600, 150);
@@ -241,7 +236,6 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
             graphics.setFont(new Font("serif", Font.BOLD, 40));
             graphics.drawString(player.getName() + " " + "tu numero de", 600, 150);
             graphics.drawString("dado es " + dice.content, 600, 200);
-            System.out.println("Paint: "+ currentPlayer);
         }
 
         if (passTurnFlag) {
@@ -250,16 +244,11 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
                 if(currentPlayer == 0){
                     currentPlayer = tam;
                 }
-                System.out.println("Pass turn: "+ currentPlayer);
             }
             kill=0;
         }
 
         passTurnFlag = false;
-    }
-
-    private void showMessage(String title, String message) {
-        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void setGameCallback(GameCallback callback) {
@@ -290,10 +279,6 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
                 lastMovement.getEntityTwo().undoMovement();
             }
         }
-    }
-
-    public BuildPlayers getBuildPlayers(){
-        return players;
     }
 
 	@Override

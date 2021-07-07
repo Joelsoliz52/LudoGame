@@ -4,14 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.io.Serializable;
 import java.util.HashMap;
-
-import javax.swing.ImageIcon;
-
 import core.BuildPlayers;
 import entities.Player;
 import interfaces.Board;
@@ -48,8 +43,8 @@ public class RunBoard implements Board, Serializable {
      * @param graphics Drawing controller.
      */
     public void draw(Graphics2D graphics) {
-        int x = (int)position.getX();
-        int y = (int)position.getY();
+        int x = position.getX();
+        int y = position.getY();
         int[] xPoints1 = { x + (8 * width), x + (8 * width), x + 15 + (9 * width) };
         int[] yPoints1 = { y + (8 * height), y + (11 * height), y + 15 + (9 * width) };
         int[] xPoints2 = { x + (11 * width), x + (11 * width), x + 15 + (9 * width) };
@@ -229,68 +224,6 @@ public class RunBoard implements Board, Serializable {
     }
 
     /**
-     * Draw pawn initial horizontal boxes.
-     * @param graphics Drawing controller.
-     * @param x Position X, pawn initial boxes.
-     * @param y Position Y, pawn initial boxes.
-     */
-    private void drawPawnHorizontalQuarter(Graphics2D graphics, int x, int y) {
-        x = x + 105;
-        y = y + 45;
-        for(int i = 0; i < 2; i++) {
-            int x1 = x + (2 * i * width);
-            int x2 = x + (2 * i * width) + 9 * width;
-            int y2 = y + 15 * height;
-
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x1, y, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x2, y2, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x2, y, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x1, y2, width, height);
-
-            graphics.setColor(Color.WHITE);
-            graphics.drawRect(x1, y, width, height);
-            graphics.drawRect(x2, y2, width, height);
-            graphics.drawRect(x2, y, width, height);
-            graphics.drawRect(x1, y2, width, height);
-        }
-    }
-
-    /**
-     * Draw pawn initial vertical boxes.
-     * @param graphics Drawing controller.
-     * @param x Position X, pawn initial boxes.
-     * @param y Position Y, pawn initial boxes.
-     */
-    private void drawPawnVerticalQuarter(Graphics2D graphics, int x, int y) {
-        x = x + 45;
-        y = y + 105;
-        for(int i = 0; i < 2; i++) {
-            int x2 = x + 15 * width;
-            int y1 = y + (2 * i * height);
-            int y2 = y + (2 * i * height) + 9 * height;
-
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x, y1, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x2, y2, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x2, y1, width, height);
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(x, y2, width, height);
-
-            graphics.setColor(Color.WHITE);
-            graphics.drawRect(x, y1, width, height);
-            graphics.drawRect(x2, y2, width, height);
-            graphics.drawRect(x2, y1, width, height);
-            graphics.drawRect(x, y2, width, height);
-        }
-    }
-
-    /**
      * Draw containers of pawns initial boxes.
      * @param graphics Drawing controller.
      * @param x Initial X position.
@@ -416,7 +349,7 @@ public class RunBoard implements Board, Serializable {
      */
     private void drawText(Graphics2D graphics) {
     	graphics.setFont(new Font("serif", Font.BOLD, 40));
-        HashMap<Color, Boolean> map = new HashMap<Color, Boolean>();
+        HashMap<Color, Boolean> map = new HashMap<>();
         map.put(Color.RED, false);
         map.put(Color.BLUE, false);
         map.put(Color.YELLOW, false);

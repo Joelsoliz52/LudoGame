@@ -11,7 +11,7 @@ public class MainView extends View {
     private static MainView mainView;
     private final BasicButton playButton = new BasicButton("Jugar ahora :D");
     private final BasicButton exitButton = new BasicButton("Salir :c");
-    // private static MusicBackground music = new MusicBackground("D:\\ProjectsIDENetBeans\\JavaApplication2\\src\\resources\\musicas\\soundInitGame.mp3");
+
     private MainView(){
         Dimension viewSize = new Dimension(720, 450);
         ImagePanel background = new ImagePanel("20210611_175351.gif");

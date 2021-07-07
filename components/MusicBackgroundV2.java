@@ -23,22 +23,6 @@ public class MusicBackgroundV2 {
         }
     }
 
-    public void pauseMusic() {
-        try {
-            this.player.pause();
-        } catch (MusicPlayerException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public void resumeMusic() {
-        try {
-            this.player.resume();
-        } catch (MusicPlayerException exception) {
-            exception.printStackTrace();
-        }
-    }
-
     public void stopMusic() {
         try {
             this.player.stop();
@@ -50,6 +34,7 @@ public class MusicBackgroundV2 {
     private String getFilePath(String path) {
         URL fileURL = this.getClass().getResource(path != null ? path : "");
         String filePath = fileURL.toString().replace("file:/", "");
+        filePath = filePath.replace("%20", " ");
 
         return filePath.replace("/", "\\");
     }

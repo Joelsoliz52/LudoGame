@@ -9,14 +9,10 @@ import entities.Player;
 import entities.Position;
 import interfaces.*;
 import layouts.Boards.RunBoard;
-import utilities.ListaSEC;
 import utilities.Tuple;
 
 /**
- * Write a description of class RunLogic here.
- * 
- * @author (your name)
- * @version (a version number or a date)
+ * Logic of the Run Game.
  */
 public class RunLogic implements GameLogic<Integer>, Serializable {
     public BuildPlayers players;
@@ -29,7 +25,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     private int loseTurn;
     public boolean doubleClicked;
     public ArrayList<Position> positionbox;
-    private ListaSEC<Position> positions;
     public Pawn currentPawn;
     public boolean newPositionPawn;
     private GameCallback callback;
@@ -54,21 +49,18 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             this.board = board;
         }
         currentPlayer = 1;
-        dice = new Dice<Integer>("int");
+        dice = new Dice<>("int");
         dice.content = 0;
         flag = 0;
         loseTurn = (int) (Math.random() * 3) + 1;
         doubleClicked = false;
         newPositionPawn = false;
         positionbox = new ArrayList<Position>();
-        positions = new ListaSEC<Position>();
-        addPositions(positions);
         players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
     }
 
     /**
      * Returns dice.
-     * 
      * @return Dice.
      */
     public Dice<Integer> getDice() {
@@ -77,7 +69,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * Returns flag.
-     * 
      * @return If there is an movement pending returns 1, otherwise 0.
      */
     public int getFlag() {
@@ -114,7 +105,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * OnMouseClicked logic.
-     * 
      * @param x X position of the click.
      * @param y Y position of the click.
      */
@@ -159,9 +149,8 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * doubleMouseClicked logic.
-     * 
-     * @param x X position of the click.
-     * @param y Y position of the click.
+     * @param x X position of the double click.
+     * @param y Y position of the double click.
      */
     public void doubleMouseClicked(int x, int y) {
         boolean confpos = confirmPosition(x, y, currentPawn);
@@ -175,7 +164,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * Move a pawn from initial position.
-     * 
      * @param player Current player.
      * @param x      X position.
      * @param y      Y position.
@@ -201,12 +189,10 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * Try to move a pawn in the board.
-     * 
      * @param player Current player.
      * @param x      X position.
      * @param y      Y position.
-     * @return Returns the value of the pawn to move if it exists, otherwise returns
-     *         -1.
+     * @return Returns the value of the pawn to move if it exists, otherwise returns -1.
      */
     private int movePawn(Player player, int x, int y) {
         int value = -1;
@@ -219,7 +205,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1
                     && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
-                // flag = 0;
                 break;
             } else if (player.getPawns()[i].getFreezePawn()) {
                 if (player.getloseTurn() < 1) {
@@ -245,13 +230,11 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     }
 
     /**
-     * Metodo para elegir una casilla
-     * 
-     * @param comodin al crear el comodin como una trampa o bonus se pondra en la
-     *                casilla
-     * @param x       tomado como X de una posicion de una ficha
-     * @param y       tomado como Y de una posicion de una ficha
-     * @param pawn    ficha a considerar para una trampa o bonus
+     * Method to choose a box
+     * @param comodin Comodin will be created as a trap or bonus
+     * @param x       X position of a pawn.
+     * @param y       Y position of a pawn.
+     * @param pawn    Pawn to consider for a trap or bonus.
      */
     private void chooseCasilla(Comodin comodin, int x, int y, Pawn pawn) {
         if (comodin instanceof Traps) {
@@ -263,7 +246,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
 
     /**
      * Paint the current view.
-     * 
      * @param graphics Drawing controller.
      */
     public void paint(Graphics2D graphics) {
@@ -376,26 +358,26 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     }
 
     /**
-     * Metodo para verificar una posicion en donde se pondra una trampa
-     * 
-     * @return verificacion de si una casilla a sido seleccionada
+     * Method to get double click status
+     * @return if double click is enabled or disabled.
      */
     public boolean getdoubleClicked() {
         return doubleClicked;
     }
 
     /**
-     * Metoto para modificar el estado boolean del atributo doubleClicked
+     * Method to modify the boolean state of the attribute doubleClicked
      */
     public void setdoubleClicked(boolean doubleClicked) {
         this.doubleClicked = doubleClicked;
     }
 
     /**
-     * Metodo para devolver una ficha
-     * 
-     * @param player, x, y
-     * @return ficha que tenga dicha posicion
+     * Method to return a pawn
+     * @param player Current player
+     * @param x      X position.
+     * @param y      Y position.
+     * @return pawn that has that position
      */
     private Pawn returnPawn(Player player, int x, int y) {
         int i = 0;
@@ -410,96 +392,9 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     }
 
     /**
-     * Metodo para contener posiciones
-     * 
-     * @return devolvera una ista con las posiciones del camino principal sin
-     *         incluir la zona segura y la zona inicial
+     * Method to check if the position can be trap
+     * @return verification to set the trap
      */
-    private ListaSEC<Position> addPositions(ListaSEC<Position> pos) {
-        int i = 0;
-        int x = 7;
-        int y = 0;
-        while (i < 38) {
-            if (x < 10) {
-                pos.Incorporar(new Position(x, y));
-                x++;
-            } else {
-                if (y < 5) {
-                    pos.Incorporar(new Position(x, y));
-                    y++;
-                } else {
-                    if (x < 18) {
-                        pos.Incorporar(new Position(x, y));
-                        x++;
-                    } else {
-                        if (y < 13) {
-                            pos.Incorporar(new Position(x, y));
-                            y++;
-                        } else {
-                            if (x > 11) {
-                                pos.Incorporar(new Position(x, y));
-                                x--;
-                            } else {
-                                if (y < 18) {
-                                    pos.Incorporar(new Position(x, y));
-                                    y++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            i++;
-        }
-        while (i < 54) {
-            if (x > 11) {
-                pos.Incorporar(new Position(x, y));
-                x--;
-            } else {
-                if (y < 18) {
-                    pos.Incorporar(new Position(x, y));
-                    y++;
-                } else {
-                    if (x > 8) {
-                        pos.Incorporar(new Position(x, y));
-                        x--;
-                    }
-                }
-            }
-            i++;
-        }
-        while (i < 67) {
-            if (y > 13) {
-                pos.Incorporar(new Position(x, y));
-                y--;
-            } else {
-                if (x > 0) {
-                    pos.Incorporar(new Position(x, y));
-                    x--;
-                }
-            }
-            i++;
-        }
-        while (i < 88) {
-            if (y > 5) {
-                pos.Incorporar(new Position(x, y));
-                y--;
-            } else {
-                if (x < 7) {
-                    pos.Incorporar(new Position(x, y));
-                    x++;
-                } else {
-                    if (y > 0) {
-                        pos.Incorporar(new Position(x, y));
-                        y--;
-                    }
-                }
-            }
-            i++;
-        }
-        return pos;
-    }
-
     public boolean confirmPosition(int x, int y, Pawn pawn) {
         int a = 0;
         Position pos = new Position(x, y);
@@ -518,15 +413,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             }
         }
         return false;
-    }
-
-    /**
-     * Metodo de retorno de una lista de posiciones
-     * 
-     * @return ListaSEC<Position>
-     */
-    public ListaSEC<Position> getPositions() {
-        return positions;
     }
 
     public boolean getnewPositionPawn() {

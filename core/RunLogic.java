@@ -88,7 +88,7 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
             }
         }
         if (flag == 0) {
-            for (int i = 0; i < tam; i++) {
+            for (int i = 0; i < 4; i++) {
                 int current = players.getPlayer(currentPlayer).getPawns()[i].getCurrent();
 
                 if (current == -1) {
@@ -200,9 +200,8 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
         for (int i = 0; i < 4; i++) {
             Position posPawn = player.getPawns()[i].getPosition();
             int current = player.getPawns()[i].getCurrent();
-            int num = 84;
 
-            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < num && current != -1
+            if (posPawn.equals(new Position(x, y)) && (current + dice.content) < 84 && current != -1
                     && !player.getPawns()[i].getFreezePawn()) {
                 value = i;
                 break;

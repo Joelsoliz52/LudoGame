@@ -7,7 +7,6 @@ import entities.Position;
 import interfaces.Comodin;
 import interfaces.ComodinCallback;
 
-import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -30,13 +29,13 @@ public class Bonus implements Comodin, Serializable {
                 player.setFlagBonus(1);
             }else{
                 if(al == 2){
-                    bonusJumperTime(pawn, player);
+                    bonusJumperTime(pawn);
                     player.setFlagBonus(2);
                 }else{
                     if(al == 3){
                         bonusNewThrowDice(player);
                     }else{
-                        bonusSpeed(logic.getDice(), pawn, player);
+                        bonusSpeed(logic.getDice(), pawn);
                         player.setFlagBonus(4);
                     }
                 }
@@ -60,26 +59,22 @@ public class Bonus implements Comodin, Serializable {
     /**
      * Method for having time jump bonus
      * @param pawn, pawn that won bonus
-     * @param player, player that won bonus
      */
-    public void bonusJumperTime(Pawn pawn, Player player){
+    public void bonusJumperTime(Pawn pawn){
         int alc = (int)(Math.random()*2)+1;
         if(alc == 1){
-            if(pawn.getCurrent()+10 > 79 && (player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW))){
-                pawn.setCurrent(78);
-                callback.onCallback(pawn);
-            }else if(pawn.getCurrent()+10 > 83 && (player.getColor().equals(Color.BLUE) || player.getColor().equals(Color.RED))){
-                pawn.setCurrent(82);
-                callback.onCallback(pawn);
-            }else{
+            if((pawn.getCurrent() + 10) < 83) {
                 pawn.setCurrent(pawn.getCurrent() + 10);
                 callback.onCallback(pawn);
+            }else {
+                pawn.setCurrent(82);
+                callback.onCallback(pawn);
             }
+
         }else{
             pawn.setCurrent(pawn.getCurrent()-10);
             callback.onCallback(pawn);
         }
-        
     }
      
     /**
@@ -94,22 +89,12 @@ public class Bonus implements Comodin, Serializable {
      * Method for having bonus velocity
      * @param dice, amount to advance
      * @param pawn, pawn that won bonus
-     * @param player, player that won bonus
      */
-    public void bonusSpeed(Dice<Integer> dice, Pawn pawn, Player player){
+    public void bonusSpeed(Dice<Integer> dice, Pawn pawn){
         dice.throwDice();
         int pos = dice.content;
-        if(pawn.getCurrent()+pos > 79 && (player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW))){
-            pawn.setCurrent(78);
-            callback.onCallback(pawn);
-        }else if(player.getColor().equals(Color.GREEN) || player.getColor().equals(Color.YELLOW)){
-            pawn.setCurrent(pawn.getCurrent() + pos);
-            callback.onCallback(pawn);
-        }else{
-            pawn.setCurrent(pawn.getCurrent() + pos);
-            callback.onCallback(pawn);
-        }
-        
+        pawn.setCurrent(pawn.getCurrent() + pos);
+        callback.onCallback(pawn);
     }
     
     private Player returnPlayer1(Player[] players, Pawn pawn){

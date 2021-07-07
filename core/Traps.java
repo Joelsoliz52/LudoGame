@@ -31,13 +31,13 @@ public class Traps implements Comodin, Serializable {
         }
         if(trustPositionPawn2(pawnA, players) && (!pos.getFlagTraps())){
             if (al ==1){
-                JOptionPane.showMessageDialog(null, "escoge una casilla");
+                JOptionPane.showMessageDialog(null, "Escoge una casilla realizando el doble click.");
                 logic.setdoubleClicked(true);
             }else{
                 if(al == 2){
                     putTrapLoseTurn(player);
                 }else if(al == 3){
-                    JOptionPane.showMessageDialog(null, "escoge una ficha");
+                    JOptionPane.showMessageDialog(null, "Escoge una ficha realizando el doble click.");
                     logic.setnewPositionPawn(true);
                     logic.setdoubleClicked(true);
                 }

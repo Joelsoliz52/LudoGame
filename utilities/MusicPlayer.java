@@ -4,12 +4,13 @@ import utilities.enums.MusicPlayerActions;
 import utilities.exceptions.MusicPlayerException;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.InputStream;
+
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class MusicPlayer {
-    private FileInputStream FIS;
+    private InputStream FIS;
     private BufferedInputStream BIS;
     private Player player;
     private long pauseLocation;
@@ -32,7 +33,7 @@ public class MusicPlayer {
 
     public void play(String path) throws MusicPlayerException {
         try {
-            this.FIS = new FileInputStream(path);
+            this.FIS = this.getClass().getResourceAsStream(path);
             this.BIS = new BufferedInputStream(this.FIS);
 
             this.player = new Player(this.BIS);
@@ -62,7 +63,7 @@ public class MusicPlayer {
 
     public void resume() throws MusicPlayerException {
         try {
-            this.FIS = new FileInputStream(this.fileLocation);
+            this.FIS = this.getClass().getResourceAsStream(this.fileLocation);
             this.BIS = new BufferedInputStream(this.FIS);
 
             this.player = new Player(this.BIS);

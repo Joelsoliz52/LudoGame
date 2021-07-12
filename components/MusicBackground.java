@@ -11,7 +11,7 @@ public class MusicBackground {
     private final String filePath;
 
     public MusicBackground(String name) {
-        this.filePath = this.getFilePath(Helper.getBasePath(name) + name);
+        this.filePath = Helper.getBasePath(name) + name;
         this.player = new MusicPlayer();
     }
 
@@ -29,13 +29,5 @@ public class MusicBackground {
         } catch (MusicPlayerException exception) {
             exception.printStackTrace();
         }
-    }
-
-    private String getFilePath(String path) {
-        URL fileURL = this.getClass().getResource(path != null ? path : "");
-        String filePath = fileURL.toString().replace("file:/", "");
-        filePath = filePath.replace("%20", " ");
-
-        return filePath.replace("/", "\\");
     }
 }

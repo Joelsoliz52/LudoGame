@@ -6,11 +6,11 @@ import utilities.exceptions.MusicPlayerException;
 
 import java.net.URL;
 
-public class MusicBackgroundV2 {
+public class MusicBackground {
     private final MusicPlayer player;
     private final String filePath;
 
-    public MusicBackgroundV2(String name) {
+    public MusicBackground(String name) {
         this.filePath = this.getFilePath(Helper.getBasePath(name) + name);
         this.player = new MusicPlayer();
     }

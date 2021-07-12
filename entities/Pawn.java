@@ -215,6 +215,7 @@ public class Pawn implements Serializable {
         }
         this.optional = lastMovement.getEntityOne();
     }
+
     public void setUndoMovementOptional(boolean UndoMovementOptional){
         this.UndoMovementOptional = UndoMovementOptional;
     }

@@ -1,15 +1,16 @@
 package core;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
 import entities.Pawn;
 import entities.Player;
 import interfaces.Board;
 import interfaces.Path;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Build Players controller.
  *
@@ -21,6 +22,7 @@ public class BuildPlayers implements Serializable {
     public Player[] players;
     private final Board board;
     public int tam;
+
     /**
      * BuildPlayers constructor.
      * @param height Height of the boxes.

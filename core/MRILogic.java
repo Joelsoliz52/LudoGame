@@ -1,11 +1,5 @@
 package core;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.io.Serializable;
-import java.util.Stack;
-
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -16,6 +10,12 @@ import interfaces.GameLogic;
 import layouts.Boards.MRIBoard;
 import utilities.Tuple;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.io.Serializable;
+import java.util.Stack;
+
 /**
  * Logic of the First Custom Game.
  *
@@ -24,10 +24,10 @@ import utilities.Tuple;
  */
 public class MRILogic implements GameLogic<Integer>, Serializable {
     // Fields of the class.
-    public BuildPlayers players;
-    private Board board;
+    private final Board board;
     private int currentPlayer;
     private final Dice<Integer> dice;
+    public BuildPlayers players;
     private int flag;
     private int kill;
     public int tam;
@@ -339,7 +339,6 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
 
     @Override
     public void undoMovement() {
-
         if (!stack.empty()) {
             Tuple<Integer, Pawn, Pawn> lastMovement = this.stack.pop();
 

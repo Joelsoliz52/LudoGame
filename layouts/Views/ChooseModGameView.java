@@ -4,7 +4,7 @@ import components.BasicButton;
 import components.BasicLabel;
 import components.ImagePanel;
 import components.utils.enums.ButtonTypes;
-import utilities.GameModes;
+import utilities.enums.GameModes;
 import utilities.Helper;
 
 import java.awt.Color;
@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 
 public class ChooseModGameView extends View {
     private static ChooseModGameView chooseModGameView;
-    private final ImagePanel background = new ImagePanel("7299.jpg");
+    private final ImagePanel background = new ImagePanel("background.jpg");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
 
     private ChooseModGameView() {

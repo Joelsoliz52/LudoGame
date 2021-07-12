@@ -1,12 +1,12 @@
 package utilities;
 
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import utilities.enums.MusicPlayerActions;
 import utilities.exceptions.MusicPlayerException;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 public class MusicPlayer {
     private FileInputStream FIS;

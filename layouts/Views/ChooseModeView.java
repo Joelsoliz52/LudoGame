@@ -2,9 +2,9 @@ package layouts.Views;
 
 import components.BasicButton;
 import components.BasicLabel;
-import components.utils.enums.ButtonTypes;
-import utilities.GameModes;
 import components.ImagePanel;
+import components.utils.enums.ButtonTypes;
+import utilities.enums.GameModes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +14,9 @@ public class ChooseModeView extends View{
     private final BasicButton classicModeButton = new BasicButton("Juego Clasico");
     private final BasicButton modifiedModeButton = new BasicButton("Juego Mod");
     private final BasicButton backButton = new BasicButton("Volver", ButtonTypes.INVERTED);
+
     private ChooseModeView() {
-        ImagePanel background = new ImagePanel("7299.jpg");
+        ImagePanel background = new ImagePanel("background.jpg");
 
         BasicLabel title = new BasicLabel("Escoger modo de juego:");
         title.setup(20, 10);

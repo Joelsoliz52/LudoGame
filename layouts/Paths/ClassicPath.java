@@ -1,10 +1,10 @@
 package layouts.Paths;
 
-    
-import java.awt.*;
+import interfaces.Path;
+
+import java.awt.Color;
 import java.io.Serializable;
 
-import interfaces.Path;
 /**
  * Path of the Classic Game.
  *
@@ -12,13 +12,14 @@ import interfaces.Path;
  * @version 1
  */
 public class ClassicPath implements Path, Serializable {
+    private final int tam;
     private int[][] AX;
     private int[][] AY;
-    private int tam;
-    public ClassicPath(int tam, Color[] colores){
+
+    public ClassicPath(int tam, Color[] colors){
         this.tam = tam;
-        addAX(colores);
-        addAY(colores);
+        addAX(colors);
+        addAY(colors);
         getAX();
         getAY();
     }
@@ -31,13 +32,13 @@ public class ClassicPath implements Path, Serializable {
         return AX;
     }
     
-    private void addAX(Color[] colores){
+    private void addAX(Color[] colors){
         int i = 0;
         int pos = 0;
         AX = new int[4][57];
         
         while(pos < tam){
-            if(colores[pos].equals(Color.BLUE)){
+            if(colors[pos].equals(Color.BLUE)){
                 int[] a1 = {1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,1,2,3,4,5,6};
                 while(i < 57){
                     AX[pos][i] = a1[i];
@@ -45,7 +46,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.GREEN)){
+            if(colors[pos].equals(Color.GREEN)){
                 int[] a2 = {8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,7,7,7,7,7,7};
                 while(i < 57){
                     AX[pos][i] = a2[i];
@@ -53,7 +54,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.RED)){
+            if(colors[pos].equals(Color.RED)){
                 int[] a3 = {13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,13,12,11,10,9,8};
                 while(i < 57){
                     AX[pos][i] = a3[i];
@@ -61,7 +62,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.YELLOW)){
+            if(colors[pos].equals(Color.YELLOW)){
                 int[] a4 = {6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,7,7,7,7,7,7};
                 while(i < 57){
                     AX[pos][i] = a4[i];
@@ -81,12 +82,12 @@ public class ClassicPath implements Path, Serializable {
         return AY;
     }
 
-    private void addAY(Color[] colores){
+    private void addAY(Color[] colors){
         int pos = 0;
         int i = 0;
         AY = new int[4][57];
         while(pos < tam){
-            if(colores[pos].equals(Color.BLUE)){
+            if(colors[pos].equals(Color.BLUE)){
                 int[] a1 = {6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,7,7,7,7,7,7};
                 while(i < 57){
                     AY[pos][i] = a1[i];
@@ -94,7 +95,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.GREEN)){
+            if(colors[pos].equals(Color.GREEN)){
                 int[] a2 = {1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,1,2,3,4,5,6};
                 while(i < 57){
                     AY[pos][i] = a2[i];
@@ -102,7 +103,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.RED)){
+            if(colors[pos].equals(Color.RED)){
                 int[] a3 = {8,8,8,8,8,9,10,11,12,13,14,14,14,13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,7,7,7,7,7,7};
                 while(i < 57){
                     AY[pos][i] = a3[i];
@@ -110,7 +111,7 @@ public class ClassicPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if(colores[pos].equals(Color.YELLOW)){
+            if(colors[pos].equals(Color.YELLOW)){
                 int[] a4 = {13,12,11,10,9,8,8,8,8,8,8,7,6,6,6,6,6,6,5,4,3,2,1,0,0,0,1,2,3,4,5,6,6,6,6,6,6,7,8,8,8,8,8,8,9,10,11,12,13,14,14,13,12,11,10,9,8};
                 while(i < 57){
                     AY[pos][i] = a4[i];

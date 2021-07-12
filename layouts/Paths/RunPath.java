@@ -1,19 +1,19 @@
 package layouts.Paths;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.Serializable;
 
 import interfaces.Path;
 
 public class RunPath implements Path, Serializable {
+    private final int tam;
     private int[][] AX;
     private int[][] AY;
-    private int tam;
 
-    public RunPath(int tam, Color[] colores) {
+    public RunPath(int tam, Color[] colors) {
         this.tam = tam;
-        addAX(colores);
-        addAY(colores);
+        addAX(colors);
+        addAY(colors);
         getAX();
         getAY();
     }
@@ -27,13 +27,13 @@ public class RunPath implements Path, Serializable {
         return AX;
     }
 
-    private void addAX(Color[] colores) {
+    private void addAX(Color[] colors) {
         int i = 0;
         int pos = 0;
         AX = new int[4][84];
 
         while (pos < tam) {
-            if (colores[pos].equals(Color.BLUE)) {
+            if (colors[pos].equals(Color.BLUE)) {
                 int[] a1 = { 3, 4, 4, 4, 4, 5, 6, 7, 7, 7, 7, 7, 7, 8, 9, 10, 10, 10, 10, 10, 10, 11, 12, 13, 14, 15,
                         16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 16, 15, 14, 13, 12, 11, 11, 11, 11, 11, 11, 10,
                         9, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4, 5, 6,
@@ -44,7 +44,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.GREEN)) {
+            if (colors[pos].equals(Color.GREEN)) {
                 int[] a2 = { 15, 14, 14, 14, 14, 15, 16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 16, 15, 14, 13, 12,
                         11, 11, 11, 11, 11, 11, 10, 9, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 8, 9, 10, 10, 10, 10, 10, 10, 11, 12, 13, 14, 14, 14, 14,
@@ -55,7 +55,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.RED)) {
+            if (colors[pos].equals(Color.RED)) {
                 int[] a3 = { 15, 14, 14, 14, 14, 13, 12, 11, 11, 11, 11, 11, 11, 10, 9, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 3,
                         2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 8, 9, 10, 10, 10, 10, 10,
                         10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 16, 15, 14, 14, 14, 14,
@@ -66,7 +66,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.YELLOW)) {
+            if (colors[pos].equals(Color.YELLOW)) {
                 int[] a4 = { 3, 4, 4, 4, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7,
                         8, 9, 10, 10, 10, 10, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18,
                         17, 16, 15, 14, 13, 12, 11, 11, 11, 11, 11, 11, 10, 9, 8, 8, 8, 8, 8, 8, 7, 6, 5, 4, 4, 4, 4, 5,
@@ -90,12 +90,12 @@ public class RunPath implements Path, Serializable {
         return AY;
     }
 
-    private void addAY(Color[] colores) {
+    private void addAY(Color[] colors) {
         int pos = 0;
         int i = 0;
         AY = new int[4][84];
         while (pos < tam) {
-            if (colores[pos].equals(Color.BLUE)) {
+            if (colors[pos].equals(Color.BLUE)) {
                 int[] a1 = { 2, 2, 3, 4, 5, 5, 5, 5, 4, 3, 2, 1, 0, 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6,
                         7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 15, 16, 17, 18, 18, 18, 18, 17, 16, 15,
                         14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 8,
@@ -106,7 +106,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.GREEN)) {
+            if (colors[pos].equals(Color.GREEN)) {
                 int[] a2 = { 2, 2, 3, 4, 5, 5, 5, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 15,
                         16, 17, 18, 18, 18, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 11, 10, 9, 8, 7,
                         6, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0, 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 8,
@@ -117,7 +117,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.RED)) {
+            if (colors[pos].equals(Color.RED)) {
                 int[] a3 = { 16, 16, 15, 14, 13, 13, 13, 13, 14, 15, 16, 17, 18, 18, 18, 18, 17, 16, 15, 14, 13, 13, 13,
                         13, 13, 13, 13, 13, 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0, 0, 0, 0,
                         1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 12, 11, 10,
@@ -128,7 +128,7 @@ public class RunPath implements Path, Serializable {
                 }
                 i = 0;
             }
-            if (colores[pos].equals(Color.YELLOW)) {
+            if (colors[pos].equals(Color.YELLOW)) {
                 int[] a4 = { 16, 16, 15, 14, 13, 13, 13, 13, 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3,
                         2, 1, 0, 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13,
                         13, 13, 13, 13, 14, 15, 16, 17, 18, 18, 18, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 12, 11, 10,

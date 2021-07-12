@@ -1,5 +1,12 @@
 package layouts.Boards;
 
+import core.BuildPlayers;
+import entities.Player;
+import entities.Position;
+import interfaces.Board;
+import interfaces.Path;
+import layouts.Paths.RunPath;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -7,33 +14,29 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.Serializable;
 import java.util.HashMap;
-import core.BuildPlayers;
-import entities.Player;
-import interfaces.Board;
-import interfaces.Path;
-import layouts.Paths.RunPath;
 
 /**
  * Board of the First Custom Game.
  *
- * @author daniel
+ * @author Daniel
  * @version 1
  */
 public class RunBoard implements Board, Serializable {
     // Fields of the class.
+    private final Color[] colors;
     private final int height;
-    private final entities.Position position;
+    private final Position position;
     private final int width;
-    private Color[] colores;
     public BuildPlayers bd;
     public int tam;
+
     /**
      * RunBoard constructor.
-     * @param position2 Initial position of the board.
+     * @param position Initial position of the board.
      */
-    public RunBoard(entities.Position position2, Color[] colores) {
-        this.position = position2;
-        this.colores = colores;
+    public RunBoard(Position position, Color[] colors) {
+        this.position = position;
+        this.colors = colors;
         height = 30;
         width = 30;
     }
@@ -224,126 +227,6 @@ public class RunBoard implements Board, Serializable {
     }
 
     /**
-     * Draw containers of pawns initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Initial X position.
-     * @param y Initial Y position.
-     */
-    private void drawQuarters(Graphics2D graphics, int x, int y) {
-        graphics.setColor(Color.WHITE);
-        drawQuarterRed(graphics, x, y);
-        graphics.setColor(Color.WHITE);
-        drawQuarterYellow(graphics, x, y);
-        graphics.setColor(Color.WHITE);
-        drawQuarterBlue(graphics, x, y);
-        graphics.setColor(Color.WHITE);
-        drawQuarterGreen(graphics, x, y);
-    }
-
-    /**
-     * Draw containers of blue pawns initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Initial X position.
-     * @param y Initial Y position.
-     */
-    private void drawQuarterBlue(Graphics2D graphics, int x, int y) {
-        graphics.fillRect(x, y, width, height);
-        for(int i = 3; i < 8; i++) {
-            graphics.fillRect(x + (i * width), y, width, height);
-            graphics.fillRect(x + (i * width), y + (3 * height), width, height);
-            graphics.fillRect(x  , y + (i * height), width, height);
-            graphics.fillRect(x + (3 * width), y + (i * height), width, height);
-        }
-        for(int i = 0; i < 3; i++) {
-            graphics.fillRect(x + (i * width), y + (2 * height), width, height);
-            graphics.fillRect(x + (i * width), y + (7 * height), width, height);
-            graphics.fillRect(x + (2 * width), y + (i * height), width, height);
-            graphics.fillRect(x + (7 * width), y + (i * height), width, height);
-        }
-    }
-
-    /**
-     * Draw containers of green pawns initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Initial X position.
-     * @param y Initial Y position.
-     */
-    private void drawQuarterGreen(Graphics2D graphics, int x, int y) {
-        x += 11 * width;
-        graphics.fillRect(x + (7 * width), y, width, height);
-
-        for(int i = 0; i < 5; i++) {
-            graphics.fillRect(x + (i * width), y, width, height);
-            graphics.fillRect(x + (i * width), y + (3 * height), width, height);
-        }
-        for(int i = 5; i < 8; i++) {
-            graphics.fillRect(x + (i * width), y + (2 * height), width, height);
-            graphics.fillRect(x + (i * width), y + (7 * height), width, height);
-        }
-        for(int i = 3; i < 8; i++) {
-            graphics.fillRect(x + (4 * width), y + (i * height), width, height);
-            graphics.fillRect(x + (7 * width), y + (i * height), width, height);
-        }
-        for(int i = 0; i < 3; i++) {
-            graphics.fillRect(x, y + (i * height), width, height);
-            graphics.fillRect(x + (5 * width), y + (i * height), width, height);
-        }
-    }
-
-    /**
-     * Draw containers of red pawns initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Initial X position.
-     * @param y Initial Y position.
-     */
-    private void drawQuarterRed(Graphics2D graphics, int x, int y) {
-        x += 11 * width;
-        y += 11 * height;
-        graphics.fillRect(x + (7 * width), y + (7 * height), width, height);
-
-        for(int i = 0; i < 5; i++) {
-            graphics.fillRect(x + (i * width), y + (4 * height), width, height);
-            graphics.fillRect(x + (i * width), y + (7 * height), width, height);
-            graphics.fillRect(x + (4 * width), y + (i * height), width, height);
-            graphics.fillRect(x + (7 * width), y + (i * height), width, height);
-        }
-        for(int i = 5; i < 8; i++) {
-            graphics.fillRect(x + (i * width), y, width, height);
-            graphics.fillRect(x + (i * width), y + (5 * height), width, height);
-            graphics.fillRect(x, y + (i * height), width, height);
-            graphics.fillRect(x + (5 * width), y + (i * height), width, height);
-        }
-    }
-
-    /**
-     * Draw containers of yellow pawns initial boxes.
-     * @param graphics Drawing controller.
-     * @param x Initial X position.
-     * @param y Initial Y position.
-     */
-    private void drawQuarterYellow(Graphics2D graphics, int x, int y) {
-        y += 11 * height;
-        graphics.fillRect(x, y + (7 * height), width, height);
-
-        for(int i = 0; i < 5; i++) {
-            graphics.fillRect(x  , y + (i * height), width, height);
-            graphics.fillRect(x + (3 * width), y + (i * height), width, height);
-        }
-        for(int i = 5; i < 8; i++) {
-            graphics.fillRect(x + (2 * width), y + (i * height), width, height);
-            graphics.fillRect(x + (7 * width), y + (i * height), width, height);
-        }
-        for(int i = 3; i < 8; i++) {
-            graphics.fillRect(x + (i * width), y + (4 * height), width, height);
-            graphics.fillRect(x + (i * width), y + (7 * height), width, height);
-        }
-        for(int i = 0; i < 3; i++) {
-            graphics.fillRect(x + (i * width), y, width, height);
-            graphics.fillRect(x + (i * width), y + (5 * height), width, height);
-        }
-    }
-
-    /**
      * Draw the text of the game.
      * @param graphics Drawing controller.
      */
@@ -415,7 +298,7 @@ public class RunBoard implements Board, Serializable {
      * Returns pawns path of the First Custom Game.
      * @return Pawns path.
      */
-    public Path getPath() { return new RunPath(tam, colores); }
+    public Path getPath() { return new RunPath(tam, colors); }
 
     /**
      * Returns width of the boxes.

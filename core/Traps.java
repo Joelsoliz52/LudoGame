@@ -1,20 +1,22 @@
 package core;
 
-import java.io.Serializable;
-import javax.swing.JOptionPane;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
 import entities.Position;
 import interfaces.Comodin;
 import interfaces.ComodinCallback;
+
+import java.io.Serializable;
+import javax.swing.JOptionPane;
+
 /**
  * Class to set or activate trap
  */
-
 public class Traps implements Comodin, Serializable {
     private Position pos;
     private ComodinCallback callback;
+
     public Traps(){}
 
     public Traps(Player[] players, int x, int y, RunLogic logic,Pawn pawnA, ComodinCallback callback){
@@ -83,7 +85,6 @@ public class Traps implements Comodin, Serializable {
      */
     public void putTrapReturnInit(Pawn pawn){
         pawn.setCurrent(-1);
-
     }
 
     /**
@@ -297,6 +298,4 @@ public class Traps implements Comodin, Serializable {
     public Position getPos(){
         return pos;
     }
-
-
 }

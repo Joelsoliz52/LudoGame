@@ -18,6 +18,7 @@ public class Bonus implements Comodin, Serializable {
     private ComodinCallback callback;
     
     public Bonus(){}
+
     public Bonus(Player[] players, int x, int y, RunLogic logic,Pawn pawn, ComodinCallback callback){
         this.callback = callback;
         int al = aleatori();
@@ -65,16 +66,13 @@ public class Bonus implements Comodin, Serializable {
         if(alc == 1){
             if((pawn.getCurrent() + 10) < 83) {
                 pawn.setCurrent(pawn.getCurrent() + 10);
-                callback.onCallback(pawn);
             }else {
                 pawn.setCurrent(82);
-                callback.onCallback(pawn);
             }
-
         }else{
             pawn.setCurrent(pawn.getCurrent()-10);
-            callback.onCallback(pawn);
         }
+        callback.onCallback(pawn);
     }
      
     /**

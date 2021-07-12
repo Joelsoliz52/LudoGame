@@ -2,7 +2,7 @@ package layouts.Views;
 
 import components.BasicButton;
 import components.ImagePanel;
-import components.MusicBackgroundV2;
+import components.MusicBackground;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,9 +14,9 @@ public class MainView extends View {
 
     private MainView(){
         Dimension viewSize = new Dimension(720, 450);
-        ImagePanel background = new ImagePanel("20210611_175351.gif");
-        ImagePanel coin = new ImagePanel("20210611_175039.gif", 480, 120, viewSize);
-        MusicBackgroundV2 musicBackground = new MusicBackgroundV2("soundInitGame.mp3");
+        ImagePanel background = new ImagePanel("mainBackground.gif");
+        ImagePanel coin = new ImagePanel("coin.gif", 480, 120, viewSize);
+        MusicBackground musicBackground = new MusicBackground("soundInitGame.mp3");
         
         playButton.setup(290, 260, Color.RED);
         exitButton.setup(290, 340, Color.BLUE);

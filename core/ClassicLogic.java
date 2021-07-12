@@ -1,11 +1,5 @@
 package core;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.io.Serializable;
-import java.util.Stack;
-
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -16,6 +10,12 @@ import interfaces.GameLogic;
 import layouts.Boards.ClassicBoard;
 import utilities.Tuple;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.io.Serializable;
+import java.util.Stack;
+
 /**
  * Logic of the Classic Game.
  *
@@ -25,7 +25,7 @@ import utilities.Tuple;
 public class ClassicLogic implements GameLogic<Integer>, Serializable {
     // Fields of the class.
     public BuildPlayers players;
-    private Board board;
+    private final Board board;
     private int currentPlayer;
     private final Dice<Integer> dice;
     private int flag;
@@ -34,6 +34,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
     private GameCallback callback;
     private boolean passTurnFlag = false;
     private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
+
     /**
      * ClassicLogic constructor.
      */
@@ -48,7 +49,7 @@ public class ClassicLogic implements GameLogic<Integer>, Serializable {
         dice.content = 0;
         flag = 0;
         kill = 0;
-        players = new BuildPlayers(tam, board.getHeight(), board.getWidth(), board);
+        players = new BuildPlayers(tam, this.board.getHeight(), this.board.getWidth(), this.board);
     }
 
     /**

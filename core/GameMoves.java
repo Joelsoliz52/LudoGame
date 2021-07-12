@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import interfaces.GameCallback;
 import interfaces.GameLogic;
-import utilities.GameModes;
+import utilities.enums.GameModes;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -2,7 +2,8 @@ package components;
 
 import utilities.Constants;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.TextField;
 
 public class TextInput extends TextField {
     private final Font font;

@@ -1,8 +1,5 @@
 package core;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.util.*;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -11,15 +8,24 @@ import interfaces.*;
 import layouts.Boards.RunBoard;
 import utilities.Tuple;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Stack;
+
 /**
  * Logic of the Run Game.
  */
 public class RunLogic implements GameLogic<Integer>, Serializable {
+    private final Board board;
+    private final ComodinCallback comodinCallback;
+    private final Dice<Integer> dice;
+    private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
     public BuildPlayers players;
-    private Board board;
     private Comodin comodin;
     private int currentPlayer;
-    private final Dice<Integer> dice;
     private int flag;
     public int tam;
     private int loseTurn;
@@ -29,8 +35,6 @@ public class RunLogic implements GameLogic<Integer>, Serializable {
     public boolean newPositionPawn;
     private GameCallback callback;
     private boolean passTurnFlag = false;
-    private final Stack<Tuple<Integer, Pawn, Pawn>> stack = new Stack<>();
-    private final ComodinCallback comodinCallback;
 
     public RunLogic(Board board) {
         comodinCallback = new ComodinCallback() {

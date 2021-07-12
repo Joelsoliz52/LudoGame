@@ -1,13 +1,19 @@
 package layouts.Boards;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.util.*;
 import core.BuildPlayers;
 import entities.Player;
 import interfaces.Board;
 import interfaces.Path;
 import layouts.Paths.ClassicPath;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.io.Serializable;
+import java.util.HashMap;
+
 /**
  * Board of the Classic Game.
  *
@@ -19,16 +25,17 @@ public class ClassicBoard implements Board, Serializable {
     private final int height;
     private final entities.Position position;
     private final int width;
-    private Color[] colores;
+    private final Color[] colors;
     public BuildPlayers bd;
     public int tam;
+
     /**
      * ClassicBoard constructor.
      * @param position Initial position of the board.
      */
-    public ClassicBoard(entities.Position position, Color[] colores) {
+    public ClassicBoard(entities.Position position, Color[] colors) {
         this.position = position;
-        this.colores = colores;
+        this.colors = colors;
         height = 30;
         width = 30;
     }
@@ -335,7 +342,7 @@ public class ClassicBoard implements Board, Serializable {
      * Returns pawns path of the Classic Game.
      * @return Pawns path.
      */
-    public Path getPath() { return new ClassicPath(colores.length, colores); }
+    public Path getPath() { return new ClassicPath(colors.length, colors); }
 
     /**
      * Returns width of the boxes.

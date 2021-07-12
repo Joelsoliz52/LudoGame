@@ -1,13 +1,20 @@
 package layouts.Boards;
 
-import java.awt.*;
-import java.io.Serializable;
-import java.util.*;
 import core.BuildPlayers;
 import entities.Player;
+import entities.Position;
 import interfaces.Board;
 import interfaces.Path;
 import layouts.Paths.MRIPath;
+
+import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.io.Serializable;
+import java.util.HashMap;
+
 /**
  * Board of the First Custom Game.
  *
@@ -16,19 +23,20 @@ import layouts.Paths.MRIPath;
  */
 public class MRIBoard implements Board, Serializable {
     // Fields of the class.
+    private final Color[] colors;
     private final int height;
-    private final entities.Position position;
+    private final Position position;
     private final int width;
     public int tam;
     public BuildPlayers bd;
-    private Color[] colores;
+
     /**
      * MRIBoard constructor.
      * @param position2 Initial position of the board.
      */
-    public MRIBoard(entities.Position position2, Color[] colores) {
+    public MRIBoard(entities.Position position2, Color[] colors) {
         position = position2;
-        this.colores = colores;
+        this.colors = colors;
         height = 30;
         width = 30;
     }
@@ -48,7 +56,6 @@ public class MRIBoard implements Board, Serializable {
         int[] yPoints3 = { y + (8 * height), y + (8 * height), y + 15 + (9 * width) };
         int[] xPoints4 = { x + (8 * width), x + (11 * width), x + 15 + (9 * width) };
         int[] yPoints4 = { y + (11 * height), y + (11 * height), y + 15 + (9 * width) };
-
 
         graphics.setColor(Color.WHITE);
         graphics.fillRect(x, y, 19 * width, 19 * height);
@@ -456,7 +463,7 @@ public class MRIBoard implements Board, Serializable {
      * Returns pawns path of the First Custom Game.
      * @return Pawns path.
      */
-    public Path getPath() { return new MRIPath(colores.length, colores); }
+    public Path getPath() { return new MRIPath(colors.length, colors); }
 
     /**
      * Returns width of the boxes.

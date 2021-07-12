@@ -11,7 +11,7 @@ import layouts.Boards.RunBoard;
 import layouts.Paths.ClassicPath;
 import layouts.Paths.MRIPath;
 import layouts.Paths.RunPath;
-import utilities.GameModes;
+import utilities.enums.GameModes;
 
 import java.awt.Color;
 import java.io.Serializable;

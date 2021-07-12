@@ -1,6 +1,7 @@
 package utilities;
 
 import entities.Position;
+import utilities.enums.GameModes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,7 +44,7 @@ public class Helper {
             }
 
             if (musicExtensions.contains(fileExtension)) {
-                return "/resources/musicas/";
+                return "/resources/musics/";
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             return "./";

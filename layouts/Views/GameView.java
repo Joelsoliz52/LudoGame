@@ -2,18 +2,25 @@ package layouts.Views;
 
 import components.BasicButton;
 import components.ImagePanel;
-import components.MusicBackgroundV2;
+import components.MusicBackground;
 import components.utils.enums.ButtonTypes;
 import core.GameMoves;
 import utilities.Constants;
-import utilities.GameModes;
+import utilities.enums.GameModes;
 import utilities.Helper;
 
-import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class GameView extends View {
     private static GameView gameView;
@@ -25,14 +32,14 @@ public class GameView extends View {
     private final BasicButton undoButton = new BasicButton("Retroceder", ButtonTypes.INVERTED);
 
     private final ImagePanel background = new ImagePanel("");
-    private MusicBackgroundV2 musicBackground;
+    private MusicBackground musicBackground;
     private GameModes gameMode;
     private final HashMap<Color, String> players;
 
     private GameView(GameModes gameMode, HashMap<Color, String> players) {
         this.gameMode = gameMode;
         this.players = players;
-        this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
+        this.musicBackground = new MusicBackground(Helper.getFileMusic(gameMode));
 
         this.init();
         this.setupButtons(gameMode);
@@ -118,7 +125,6 @@ public class GameView extends View {
         });
         this.restartButton.onClick(e -> this.onRestart());
         this.saveGameButton.onClick(e -> {
-
             try {
                 JFileChooser fileSelector = new JFileChooser();
                 fileSelector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -140,7 +146,6 @@ public class GameView extends View {
             }
         });
         this.loadGameButton.onClick(e -> {
-
             try {
                 JFileChooser fileSelector = new JFileChooser();
                 fileSelector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -159,7 +164,7 @@ public class GameView extends View {
                     this.gm.setGameCallback(() -> this.restartButton.setVisible(true));
                     this.add(this.gm);
                     this.musicBackground.stopMusic();
-                    this.musicBackground = new MusicBackgroundV2(Helper.getFileMusic(this.gameMode));
+                    this.musicBackground = new MusicBackground(Helper.getFileMusic(this.gameMode));
                     this.musicBackground.playMusic();
                     this.setupButtons(this.gameMode);
                     this.setup(this.background, this.getSizeByMode(), this.musicBackground);

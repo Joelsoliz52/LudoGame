@@ -1,17 +1,17 @@
 package layouts.Views;
 
-import components.MusicBackgroundV2;
+import components.ImagePanel;
+import components.MusicBackground;
 import entities.Position;
 import utilities.Helper;
-import components.ImagePanel;
 
-import javax.swing.JFrame;
 import java.awt.Dimension;
+import javax.swing.JFrame;
 
 public class View extends JFrame {
     private View prevView;
     private View nextView;
-    private MusicBackgroundV2 music;
+    private MusicBackground music;
 
     public View() {
         this.setUndecorated(true);
@@ -19,7 +19,7 @@ public class View extends JFrame {
         this.setLayout(null);
     }
 
-    public void setup(ImagePanel background, Dimension viewSize, MusicBackgroundV2 music) {
+    public void setup(ImagePanel background, Dimension viewSize, MusicBackground music) {
         this.music = music;
         Position centeredPosition = Helper.calculateCenteredPosition(viewSize);
         this.setBounds(centeredPosition.getX(), centeredPosition.getY(), viewSize.width, viewSize.height);

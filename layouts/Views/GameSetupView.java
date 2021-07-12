@@ -2,7 +2,7 @@ package layouts.Views;
 
 import components.*;
 import components.utils.enums.ButtonTypes;
-import utilities.GameModes;
+import utilities.enums.GameModes;
 import utilities.Helper;
 
 import java.awt.Color;
@@ -42,10 +42,11 @@ public class GameSetupView extends View {
 
     // TextField
     private final TextInput playerNameInput = new TextInput();
+
     private GameSetupView(GameModes gameMode) {
         this.gameMode = gameMode;
-        ImagePanel background = new ImagePanel("CreationBoards.jpg");
-        MusicBackgroundV2 musicBackground = new MusicBackgroundV2(Helper.getFileMusic(gameMode));
+        ImagePanel background = new ImagePanel("creationBoards.jpg");
+        MusicBackground musicBackground = new MusicBackground(Helper.getFileMusic(gameMode));
 
         playerNameInput.setup(30, 155, 170, 30);
         this.add(playerNameInput);

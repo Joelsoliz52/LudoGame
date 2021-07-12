@@ -1,9 +1,9 @@
 package entities;
 
+import interfaces.Path;
+
 import java.awt.Color;
 import java.io.Serializable;
-
-import interfaces.Path;
 
 /**
  * Entity Player
@@ -18,10 +18,11 @@ public class Player implements Serializable {
     private Color color;
     private final Pawn[] pawns;
     private int turn;
-    private String name;
+    private final String name;
     private int flagBonus;
     private int flagTraps;
     private int loseTurn;
+
     /**
      * Player constructor.
      * @param height Height of the boxes.
@@ -108,9 +109,5 @@ public class Player implements Serializable {
     
     public String getName(){
         return name;
-    }
-    
-    public void setName(String n){
-        name = n;
     }
 }

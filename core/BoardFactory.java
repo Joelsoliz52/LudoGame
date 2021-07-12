@@ -1,5 +1,8 @@
 package core;
 
+import core.classic.ClassicLogic;
+import core.mri.MRILogic;
+import core.run.RunLogic;
 import entities.Player;
 import entities.Position;
 import interfaces.Board;

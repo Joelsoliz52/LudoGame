@@ -1,5 +1,6 @@
-package core;
+package core.classic;
 
+import core.BuildPlayers;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;

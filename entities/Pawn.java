@@ -25,13 +25,12 @@ public class Pawn implements Serializable {
     private final int width;
     private boolean pathOptional;
     private int optional;
-    private int numPathOp;
     private boolean flagBonus;
     private boolean freezePawn;
     private final Stack<Integer> pawnMovements = new Stack<>();
     private final Stack<Tuple<Integer, Integer, Boolean>> pawnOptionalMovements = new Stack<>();
     private boolean classicGame = true;
-    private boolean UndoMovementOptional;
+
     /**
      * Pawn constructor.
      * @param height Height of pawn boxes.
@@ -46,10 +45,8 @@ public class Pawn implements Serializable {
         this.width = width;
         pathOptional = false;
         optional = 0;
-        numPathOp = 0;
         flagBonus = false;
         freezePawn = false;
-        UndoMovementOptional = true;
         pawnMovements.push(current);
         pawnOptionalMovements.push(new Tuple<>(optional, current, pathOptional));
     }
@@ -75,23 +72,15 @@ public class Pawn implements Serializable {
             if(!pathOptional) {
                 x = path.getAX()[player.getTurn() - 1][current];
                 y = path.getAY()[player.getTurn() - 1][current];
-                setUndoMovementOptional(true);
             }
             else{
-                if (UndoMovementOptional) {
-                    x = path.getOptionalAX()[player.getTurn() - 1][current];
-                    y = path.getOptionalAY()[player.getTurn() - 1][current];
-                    setUndoMovementOptional(true);
-                }else {
-                    x = path.getOptionalAX()[player.getTurn() - 1][currentOptional];
-                    y = path.getOptionalAY()[player.getTurn() - 1][currentOptional];
-                }
+                x = path.getOptionalAX()[player.getTurn() - 1][currentOptional];
+                y = path.getOptionalAY()[player.getTurn() - 1][currentOptional];
             }
         }
         position = new Position(x, y);
         graphics.setColor(player.getColor());
         drawNewPosition(graphics, temp1, temp2);
-
     }
 
     public void setPathOptional(boolean pathOptional){
@@ -166,21 +155,6 @@ public class Pawn implements Serializable {
         return optional;
     }
 
-    /**
-     * Set optional path number.
-     */
-    public int getnumPathOp(){
-        return numPathOp;
-    }
-
-    /**
-     * Set optional path number.
-     * @param numPathOp New optional path number.
-     */
-    public void setnumPathOp(int numPathOp){
-        this.numPathOp= numPathOp;
-    }
-
     public boolean getFlag() { return flagBonus; }
 
     public void setFlag(boolean flagBonus) { this.flagBonus = flagBonus;}
@@ -195,7 +169,6 @@ public class Pawn implements Serializable {
     }
 
     public void undoMovement() {
-        setUndoMovementOptional(false);
         if (this.classicGame) {
             this.pawnMovements.pop();
             this.current = this.pawnMovements.lastElement();
@@ -211,12 +184,14 @@ public class Pawn implements Serializable {
 
         if (lastMovement.getEntityOne() == 2) {
             this.currentOptional = lastMovement.getEntityTwo();
+            this.current = this.undoOptionalMovement();
             this.pathOptional = true;
         }
         this.optional = lastMovement.getEntityOne();
     }
 
-    public void setUndoMovementOptional(boolean UndoMovementOptional){
-        this.UndoMovementOptional = UndoMovementOptional;
+    private int undoOptionalMovement() {
+        int optionalPath = this.currentOptional / 8;
+        return (optionalPath * 17) + 3 + this.currentOptional % 8;
     }
 }

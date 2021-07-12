@@ -1,5 +1,6 @@
-package core;
+package core.mri;
 
+import core.BuildPlayers;
 import entities.Dice;
 import entities.Pawn;
 import entities.Player;
@@ -150,7 +151,6 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
      * @param y Y position.
      */
     private void moveInitPawn(Player player, int x, int y) {
-
         for (int i = 0; i < 4; i++) {
             Pawn pawn = player.getPawns()[i];
 
@@ -207,6 +207,12 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             if (current == 74)
                 player.incrementCoin();
 
+            if(verifyPosition(current, pawn.getCurrentOptional()) && pawn.getOptional()==2){
+                pawn.setOptional(0);
+                optionalFinal(pawn);
+                current = pawn.getCurrent();
+            }
+
             if((dice.content==2||dice.content==4||dice.content==6)&& pawn.getOptional()==1){
                 pawn.setOptional(2);
                 optionalInitial(pawn,current);
@@ -214,12 +220,8 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
             }else if (pawn.getOptional()==1){
                 pawn.setOptional(0);
             }
-            if((pawn.getCurrentOptional() > 7)&& pawn.getOptional()==2){
-                pawn.setOptional(0);
-                optionalFinal(pawn);
-                current = pawn.getCurrent();
-            }
-            if(((current == 3)||(current == 20)||(current == 37)||(current == 54))&&pawn.getOptional()==0){
+
+            if(((current == 3)||(current == 20)||(current == 37)||(current == 54)) && pawn.getOptional()==0){
                 pawn.setOptional(1);
                 pawn.setCheckPoint(1, pawn.getCurrent(), false);
             }
@@ -233,7 +235,7 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
                 }
             }
 
-            if (pawn.getOptional() == 2 && pawn.getCurrentOptional() <= 7) {
+            if (pawn.getOptional() == 2 && verifyPositionInOptionalPath(current, pawn.getCurrentOptional())) {
                 pawn.setCheckPoint(2, pawn.getCurrentOptional(), true);
             }
 
@@ -245,41 +247,47 @@ public class MRILogic implements GameLogic<Integer>, Serializable {
         return value;
     }
 
+    private boolean verifyPosition(int current, int currentOptional) {
+        if (currentOptional > 31 && current > 61) { return true; }
+        if (currentOptional > 23 && current > 44 && current < 54) { return true; }
+        if (currentOptional > 15 && current > 27 && current < 37) { return true; }
+        return currentOptional > 7 && current > 10 && current < 20;
+    }
+
+    private boolean verifyPositionInOptionalPath(int current, int currentOptional) {
+        if (currentOptional <= 31 && currentOptional > 24 && current > 54) { return true; }
+        if (currentOptional <= 23 && currentOptional > 16 && current > 37) { return true; }
+        if (currentOptional <= 15 && currentOptional > 8 && current > 20) { return true; }
+        return currentOptional <= 7 && currentOptional > 0 && current > 3;
+    }
+
     /**
      * method to enter optional path.
      * @param pawn Current pawn.
      * @param current Current pawn path position.
      */
     private void optionalInitial(Pawn pawn, int current){
+        int newCurrentOptional = getNewCurrentOptional(current);
+        pawn.setCurrentOptional(newCurrentOptional + dice.content);
         pawn.setPathOptional(true);
-        int j = 0;
-        if(current == (20 + dice.content)){j = 1; pawn.setnumPathOp(1);}
-        else if (current == (37 + dice.content)){j = 2; pawn.setnumPathOp(2);}
-        else if(current == (54 + dice.content)){j = 3; pawn.setnumPathOp(3);}
-        for(int i = 0; i < 4; i++){
-            if(j == i){
-                pawn.setCurrent((8 * i) + dice.content);
-                pawn.setCurrentOptional(dice.content);
-                break;
-            }
-        }
+    }
+
+    private int getNewCurrentOptional(int position) {
+        if (position >= 3 && position <= 9) { return 0; }
+        if (position >= 20 && position <= 26) { return 8; }
+        if (position >= 37 && position <= 43) { return 16; }
+        if (position >= 54 && position <= 60) { return 24; }
+        return 0;
     }
 
     /**
      * method to get out of the optional path.
      * @param pawn Current pawn.
      */
-    private void optionalFinal(Pawn pawn){
+    private void optionalFinal(Pawn pawn) {
         pawn.setPathOptional(false);
-        for(int i = 0; i < 4; i++){
-            if(pawn.getnumPathOp() == i){
-                int u = ( - 7 + pawn.getCurrentOptional()) + (10 + (i*17));
-                pawn.setCurrent(u-1);
-                break;
-            }
-        }
-        pawn.setCurrentOptional(0);
-        pawn.setCheckPoint(0, pawn.getCurrent(), false);
+        pawn.setCurrent(pawn.getCurrent() - 1);
+        pawn.setCurrentOptional(getNewCurrentOptional(pawn.getCurrent()));
     }
 
     /**
